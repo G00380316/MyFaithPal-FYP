@@ -1,11 +1,15 @@
 .main {
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
-  background-color: rgb(164, 141, 141);
+  background-image: url("https://images8.alphacoders.com/130/1305886.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .description {
@@ -98,7 +102,7 @@
 
 .center::before,
 .center::after {
-  content: '';
+  content: "";
   left: 50%;
   position: absolute;
   filter: blur(45px);
