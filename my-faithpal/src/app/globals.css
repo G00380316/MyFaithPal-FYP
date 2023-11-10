@@ -91,17 +91,15 @@ nav {
   color: #996515;
 }
 
-button {
-  font-size: 16px;
-  font-weight: bold;
-  background-color: rgb(0, 0, 0);
+footer {
+  padding: 50px;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
   color: #996515;
-  border-width: 3px;
-  border-color: #996515;
-  padding: 15px;
-  padding-left: 40px;
-  padding-right: 40px;
-  border-radius: 10px;
 }
 
 html,

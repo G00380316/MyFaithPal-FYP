@@ -23,6 +23,19 @@
   font-family: var(--font-mono);
 }
 
+.button {
+  font-size: 16px;
+  font-weight: bold;
+  background-color: rgb(0, 0, 0);
+  color: #996515;
+  border-width: 3px;
+  border-color: #996515;
+  padding: 15px;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 10px;
+}
+
 .description a {
   display: flex;
   justify-content: center;
@@ -85,7 +98,7 @@
   padding: 4rem 0;
 }
 
-.center::before {
+/*.center::before {
   background: var(--secondary-glow);
   border-radius: 50%;
   width: 480px;
@@ -107,7 +120,7 @@
   position: absolute;
   filter: blur(45px);
   transform: translateZ(0);
-}
+}*/
 
 .logo {
   position: relative;
