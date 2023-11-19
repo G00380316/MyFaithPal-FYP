@@ -1,14 +1,15 @@
-"use client"
-import useBackendData from "@/hooks/user";
+import DisplayUser from "@/hooks/getUser";
 
 export default function chat() {
-
-  useBackendData();
-
-return (
-<div style={{display: 'flex',flexDirection: 'column', justifyContent: 'space-evenly'}}>
-    <h1>chat page</h1>
-    <p style={{color: 'purple'}}>Hi Welcome!!Nice to meet you</p>
-</div>
-)
-}
+  return (
+    <section>
+      <div>
+      <h1>chat page</h1>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <p style={{ color: 'purple',paddingRight:10 }}>Hi Welcome!!Nice to meet you</p>
+        <DisplayUser />
+      </div>
+    </section>
+      )
+  }

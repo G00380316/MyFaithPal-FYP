@@ -9,7 +9,7 @@ export default function Home() {
           <li style={{color: "transparent"}}>
             <h1 style={{color: 'black',fontSize:50}}>Gensis 1:1</h1>
             <h1 style={{ color: 'white' }}>"In the beginning God created the heaven and the earth."</h1>
-            <div style={{paddingLeft: 320,paddingTop: 50}}>
+            <div style={{paddingLeft: 340,paddingTop: 50}}>
               <Link href='/bible' ><button className={styles.button}>Start Reading</button> </Link>
             </div>
           </li>
