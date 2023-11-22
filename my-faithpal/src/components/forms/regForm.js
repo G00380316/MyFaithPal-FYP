@@ -15,12 +15,33 @@ export default function regForm() {
     console.log(email);
     console.log(password);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!name || !email || !password) {
             setError("All fields are necessary");
             return;
+        }
+
+        try {
+            const res = await fetch('api/register', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name, email, password
+                }),
+            });
+
+            if (res.ok) {
+                const form = e.target;
+                form.reset();
+            } else {
+                console.log("Error registraiton failed", error);
+            }
+        } catch (error) {
+            console.log("Error whilst Registration: ", error);
         }
     };
 

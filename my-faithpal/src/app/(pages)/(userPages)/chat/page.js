@@ -1,4 +1,4 @@
-import DisplayUser from "@/api/getUser";
+import DisplayUser from "@/app/api/getUser";
 
 export default function chat() {
   return (
