@@ -19,9 +19,14 @@ export default function LoginForm() {
                 </div>
                 <div>
                     <button>Sign in</button>
+                    <div className={styles.error}>
+                        Error try again
+                    </div>
                 </div>
             </form>
-            <Link href='/register'><p className={styles.p}>Haven't registered yet click here!!!</p></Link>
+            <div className={styles.link}>
+                <Link href='/register'><p className={styles.p}>Haven't registered yet click here!!!</p></Link>
+            </div>
         </div>
     )
 }

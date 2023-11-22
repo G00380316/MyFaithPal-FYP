@@ -13,13 +13,14 @@
 }
 
 .title {
-width: 100px;
+width: 105px;
 padding: 15px;
 }
 
 .description {
     font-size: 11px;
     width: 290px;
+    padding: 0px 5px;
 }
 
 .form {
@@ -83,8 +84,26 @@ padding: 15px;
     background-color: transparent;
 }
 
+.form .error {
+    background: #c51244 ;
+    border-radius: 4px ;
+    font-weight: 600;
+    padding: 10px 0;
+    width: 200px;
+    margin: 10px 35px;
+    box-shadow: 1px 1px 1px #aaaaaa;
+    transition: all 0.8s ease;
+}
+
 .p {
-    padding-bottom: 25px;
+    border-bottom: 2px solid black;
+}
+
+.link {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
 }
 
 @media (max-width: 610px) {
