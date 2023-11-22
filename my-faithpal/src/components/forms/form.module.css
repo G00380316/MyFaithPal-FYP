@@ -1,0 +1,142 @@
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    -webkit-box-shadow: 7px 5px 17px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 7px 5px 17px 0px rgba(0,0,0,0.75);
+    box-shadow: 7px 5px 17px 0px rgba(0,0,0,0.75);
+}
+
+.title {
+width: 100px;
+padding: 15px;
+}
+
+.description {
+    font-size: 11px;
+    width: 290px;
+}
+
+.form {
+    padding: 70px 30px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.form .field {
+    display: flex;
+    position: relative;
+    flex: 50%;
+}
+
+.form label {
+    color: #ffffff;
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-bottom: 5px;
+    font-weight: 200;
+    position: absolute;
+    top: -20px;
+    transition: all 0.3s ease;
+}
+
+.form input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ffffff;
+    outline: none;
+    transition: all 0.3s ease;
+    color: #000000;
+    font-size: 16px;
+    width: 90%;
+    margin-bottom: 50px;
+    font-weight: 300;
+    padding: 4px 0px;
+}
+
+.form input:focus {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ffffff;
+}
+
+.form button {
+    cursor: pointer;
+    border: 0;
+    border-radius: 4px;
+    font-weight: 600;
+    margin: 0 10px;
+    width: 200px;
+    padding: 10px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+}
+
+.form button:hover {
+    background-color: transparent;
+}
+
+.p {
+    padding-bottom: 25px;
+}
+
+@media (max-width: 610px) {
+    .container{
+        max-width: 90%;
+        position: relative;
+        margin-left: 15px;
+    }
+    .container .title {
+        text-align: center;
+        padding: 10px;
+        position: relative;
+        transform: unset;
+        width: 90px;
+        padding: 8px;
+    }
+
+    .container .title {
+        font-size: 18px;
+    }
+
+    .description {
+        width: 330px;
+        padding-right: 50px;
+        padding-bottom: 10px;
+    }
+
+    .form {
+        flex-direction: column;
+        padding: 30px 20px;
+    }
+
+    .form label{
+        top: -12px;
+        font-size: 8px;
+    }
+
+    .form .field:focus-within label {
+        top: -15px;
+    }
+    .form input {
+        font-size: 12px;
+        padding: 0;
+    }
+
+    .form .field input {
+        margin-bottom: 35px;
+        width: 100%;
+    }
+
+    .form button {
+        padding: 10px;
+        font-size: 12px;
+    }
+}

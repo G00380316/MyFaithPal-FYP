@@ -1,10 +1,12 @@
-import Link from "next/link"
+import RegForm from "@/components/forms/regForm"
+import styles from "@/app/(pages)/(auth)/register/reg.module.css"
 
 export default function register() {
     return (
-        <main>
-            <h1>Register page</h1>
-            <Link href='/'><p>Go home</p></Link>
+        <main className={styles.main}>
+            <div>
+                <RegForm />
+            </div>
         </main>
     )
 }

@@ -1,11 +1,12 @@
-import Link from "next/link"
+import LoginForm from "@/components/forms/loginForm"
+import styles from "@/app/(pages)/(auth)/login/login.module.css"
 
 export default function login() {
     return (
-    <main>
-    <h1>Login page</h1><div style={{ padding: 10 }}>
-    <Link href='/register'><p>Haven't registered yet click here!!!</p></Link>
-    </div>
+    <main className={styles.main}>
+        <div>
+            <LoginForm />
+        </div>
     </main>
     )
 }
