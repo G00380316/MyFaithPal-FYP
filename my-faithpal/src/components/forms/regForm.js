@@ -3,6 +3,7 @@
 import Link from "next/link"
 import styles from "@/components/forms/form.module.css"
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function regForm() {
 
@@ -10,6 +11,8 @@ export default function regForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+
+    const router = useRouter();
 
     console.log(name);
     console.log(email);
@@ -60,6 +63,7 @@ export default function regForm() {
             if (res.ok) {
                 const form = e.target;
                 form.reset();
+                router.push("/login");
             } else {
                 console.log("Error registraiton failed", error);
             }
