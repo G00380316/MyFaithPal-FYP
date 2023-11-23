@@ -27,6 +27,7 @@
 }
 
 .main section button{
+    cursor: pointer;
     background: #c51244 ;
     border-radius: 4px ;
     font-weight: 600;
@@ -37,4 +38,8 @@
     box-shadow: 1px 1px 1px #aaaaaa;
     transition: all 0.4s ease;
     border: none;
+}
+
+.main section button:hover {
+    background-color: transparent;
 }
