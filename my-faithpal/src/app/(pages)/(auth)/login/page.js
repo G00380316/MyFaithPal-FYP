@@ -8,7 +8,7 @@ export default async function login() {
 
     const session = await getServerSession(authOptions);
 
-    if (session) redirect("profile");
+    if (session) { redirect("profile"); }
 
     return (
     <main className={styles.main}>
