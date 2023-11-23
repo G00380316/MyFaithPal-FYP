@@ -8,12 +8,14 @@
 }
 
 .main section {
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 10px 10px 5px 10px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 10px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 10px rgba(0,0,0,0.75);
     padding: 50px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .main section div {
@@ -29,6 +31,20 @@
 .main section button{
     cursor: pointer;
     background: #c51244 ;
+    border-radius: 4px ;
+    font-weight: 600;
+    color: aliceblue;
+    padding: 10px 0;
+    width: 200px;
+    margin: 10px 22px;
+    box-shadow: 1px 1px 1px #aaaaaa;
+    transition: all 0.4s ease;
+    border: none;
+}
+
+.main section .button {
+    cursor: pointer;
+    background: #12c54b ;
     border-radius: 4px ;
     font-weight: 600;
     color: aliceblue;

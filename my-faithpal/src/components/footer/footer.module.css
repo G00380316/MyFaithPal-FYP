@@ -20,6 +20,19 @@
     text-align: center;
 }
 
+.div {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    flex-direction: row;
+    flex: 1;
+    align-items: flex-start;
+}
+
+.footer div p span {
+    color: azure;
+    font-weight: 400;
+}
+
 .p {
     padding-right: 250px;
     align-self: center;

@@ -1,6 +1,12 @@
-import DisplayUser from "@/app/api/getUser";
+"use client"
+
+//import DisplayUser from "@/app/api/getUser"; to get from backend information from json backend
+import { useSession } from "next-auth/react";
 
 export default function chat() {
+
+  const { data: session } = useSession();
+
   return (
     <section>
       <div>
@@ -8,7 +14,7 @@ export default function chat() {
       </div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <p style={{ color: 'purple',paddingRight:10 }}>Hi Welcome!!Nice to meet you</p>
-        <DisplayUser />
+        {session?.user?.name}
       </div>
     </section>
       )
