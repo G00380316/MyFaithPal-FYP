@@ -24,6 +24,29 @@ export default function regForm() {
         }
 
         try {
+            const resUserExists = await fetch('api/userCheck', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const { user } = await resUserExists.json();
+
+            if (user) {
+                setError("User already exists");
+                form.reset();
+                console.log(error);
+                return;
+            }
+            
+            /*if (resUserExists.ok) {
+                setError("User already exists");
+                console.log(error);
+                return;
+            }*/
+
             const res = await fetch('api/register', {
                 method: "POST",
                 headers: {
