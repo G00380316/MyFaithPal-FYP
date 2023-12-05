@@ -10,12 +10,11 @@ const Dropdown = ({ options, onSelect }) => {
 
 return (
     <div>
-        <label>Select an bible:</label>
         <select
         value={selectedOption}
         onChange={(e) => handleSelect(e.target.value)}
         >
-        <option value="" disabled>Select an option</option>
+        <option value="" disabled>Select an Option</option>
         {options.map((option) => (
         <option key={option.value} value={option.value}>
             {option.label}
