@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 
 router.get('/test', async (req, res) => {
     try {
-        const apiUrl = 'https://api.scripture.api.bible/v1/bibles/9879dbb7cfe39e4d-04/verses/GEN.1.1?include-chapter-numbers=true&include-verse-numbers=true';
+        const apiUrl = 'https://api.scripture.api.bible/v1/bibles/9879dbb7cfe39e4d-04/chapters/GEN.1?include-chapter-numbers=true&include-verse-numbers=true';
         const apiKey = process.env.API_KEY;
 
         if (!apiKey) {

@@ -1,0 +1,6 @@
+.nav {
+  background-color: #333;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
