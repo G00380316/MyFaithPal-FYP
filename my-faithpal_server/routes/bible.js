@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 
 const router = express.Router();
-const env = dotenv.config();
+dotenv.config();
 
 router.get('/', (req, res) => {
     res.send('hello');

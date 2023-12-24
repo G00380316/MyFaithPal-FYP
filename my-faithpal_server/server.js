@@ -1,12 +1,17 @@
+import { connectMongoDB } from "./lib/mongo.js";
 import bodyParser from 'body-parser';
+import dotenv from "dotenv";
 import cors from 'cors';
 import express from 'express';
 
 //Routes
 import bibleRoutes from './routes/bible.js';
 
+dotenv.config();
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
+connectMongoDB();
 
 app.use(cors());
 app.use(bodyParser.json());
