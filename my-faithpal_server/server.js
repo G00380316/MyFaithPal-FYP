@@ -5,7 +5,8 @@ import cors from 'cors';
 import express from 'express';
 
 //Routes
-import bibleRoutes from './routes/bible.js';
+import Bible from './routes/bible.js';
+import Chatroom from "./routes/chatroom.js";
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => res.send('Welcome to Faithpals Backend Servers'));
 
-app.use('/bibles', bibleRoutes);
+app.use('/bible', Bible);
+app.use('/chatroom', Chatroom);
 
 app.listen(PORT, () => console.log(`Server started on port http://localhost:${PORT}`));

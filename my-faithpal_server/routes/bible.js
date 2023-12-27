@@ -6,7 +6,7 @@ const router = express.Router();
 dotenv.config();
 
 router.get('/', (req, res) => {
-    res.send('hello');
+    res.send('Hello, this is the Bible Route');
 })
 
 router.get('/test', async (req, res) => {
