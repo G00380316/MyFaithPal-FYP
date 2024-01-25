@@ -1,8 +1,8 @@
-import { connectMongoDB } from "./lib/mongo.js";
 import bodyParser from 'body-parser';
-import dotenv from "dotenv";
 import cors from 'cors';
+import dotenv from "dotenv";
 import express from 'express';
+import { connectMongoDB } from "./lib/mongo.js";
 
 //Routes
 import Bible from './routes/bible.js';
@@ -17,7 +17,7 @@ connectMongoDB();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => res.send('Welcome to Faithpals Backend Servers'));
+app.get('/', (res) => res.send('Welcome to Faithpals Backend Servers'));
 
 app.use('/bible', Bible);
 app.use('/chatroom', Chatroom);
