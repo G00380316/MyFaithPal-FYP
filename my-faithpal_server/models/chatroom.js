@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const { Schema, models } = mongoose;
 
 const chatroomSchema = new Schema({
-    name: {
-        type: String,
+    participants: {
+        type: Array,
         required: true,
     },
 },

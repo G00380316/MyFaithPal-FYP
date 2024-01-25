@@ -2,11 +2,12 @@
 
 //import DisplayUser from "@/app/api/getUser"; to get from backend information from json backend
 import { useSession } from "next-auth/react";
+import { io } from "socket.io-client";
 
 export default function chat() {
 
   const { data: session } = useSession();
-
+  
   return (
     <section>
       <div>
