@@ -31,9 +31,12 @@ router.get('/test', async (req, res) => {
     }
 });
 
-router.get('/john1:1', async (req, res) => {
+router.get('/:passage', async (req, res) => {
+
+    const passage = req.params.passage;
+
     try {
-        const apiUrl = 'https://6ht3rkv1-4000.uks1.devtunnels.ms/john%203:16-20?translation=bbe';
+        const apiUrl = `http://127.0.0.1:4567/${passage}`;
 
         const response = await axios.get(apiUrl);
 

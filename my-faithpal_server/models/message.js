@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 const { Schema, models } = mongoose;
 
@@ -13,7 +13,7 @@ const messageSchema = new Schema({
         required: true,
         ref: "User",
     },
-    message: {
+    text: {
         type: String,
         required: true,
     },
