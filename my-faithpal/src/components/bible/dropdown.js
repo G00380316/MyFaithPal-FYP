@@ -1,27 +1,19 @@
 import React, { useState } from 'react';
 
 const Dropdown = ({ options, onSelect }) => {
-    const [selectedOption, setSelectedOption] = useState('');
+    const handleSelect = (e) => {
+        const selectedOption = options.find(option => option.value === e.target.value);
+        onSelect(selectedOption);
+    };
 
-    const handleSelect = (option) => {
-    setSelectedOption(option);
-    onSelect(option);
-};
-
-return (
-    <div>
-        <select
-        value={selectedOption}
-        onChange={(e) => handleSelect(e.target.value)}
-        >
-        <option value="" disabled>Select an Option</option>
-        {options.map((option) => (
-        <option key={option.value} value={option.value}>
-            {option.label}
-        </option>
-        ))}
-    </select>
-    </div>
+    return (
+        <select onChange={handleSelect}>
+            {options.map(option => (
+                <option key={option.value} value={option.value}>
+                    {option.label}
+                </option>
+            ))}
+        </select>
     );
 };
 

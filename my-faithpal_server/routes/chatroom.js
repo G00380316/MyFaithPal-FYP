@@ -6,7 +6,7 @@ import { connectMongoDB } from '../lib/mongo.js';
 const router = express.Router();
 dotenv.config();
 
-    router.get('/', (res) => {
+    router.get('/', (req, res) => {
         res.send('Hello, this is the Chartroom Route');
     })
 
@@ -39,13 +39,13 @@ dotenv.config();
     router.get('/findall/:userId', async (req, res) => {
         const userId = req.params.userId;
 
-        const intUserId = parseInt(userId);
+        //const intUserId = parseInt(userId);
 
         try {
             await connectMongoDB();
 
             const chatrooms = await Chatroom.find({
-                participants: { $in: intUserId }
+                participants: { $in: userId } //Replace userId with intUserId for int
             })
 
             console.log('User ID:', userId);
@@ -62,14 +62,14 @@ dotenv.config();
     router.get('/find/:firstId/:secondId', async (req, res) => {
         const { firstId, secondId } = req.params;
 
-        const intFirstUserId = parseInt(firstId);
-        const intSecondUserId = parseInt(secondId);
+        //const intFirstUserId = parseInt(firstId);
+        //const intSecondUserId = parseInt(secondId);
 
         try {
             await connectMongoDB();
             
             const chatrooms = await Chatroom.findOne({
-                participants: {$all: [intFirstUserId,intSecondUserId]}
+                participants: {$all: [firstId,secondId]}
             })
 
             console.log('User ID:', firstId);
