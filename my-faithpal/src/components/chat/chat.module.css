@@ -1,8 +1,70 @@
-    .chat-container {
-        max-width: 400px;
-        margin: 0 auto;
+    .user_online {
+        display: inline-block;
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        background: rgb(0, 219, 0);
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        z-index: 2;
     }
 
+    .this_user_notifications {
+        display: flex;
+        background: #00bd9b;
+        height: 20px;
+        width: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+    }
+
+     /* User Card */
+    .user-card {
+        color: white;
+        position: relative;
+        border-bottom: 1px solid rgb(100, 100, 100);
+        width: 380px;
+    }
+
+    .text-content {
+        color: white;
+        position: relative;
+        border-bottom: 1px solid rgb(100, 100, 100);
+        width: 170px;
+    }
+
+    .name {
+        font-weight: 700;
+    }
+
+    .text {
+        font-size: 14px;
+        color: rgb(180, 180, 180);
+    }
+
+    .date {
+        font-size: 14px;
+        color: rgb(180, 180, 180);
+    }
+
+    .button {
+        padding: 15px; /* This overrides the previous padding declaration */
+        margin-left: 5px;
+        display: flex; /* Removed quotes around flex */
+        flex-direction: row; /* Removed quotes around row */
+        justify-content: space-between; /* Removed quotes around space-between */
+        align-items: center; /* Removed quotes around center */
+        gap: 13px; /* Removed quotes around 13px */
+        cursor: pointer;
+        width: 300px;
+    }
+
+
+    /*
     .chat-messages {
         border: 1px solid #ccc;
         padding: 10px;
@@ -24,12 +86,8 @@
         margin-top: 10px;
     }
 
-    input {
+    .input {
         flex: 1;
         padding: 5px;
     }
-
-    button {
-        padding: 5px 10px;
-        margin-left: 5px;
-    }
+    */
