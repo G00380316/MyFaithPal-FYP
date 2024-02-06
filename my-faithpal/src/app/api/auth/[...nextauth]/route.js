@@ -11,7 +11,7 @@ export const authOptions = {
             credentials: {},
 
             async authorize(credentials) {
-                const {email, password} = credentials;
+                const { email, password } = credentials;
                 
                 try {
                     await connectMongoDB();
@@ -27,7 +27,7 @@ export const authOptions = {
                         return null;
                     }
 
-                    return user;
+                    return { _id: user.id, name: user.name, email: user.email };
                 } catch (error) {
                     console.log("Error: ", error);
                 }
@@ -36,6 +36,19 @@ export const authOptions = {
     ],
     session: {
         strategy: "jwt",
+    },
+    callbacks: {
+        async jwt({ token, user, session }) {
+            //pass id to token
+            if (user?._id) token._id = user._id;
+            console.log("jwt callback", { token, user, session })
+            return token;
+        },
+        async session({ session, token, user }) {
+            if (token?._id) session.user._id = token._id;
+            console.log("session callback", { token, user, session })
+            return session;
+        },
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {

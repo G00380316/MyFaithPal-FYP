@@ -43,12 +43,6 @@ export default function DisplayPassage({ selectedBook, selectedChapter }) {
         </div>
         ))}
         <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
     </div>
     );
 }
