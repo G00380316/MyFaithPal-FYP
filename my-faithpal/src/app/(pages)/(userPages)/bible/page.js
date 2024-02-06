@@ -4,18 +4,9 @@ import React, { useState } from "react";
 import Dropdown from "@/components/bible/dropdown";
 import styles from "@/app/(pages)/(userPages)/bible/bible.module.css";
 import DisplayPassage from "@/components/bible/getPassage";
-
-const optionsBooks = [
-    { value: 'Genesis', label: 'Genesis' },
-    { value: 'Exodus', label: 'Exodus' },
-    { value: 'Leviticus', label: 'Leviticus' },
-];
-
-const optionsChapters = [
-    { value: '1', label: '1' },
-    { value: '2', label: '2' },
-    { value: '3', label: '3' },
-];
+import { optionsBooks } from "@/util/bible/bookOptions";
+import { optionsChapters } from "@/util/bible/chapterOptions";
+//import { optionsVerses } from "@/util/versesOptions";
 
 export default function Bible() {
     const [selectedBook, setSelectedBook] = useState(optionsBooks[0].value); // Default to the first book
