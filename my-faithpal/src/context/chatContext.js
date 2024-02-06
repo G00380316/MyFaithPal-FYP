@@ -1,36 +1,41 @@
+"use client"
+
 import { createContext, useState, useEffect } from "react";
-import { baseUrl, getRequest, postRequest } from "@/util/service";
+import { baseUrl, getRequest } from "@/util/service";
+import { useSession } from "next-auth/react";
 
 export const ChatContext = createContext();
 
-export const ChatContextProvider = ({ children, user }) => {
+export const ChatContextProvider = ({ children }) => {
+    const { data: session } = useSession();
     const [userChats, setUserChats] = useState(null);
     const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
     const [userChatsError, setUserChatsError] = useState(null);
 
     useEffect(() => {
         const getUserChats = async () => {
-            if (user?._id) {
-
+            if (session?.user?._id) {
                 setIsUserChatsLoading(true);
-                setUserChatsError(null)
+                setUserChatsError(null);
 
-                const response = await getRequest(`${baseUrl}chatroom/findall/${user?._id}`)
+                const response = await getRequest(`${baseUrl}chatroom/findall/${session?.user?._id}`);
 
-                setIsUserChatsLoading(true);
+                setIsUserChatsLoading(false);
 
                 if (response.error) {
-                    return setUserChatsError(response)
+                    return setUserChatsError(response);
                 }
 
-                setUserChats(response)
+                setUserChats(response);
             }
         };
 
-        getUserChats()
-    }, [user])
+        getUserChats();
+    }, [session]);
 
     return (
-        <ChatContextProvider value = {{userChats,isUserChatsLoading,userChatsError}}>{children}</ChatContextProvider>
-    )
-}
+        <ChatContext.Provider value={{ userChats, isUserChatsLoading, userChatsError }}>
+            {children}
+        </ChatContext.Provider>
+    );
+};
