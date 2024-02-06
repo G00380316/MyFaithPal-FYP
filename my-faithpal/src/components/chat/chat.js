@@ -1,12 +1,9 @@
 import React from "react";
 import avatar from "../../../public/avatar.svg"
-import { useFetchRecipientUser } from "@/hooks/useFetchRecipient";
 import styles from "@/components/chat/chat.module.css";
 
-export default function Chat ({}) {
+export default function Chat ({recipientUser}) {
 
-    const { recipientUser } = useFetchRecipientUser();
-    
     return (
     <div className={styles.button}>
     <div style={{ marginRight: '2px',display: 'flex' ,flexDirection:'column',alignItems: 'flex-start'}}>

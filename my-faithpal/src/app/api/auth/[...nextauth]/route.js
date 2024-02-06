@@ -41,12 +41,12 @@ export const authOptions = {
         async jwt({ token, user, session }) {
             //pass id to token
             if (user?._id) token._id = user._id;
-            console.log("jwt callback", { token, user, session })
+            //console.log("jwt callback", { token, user, session })
             return token;
         },
         async session({ session, token, user }) {
             if (token?._id) session.user._id = token._id;
-            console.log("session callback", { token, user, session })
+            //console.log("session callback", { token, user, session })
             return session;
         },
     },
