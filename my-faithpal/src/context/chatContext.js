@@ -26,6 +26,8 @@ export const ChatContextProvider = ({ children }) => {
                     return setUserChatsError(response);
                 }
 
+                console.log(response);
+                
                 setUserChats(response);
             }
         };

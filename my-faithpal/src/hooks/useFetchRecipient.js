@@ -1,24 +1,29 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { ChatContext } from "@/context/chatContext";
 
-export const useFetchRecipientUser = () => {
+
+export const useFetchRecipientUser = (userChats) => {
     
     const { data: session } = useSession();
     const [recipientUser, setRecipientUser] = useState(null);
     const [error, setError] = useState(null);
-    const { userChats } = useContext(ChatContext);
 
-    const recipientId = userChats?.find((id) => id !== session?.user?._id);
+    console.log("userChats Info ", userChats);
 
-    console.log("Info ", recipientId);
+    const recipientId = userChats
+    ?.map(chat => chat.participants) // Extract participants array from each chat
+    .flat() // Flatten the array of arrays
+    .filter(id => id !== session?.user?._id); // Find all participant IDs that are not the current user's ID
+
+    console.log("recipientID Info", recipientId);
 
     useEffect(() => {
         const getUser = async () => {
             if (!recipientId) return null;
             
             try {
-                
+                console.log("Sending Recipient", recipientId)
+
                 const response = await fetch(`/api/userByID`, {
                     method: 'POST',
                     headers: {
