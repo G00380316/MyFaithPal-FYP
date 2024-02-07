@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-
 export const useFetchRecipientUser = (userChats) => {
     
     const { data: session } = useSession();
@@ -10,36 +9,39 @@ export const useFetchRecipientUser = (userChats) => {
 
     console.log("userChats Info ", userChats);
 
-    const recipientId = userChats
-    ?.map(chat => chat.participants) // Extract participants array from each chat
-    .flat() // Flatten the array of arrays
-    .filter(id => id !== session?.user?._id); // Find all participant IDs that are not the current user's ID
-
-    console.log("recipientID Info", recipientId);
-
     useEffect(() => {
         const getUser = async () => {
+
+            const recipientId = userChats
+        ?.map(chat => chat.participants) // Extract participants array from each chat
+        .flat() // Flatten the array of arrays
+        .filter(id => id !== session?.user?._id); // Find all participant IDs that are not the current user's ID
+
             if (!recipientId) return null;
-            
+
+            console.log("recipientID Info", recipientId);
+
             try {
-                console.log("Sending Recipient", recipientId)
+                for (const id of recipientId) {
+                    console.log("Sending Recipient", id);
 
-                const response = await fetch(`/api/userByID`, {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ recipientId }) ,
-                });
+                    const response = await fetch(`/api/userByID`, {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ recipientId: id }) ,
+                    });
 
-                const { userData } = await response.json();
+                    const userData  = await response.json();
 
-                console.log(userData);
+                    console.log("Data Received by API Route in Hook", userData.user);
 
-                if (response.error) {
-                    setError(response.error);
-                } else {
-                    setRecipientUser(userData);
+                    if (response.error) {
+                        setError(response.error);
+                    } else {
+                        setRecipientUser( userData.user );
+                    }
                 }
             } catch (error) {
                 setError(error.message);
@@ -48,7 +50,7 @@ export const useFetchRecipientUser = (userChats) => {
         };
 
         getUser();
-    }, [recipientId]);
+    }, [userChats]);
 
-    return {recipientUser};
+    return {recipientUser };
 };
