@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-export const useFetchRecipientUser = (userChats) => {
+export const useFetchRecipientUser = ( userChats ) => {
     
     const { data: session } = useSession();
     const [recipientUser, setRecipientUser] = useState(null);
@@ -12,25 +12,24 @@ export const useFetchRecipientUser = (userChats) => {
     useEffect(() => {
         const getUser = async () => {
 
-            const recipientId = userChats
-        ?.map(chat => chat.participants) // Extract participants array from each chat
+            const recipientId = userChats.rUser?.participants // Extract participants array from each chat
         .flat() // Flatten the array of arrays
-        .filter(id => id !== session?.user?._id); // Find all participant IDs that are not the current user's ID
+        .filter(id => id !== session?.user?._id);// Find all participant IDs that are not the current user's ID
 
             if (!recipientId) return null;
 
             console.log("recipientID Info", recipientId);
 
             try {
-                for (const id of recipientId) {
-                    console.log("Sending Recipient", id);
+                //for (const id of recipientId) {
+                    console.log("Sending Recipient", recipientId);
 
                     const response = await fetch(`/api/userByID`, {
                         method: 'POST',
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify({ recipientId: id }) ,
+                        body: JSON.stringify({ recipientId }) ,
                     });
 
                     const userData  = await response.json();
@@ -42,7 +41,7 @@ export const useFetchRecipientUser = (userChats) => {
                     } else {
                         setRecipientUser( userData.user );
                     }
-                }
+               // }
             } catch (error) {
                 setError(error.message);
                 return error;
@@ -52,5 +51,5 @@ export const useFetchRecipientUser = (userChats) => {
         getUser();
     }, [userChats]);
 
-    return {recipientUser };
+    return {recipientUser};
 };

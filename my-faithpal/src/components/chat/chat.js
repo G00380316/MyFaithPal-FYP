@@ -1,12 +1,15 @@
 import React from "react";
 import avatar from "../../../public/avatar.png";
 import styles from "@/components/chat/chat.module.css";
+import { useFetchRecipientUser } from "@/hooks/useFetchRecipient";
 
-export default function Chat( recipientUser ) {
+export default function Chat(userChats) {
+    
+    const { recipientUser } = useFetchRecipientUser(userChats);
 
     console.log("Passed to component: ", recipientUser);
 
-    var name = recipientUser?.rUser?.name || "Unknown";
+    var name = recipientUser?.name || "Unknown";
 
     return (
         <div className={styles.button}>
