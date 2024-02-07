@@ -1,5 +1,4 @@
 import React from "react";
-import avatar from "../../../public/avatar.png";
 import styles from "@/components/chat/chat.module.css";
 import { useFetchRecipientUser } from "@/hooks/useFetchRecipient";
 
@@ -14,7 +13,7 @@ export default function Chat(userChats) {
     return (
         <div className={styles.button}>
             <div style={{ marginRight: '2px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                <img src={avatar} height="20px" alt="Avatar" />
+                <img src="/avatar.png" height="20px" alt="Avatar" />
                 <div className={styles.user_card}>
                     <div className={styles.name}>{name}</div>
                     <div className={styles.text}>Text Message</div>
