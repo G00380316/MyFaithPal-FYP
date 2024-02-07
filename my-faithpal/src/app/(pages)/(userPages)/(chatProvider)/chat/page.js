@@ -12,15 +12,14 @@ export default function Chat() {
   const { userChats, isUserChatsLoading, userChatsError } = useContext(ChatContext);
   const { recipientUser } = useFetchRecipientUser(userChats);
 
-  console.log("userChat", recipientUser);
-
+  console.log("End Result", recipientUser?.name);
   return (
       <div className={styles.body}>
         {userChats && userChats.length > 0 && (
           <div className={styles.chat_container}>
             <div className= {styles.chat_box}>
               {isUserChatsLoading && <p>Loading chats...</p>}
-              {userChats?.map(( recipientUser, index) => (
+              {userChats?.map(( index) => (
                 <div className={styles.chat_box_item} key={index}>
                   <Chatrooms rUser={recipientUser} key={index} />
                 </div>

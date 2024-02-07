@@ -5,9 +5,13 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
     try {
         await connectMongoDB();
-        const { _id } = await req.json();
+        const data = await req.json();
+        
+        const _id = data.recipientId;
 
-        const user = await User.findOne({ _id })
+        console.log("ID received by Hook", _id);
+
+        const user = await User.findById({ _id })
 
         console.log("User has been checked...user: ", user);
         return NextResponse.json({ user });
