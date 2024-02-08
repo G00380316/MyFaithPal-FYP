@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useState, useEffect, useCallback } from "react";
-import { baseUrl, getRequest } from "@/util/service";
+import { baseUrl, getRequest, postRequest } from "@/util/service";
 import { useSession } from "next-auth/react";
 
 export const ChatContext = createContext();
@@ -68,12 +68,22 @@ export const ChatContextProvider = ({ children }) => {
         getUserChats();
     }, [session]);
 
-    const createChat = useCallback(() => {
+    const createChat = useCallback(async (firstId, secondId) => {
+        const response = await postRequest(`${baseUrl}chatroom/create`,
+            JSON.stringify({
+                firstId, secondId,
+            })
+        );
 
-    },[])
+        if (response.error) {
+            return console.log("Error creating chat", response);
+        }
+
+        setUserChats((prev) => [...prev, response]);
+    }, []);
 
     return (
-        <ChatContext.Provider value={{ userChats,potentialChats, isUserChatsLoading, userChatsError }}>
+        <ChatContext.Provider value={{ userChats,potentialChats, createChat ,isUserChatsLoading, userChatsError }}>
             {children}
         </ChatContext.Provider>
     );
