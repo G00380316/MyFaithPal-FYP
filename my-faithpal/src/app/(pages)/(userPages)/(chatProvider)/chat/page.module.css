@@ -2,6 +2,7 @@
     
     .body {
         display: flex;
+        flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
         font-family: "Nunito", sans-serif;
@@ -31,28 +32,7 @@
         margin-bottom: 10px; /* Adjust margin between chat boxes */
     }
 
-
-    /*
-    .chat_container {
-    
-    }
-    */
-    /*
-    // All users
-    .all-users {
-        display: flex;
-        margin-bottom: 1rem;
-    }
-
-    .single-user {
-        background: rgb(0, 213, 255);
-        color: white;
-        cursor: pointer;
-        padding: 5px 7px;
-        border-radius: 10px;
-        margin-right: 0.5rem;
-        position: relative;
-    }
+/*
 
     //Chat Box
 

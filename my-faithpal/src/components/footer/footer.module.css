@@ -1,13 +1,14 @@
 .footer {
-    padding: 50px;
+    position: relative;
+    width: 100%;
+    padding: 25px;
     display: flex;
-    flex: 1;
-    flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
     background-color: rgb(214, 204, 162);
     color: #996515;
 }
+
 
 
 .button {
