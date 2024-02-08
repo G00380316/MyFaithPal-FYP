@@ -22,7 +22,6 @@ export default function Chat(userChats) {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                 <div className={styles.date}>12/12/2022</div>
                 <div className={styles.this_user_notifications}>2</div>
-                <span className={styles.user_online}></span>
             </div>
         </div>
     );
