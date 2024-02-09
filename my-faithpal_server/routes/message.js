@@ -26,12 +26,12 @@ dotenv.config();
     })
     
     router.get('/get/:chatroomId', async (req, res) => {
-        const {chatroomId} = req.params.chatroomId;
+        const chatroom = req.params.chatroomId;
 
         try {
             await connectMongoDB();
 
-            const messages = await Message.find({chatroomId})
+            const messages = await Message.find({ chatroom })
 
             res.status(200).json(messages);
         } catch (error) {

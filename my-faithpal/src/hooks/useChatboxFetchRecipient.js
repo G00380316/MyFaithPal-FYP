@@ -7,21 +7,21 @@ export const useFetchRecipientUser = ( userChats ) => {
     const [recipientUser, setRecipientUser] = useState(null);
     const [error, setError] = useState(null);
 
-    console.log("userChats Info ", userChats);
+    console.log("userChats Chatbox Info ", userChats);
 
     useEffect(() => {
         const getUser = async () => {
 
-            const recipientId = userChats.rUser?.participants // Extract participants array from each chat
+            const recipientId = userChats?.participants // Extract participants array from each chat
         .flat() // Flatten the array of arrays
         .filter(id => id !== session?.user?._id);// Find all participant IDs that are not the current user's ID
 
             if (!recipientId) return null;
 
-            //console.log("recipientID Info", recipientId);
+            console.log("recipientID Chatbox Info", recipientId);
 
             try {
-                    console.log("Sending Recipient", recipientId);
+                    console.log("Sending Chatbox Recipient", recipientId);
 
                     const response = await fetch(`/api/userByID`, {
                         method: 'POST',
@@ -33,13 +33,14 @@ export const useFetchRecipientUser = ( userChats ) => {
 
                     const userData  = await response.json();
 
-                    //console.log("Data Received by API Route in Hook", userData.user);
+                    console.log("Data Received by API Route in Chatbox Hook", userData.user);
 
                     if (response.error) {
                         setError(response.error);
                     } else {
                         setRecipientUser( userData.user );
                     }
+               // }
             } catch (error) {
                 setError(error.message);
                 return error;
