@@ -23,7 +23,7 @@ export default function Bible() {
     };
 
     return (
-    <>
+    <main className={styles.main}>
         <nav className={styles.nav}>
         <div>
             <Dropdown options={optionsBooks} onSelect={handleBookSelect} />
@@ -35,6 +35,6 @@ export default function Bible() {
         <div>
         <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} />
         </div>
-    </>
+    </main>
     );
 }

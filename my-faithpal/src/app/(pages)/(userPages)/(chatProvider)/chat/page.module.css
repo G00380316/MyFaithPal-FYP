@@ -1,77 +1,36 @@
-    @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap");
-    
     .body {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
+        flex: 1;
+        justify-content: left;
         font-family: "Nunito", sans-serif;
         background: rgb(182, 175, 149);
-        flex: 1;
     }
 
     .chat_container {
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        max-width: 400px;
+        margin-left: 40px;
         width: 100%;
-        padding: 10px;
+        padding: 11px;
     }
 
     .chat_box {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
+        flex-grow: 1;
+        max-height: min-content;
+        height: min-content;
         background: rgb(114, 109, 93);
-        border-radius: 10px;
+        border-radius: 5px;
     }
 
     .chat_box_item {
-        margin-bottom: 10px; /* Adjust margin between chat boxes */
+        border-bottom: 10px ridge rgb(127, 125, 117);
+        border-radius: 0px;
     }
 
+    .chat_box_right {
+        margin-left: 20px; /* Adjust as needed */
+        width: 100%;
+    }
 /*
-
-    //Chat Box
-
-
-    .messages_box {
-        height: 85vh;
-        padding-right: 3px;
-        flex-grow: 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        gap: 13px;
-    }
-
-    //Chat Header
-    .chat-header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.75rem;
-        color: white;
-        background: rgb(30, 30, 30);
-    }
-
     //Messages
-    .messages {
-        max-height: calc(100vh - 15rem);
-        overflow-y: auto;
-        padding: 0 2rem;
-    }
-
-    .message {
-        color: white;
-        background: #282828;
-        padding: 0.75rem;
-        border-radius: 5px;
-        max-width: 50%;
-    }
 
     .message.self {
         color: white;
