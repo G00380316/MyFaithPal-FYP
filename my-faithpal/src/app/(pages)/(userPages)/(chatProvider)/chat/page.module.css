@@ -32,17 +32,6 @@
 /*
     //Messages
 
-    .message.self {
-        color: white;
-        background: #00bd9b;
-    }
-
-    .message-footer {
-        font-size: 12px;
-        align-self: flex-end;
-        font-weight: 400;
-    }
-
     // Chat Input
     .chat-input {
         width: 100%;
