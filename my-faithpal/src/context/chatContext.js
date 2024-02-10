@@ -16,7 +16,9 @@ export const ChatContextProvider = ({ children }) => {
     const [messages, setMessages] = useState(null);
     const [isMessagesLoading, setIsMessagesLoading] = useState(false);
     const [messagesError, setMessagesError] = useState(null);
-
+    const [sendTextMessageError, setSendTextMessageError] = useState(null);
+    const [newMessage, setNewMessage] = useState(null)
+        
     useEffect(() => {
 
         const getUsers = async () => {
@@ -94,6 +96,27 @@ export const ChatContextProvider = ({ children }) => {
         getMessages();
     }, [currentChat]);
 
+    const sendTextMessage = useCallback( async (textMessage, currentChatID, setTextMessage) => {
+        if (!textMessage) return console.log("No input");
+
+        console.log("Sending Chatroom ID to send message", currentChatID)
+        console.log("Sending User ID to send message", session?.user?._id)
+        console.log("Sending text message to send message", textMessage)
+
+        const response = await postRequest(`${baseUrl}message/create`, JSON.stringify({
+            chatroom: currentChatID, user: session?.user?._id, text: textMessage,
+        }));
+
+        if (response.error) {
+                return sendTextMessageError(response);
+        }
+
+        setNewMessage(response);
+        setMessages((prev) => [...prev, response]);
+        setTextMessage("");
+        
+    }, [session, setNewMessage, setMessages, sendTextMessageError, baseUrl]);
+
     const updateCurrentChat = useCallback(async (chat) => {
         setCurrentChat(chat)
     }, []);
@@ -113,7 +136,7 @@ export const ChatContextProvider = ({ children }) => {
     }, []);
 
     return (
-        <ChatContext.Provider value={{ userChats,potentialChats, currentChat,createChat , messages, isMessagesLoading , messagesError ,updateCurrentChat,isUserChatsLoading, userChatsError }}>
+        <ChatContext.Provider value={{ sendTextMessage,userChats,potentialChats, currentChat,createChat , messages, isMessagesLoading , messagesError ,updateCurrentChat,isUserChatsLoading, userChatsError }}>
             {children}
         </ChatContext.Provider>
     );

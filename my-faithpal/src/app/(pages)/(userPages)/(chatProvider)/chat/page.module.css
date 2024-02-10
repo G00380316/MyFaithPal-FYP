@@ -33,11 +33,6 @@
     //Messages
 
     // Chat Input
-    .chat-input {
-        width: 100%;
-        background: rgb(30, 30, 30);
-        padding: 1rem;
-    }
     .send-btn {
         border: none;
         background: rgba(72, 112, 223, 1);

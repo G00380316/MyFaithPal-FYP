@@ -1,3 +1,5 @@
+    @import url('//fonts.googleapis.com/css?family=Raleway:800i');
+    
     .user_online {
         display: inline-block;
         height: 12px;
@@ -16,7 +18,7 @@
     }
 
     .single_user {
-        background: rgb(0, 213, 255);
+        background: rgb(72, 112, 223, 1);
         color: white;
         cursor: pointer;
         padding: 5px 7px;
@@ -89,7 +91,7 @@
     }
 
     .messages {
-        max-height: calc(100vh - 15rem);
+        max-height: calc(100vh - 10rem);
         display: flex;
         flex-direction: column;
         flex: 1;
@@ -108,28 +110,29 @@
     }
 
     .messages_box {
-        height: 85vh;
+        height: 90vh;
         padding-right: 3px;
         flex-grow: 0;
         align-items: top;
         gap: 13px;
     }
 
-    .message {
+    .user_message {
         display: flex;
         flex-direction: column;
         color: white;
         background: #282828;
         padding: 0.75rem;
         border-radius: 5px;
-        margin-bottom: 3px;
+        margin-top: 3px;
+        /*margin-bottom: 3px;*/
         margin-right: auto;
         white-space: pre-line;
         overflow-wrap: break-word;
         max-width: 50%;
     }
 
-    .user_message {
+    .message {
         display: flex;
         flex: 1;
         flex-direction: column;
@@ -137,7 +140,8 @@
         background: #166355;
         padding: 0.75rem;
         border-radius: 5px;
-        margin-bottom: 3px;
+        margin-top: 3px;
+        /*margin-bottom: 3px;*/
         margin-left: auto;
         white-space: pre-line;
         overflow-wrap: break-word;
@@ -160,6 +164,43 @@
         padding: 1px;
         height: 85vh;
     }
+
+    .chat_input {
+        display: flex;
+        width: 100%;
+        background: rgb(30, 30, 30);
+        padding: 1rem;
+    }
+
+    .send_button {
+    position: relative;
+    width: 150px;
+    border: none;
+    border-bottom: 5px solid #ad7900;
+    border-radius: 8px;
+    background: rgba(72, 112, 223, 1);
+    color: white;
+    font-size: medium;
+    font-family: 'Raleway', sans-serif;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
+    outline: none;
+    cursor: pointer;
+    transition-property: background, color;
+    transition-duration: 0.2s;
+    }
+
+    .send_button:hover {
+        background: #d49b0d;
+        border-bottom-color: #946800;
+        color: #eee;
+    }
+
+    .send_button:active {
+        bottom: -3px;
+        border-bottom: 2px solid #543c00;
+        background: #a17300;
+        color: #ada48b;
+    }
     /*
     .message {
         margin-bottom: 10px;
@@ -168,11 +209,6 @@
 
     .user {
         background-color: #e6f7ff;
-    }
-
-    .chat-input {
-        display: flex;
-        margin-top: 10px;
     }
 
     .input {
