@@ -183,20 +183,20 @@
     }
 
     .send_button {
-    position: relative;
-    width: 150px;
-    border: none;
-    border-bottom: 5px solid #ad7900;
-    border-radius: 8px;
-    background: rgba(72, 112, 223, 1);
-    color: white;
-    font-size: medium;
-    font-family: 'Raleway', sans-serif;
-    text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
-    outline: none;
-    cursor: pointer;
-    transition-property: background, color;
-    transition-duration: 0.2s;
+        position: relative;
+        width: 150px;
+        border: none;
+        border-bottom: 5px solid #ad7900;
+        border-radius: 8px;
+        background: rgba(72, 112, 223, 1);
+        color: white;
+        font-size: medium;
+        font-family: 'Raleway', sans-serif;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.3);
+        outline: none;
+        cursor: pointer;
+        transition-property: background, color;
+        transition-duration: 0.2s;
     }
 
     .send_button:hover {
@@ -211,18 +211,3 @@
         background: #a17300;
         color: #ada48b;
     }
-    /*
-    .message {
-        margin-bottom: 10px;
-        padding: 5px;
-    }
-
-    .user {
-        background-color: #e6f7ff;
-    }
-
-    .input {
-        flex: 1;
-        padding: 5px;
-    }
-    */
