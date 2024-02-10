@@ -12,6 +12,16 @@
         z-index: 2;
     }
 
+    .user_online_chats {
+        display: inline-block;
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        background: rgb(0, 219, 0);
+        margin-bottom: 5px;
+        z-index: 2;
+    }
+
     .all_users {
         display: flex;
         margin-bottom: .5%;
