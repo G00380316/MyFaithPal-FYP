@@ -3,10 +3,14 @@
 import { createContext, useState, useEffect, useCallback } from "react";
 import { baseUrl, getRequest, postRequest } from "@/util/service";
 import { useSession } from "next-auth/react";
+import { io } from "socket.io-client";
+import  dotenv  from "dotenv";
 
 export const ChatContext = createContext();
+dotenv.config();
 
 export const ChatContextProvider = ({ children }) => {
+    
     const { data: session } = useSession();
     const [userChats, setUserChats] = useState(null);
     const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
@@ -17,7 +21,65 @@ export const ChatContextProvider = ({ children }) => {
     const [isMessagesLoading, setIsMessagesLoading] = useState(false);
     const [messagesError, setMessagesError] = useState(null);
     const [sendTextMessageError, setSendTextMessageError] = useState(null);
-    const [newMessage, setNewMessage] = useState(null)
+    const [newMessage, setNewMessage] = useState(null);
+    const [socket, setSocket] = useState(null);
+    const [onlineUsers, setOnlineUsers] = useState([]);
+
+    console.log("Online Users:", onlineUsers);
+
+    useEffect(() => {
+        const newSocket = io(`http://localhost:8000`);
+        setSocket(newSocket);
+
+        return () => {
+            newSocket.disconnect();
+        };
+    }, [session]);
+
+    // add online users
+    useEffect(() => {
+        if (socket === null) return;
+        socket.emit("addNewUser", session?.user?._id);
+        socket.on("getOnlineUsers", (res) => {
+            setOnlineUsers(res);
+        });
+
+        return () => {
+            socket.off("getOnlineUsers");
+        };
+    }, [socket]);
+
+    // send message
+    useEffect(() => {
+        if (socket === null) return;
+        
+        console.log("I need", currentChat)
+        
+        const recipientId = currentChat.participants // Extract participants array from each chat
+        .flat() // Flatten the array of arrays
+            .filter(id => id !== session?.user?._id);
+        
+        console.log("I need", recipientId)
+        
+        socket.emit("sendMessage", { ...newMessage, recipientId });
+    }, [newMessage]);
+
+    //receive message
+    useEffect(() => {
+        if (socket === null) return;
+        
+        socket.on("getMessage", (res) => {
+            
+            if (currentChat?._id !== res.chatroom) return
+            
+            setMessages((prev) => [...prev, res]);
+        });
+        
+        return () => {
+            socket.off("getMessage")
+        }
+
+    }, [newMessage,socket,currentChat]);
         
     useEffect(() => {
 
@@ -136,7 +198,7 @@ export const ChatContextProvider = ({ children }) => {
     }, []);
 
     return (
-        <ChatContext.Provider value={{ sendTextMessage,userChats,potentialChats, currentChat,createChat , messages, isMessagesLoading , messagesError ,updateCurrentChat,isUserChatsLoading, userChatsError }}>
+        <ChatContext.Provider value={{ onlineUsers,sendTextMessage,userChats,potentialChats, currentChat,createChat , messages, isMessagesLoading , messagesError ,updateCurrentChat,isUserChatsLoading, userChatsError }}>
             {children}
         </ChatContext.Provider>
     );

@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "@/components/chat/chat.module.css";
 import { useFetchRecipientUser } from "@/hooks/useFetchRecipient";
+import { ChatContext } from "@/context/chatContext";
 
 export default function Chat(userChats) {
     
     const { recipientUser } = useFetchRecipientUser(userChats);
+    const { onlineUsers } = useContext(ChatContext);
+
+    const isUserOnline = onlineUsers?.some(user => user.userID === recipientUser?._id);
 
     console.log("Passed to component: ", recipientUser);
 
@@ -20,9 +24,13 @@ export default function Chat(userChats) {
                 </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                <div className={styles.date}>12/12/2022</div>
-                <div className={styles.this_user_notifications}>2</div>
+                <span className={isUserOnline ? styles.user_online_chats : ""}></span>
+                <div style={{display: "flex" , flexDirection:"column",alignItems: 'flex-end'}}>
+                    <div className={styles.date}>12/12/2022</div>
+                    <div className={styles.this_user_notifications}>2</div>
+                </div>
             </div>
+            
         </div>
     );
 }
