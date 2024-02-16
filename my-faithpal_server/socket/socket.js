@@ -26,7 +26,7 @@ io.on("connection", (socket) => {
        // console.log("Person receiving message: ", message.recipientId)
         //console.log("Online users before find ", onlineUsers)
 
-        const user = onlineUsers.find(( user) => user.userID === message.recipientId[0]);
+        const user = onlineUsers.find((user) => user.userID === message.recipientId[0]);
     /*
         console.log("Online users after find", onlineUsers)
         console.log("Person receiving message: ", user)
