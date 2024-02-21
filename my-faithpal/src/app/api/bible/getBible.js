@@ -1,7 +1,9 @@
-export async function getBible(selectedBook , selectedChapter, selectedVerse) {
+export async function getBible(selectedBook , selectedChapter, selectedVerse , selectedTranslation) {
     try {
         var bookName = selectedBook ? selectedBook.toLowerCase() : '';
         const lastBookName = bookName;
+
+        console.log(selectedTranslation)
 
         if (bookName == '') {
             bookName = lastBookName;
@@ -17,15 +19,43 @@ export async function getBible(selectedBook , selectedChapter, selectedVerse) {
             selectedVerse = "1-14"
         }
 
+        //Checking if Translation is being selected
+        if (!selectedTranslation == "") {
+            
+            if (selectedVerse == "") {
+                console.log("SelectedTrans is not empty entered if statment")
+                const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}/${selectedTranslation}`);
+                const data = await res.json();
+                console.log('API Response:', data);
 
-        if (selectedVerse == "") {
-            console.log("Entered if statment")
+                return data;
+            }
+
+                const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}:${selectedVerse}/${selectedTranslation}`);
+                const data = await res.json();
+                if (data.error) {
+                    const NewSelectedVerse = selectedVerse - 1;
+                    const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}:${NewSelectedVerse}/${selectedTranslation}`);
+                    const data = await res.json();
+
+                    console.log('API Response with Verse and Translation plus Error:', data);
+
+                    return data;
+                }
+                console.log('API Response with Verse and Translation:', data);
+        
+        return data;
+        }
+
+            if (selectedVerse == "") {
+            console.log("SelectedVerse is empty entered if statment")
             const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}`);
             const data = await res.json();
             console.log('API Response:', data);
 
             return data;
         }
+
             const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}:${selectedVerse}`);
             const data = await res.json();
             if (data.error) {
