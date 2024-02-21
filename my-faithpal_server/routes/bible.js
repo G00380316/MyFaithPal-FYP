@@ -47,4 +47,24 @@ router.get('/:passage', async (req, res) => {
     }
 });
 
+router.get('/:passage/:translation', async (req, res) => {
+
+    const passage = req.params.passage;
+    const translation = req.params.translation;
+
+    console.log(passage)
+    console.log(translation)
+
+    try {
+        const apiUrl = `http://127.0.0.1:4567/${passage}?translation=${translation}`;
+
+        const response = await axios.get(apiUrl);
+
+        res.json(response.data);
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 export default router;

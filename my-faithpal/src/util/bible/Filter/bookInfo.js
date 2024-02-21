@@ -1,5 +1,3 @@
-// bookInfo.js
-
 export const bookInfo = {
     'Genesis': [
         { chapter: 1, verses: 31 },

@@ -5,16 +5,17 @@ import Dropdown from "@/components/bible/dropdown";
 import styles from "@/app/(pages)/(userPages)/bible/bible.module.css";
 import DisplayPassage from "@/components/bible/getPassage";
 
-
 export default function Bible() {
     const [selectedBook, setSelectedBook] = useState("Genesis");
     const [selectedChapter, setSelectedChapter] = useState("1");
     const [selectedVerse, setSelectedVerse] = useState("");
+    const [selectedTranslation, setSelectedTranslation] = useState("");
 
-    const handleSelectionChange = (book, chapter, verse) => {
+    const handleSelectionChange = (book, chapter, verse, translation) => {
         setSelectedBook(book);
         setSelectedChapter(chapter);
         setSelectedVerse(verse);
+        setSelectedTranslation(translation);
     };
 
     return (
@@ -25,7 +26,7 @@ export default function Bible() {
                 </div>
             </nav>
             <div>
-                <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} />
+                <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} selectedTranslation={selectedTranslation}/>
             </div>
         </main>
     );
