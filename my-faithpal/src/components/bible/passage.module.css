@@ -46,10 +46,11 @@
     border-bottom: .2px solid #333;
 }
 
-/*hover card note section*/
+/*hover card section*/
 .main div div div p span span section{
     color: black;
     background: #333;
+    transform: translate(50%,-50%);
 }
 
 /*related to comment and the position of the comment emoji before modal appears*/

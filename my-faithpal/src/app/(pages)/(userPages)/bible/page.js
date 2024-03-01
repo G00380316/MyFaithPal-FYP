@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Dropdown from "@/components/bible/dropdown";
 import styles from "@/app/(pages)/(userPages)/bible/bible.module.css";
-import DisplayPassage from "@/components/bible/getPassage";
+import DisplayPassage from "@/components/bible/getPassagetest";
 
 export default function Bible() {
     const [selectedBook, setSelectedBook] = useState("Genesis");
