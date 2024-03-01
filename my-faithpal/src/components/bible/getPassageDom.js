@@ -1,13 +1,12 @@
+import React, { useEffect, useState, useRef } from 'react';
 import { getBible } from "@/app/api/bible/getBible";
-import { useSession } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
-import ReactDOMServer from 'react-dom/server';
 import { Editor, useDomValue } from 'reactjs-editor';
+import ReactDOMServer from 'react-dom/server';
 import styles from "./passage.module.css";
+import { useSession } from 'next-auth/react';
 
 export default function DisplayPassage({ selectedBook, selectedChapter, selectedVerse , selectedTranslation }) {
     
-    let foundObjects = JSON.parse(localStorage.getItem('foundObjects'));
     const { dom, setDom } = useDomValue();
     const [bibleData, setBibleData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -40,11 +39,6 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
         setDom(editorRef.current);
     }, [bibleData, setDom]);
 
-    useEffect(() => {
-        localStorage.setItem('foundObjects', JSON.stringify(foundObjects));
-        console.log("Saved: ", foundObjects);
-    }, [foundObjects]);
-
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -57,16 +51,15 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
     let transRef = selectedTranslation;
     
     const updatedDomValue  = {
-    props: dom?.props?.children,
-    type: dom?.type,
-    ref: PassageRef, // Assuming you want the same reference for the 'ref' property of the main object
-    verse: selectedVerse,
-    translation: transRef,
-    _id: session?.user?._id,
-    };
+        props: dom?.props?.children,
+        type: dom?.type,
+        ref: PassageRef,
+        translation: transRef,
+        _id: session?.user?._id,
+    }
 
-    console.log(updatedDomValue);
-
+    console.log("This is the updated Dom or Webpage",updatedDomValue);
+    
     const htmlContent = ReactDOMServer.renderToString(
     <div style={{ maxWidth: 400, margin: '0 auto', textAlign: 'center' }}>
         <br />
