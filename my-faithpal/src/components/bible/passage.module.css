@@ -1,0 +1,67 @@
+.main{
+    margin: 5px;
+}
+
+/* For Studying Options toolbar close button*/
+.main section span  {
+    background: rgb(202, 176, 138);
+    color: #333;
+}
+
+/* For Studying Options toolbar*/
+.main section div span {
+    background: rgb(215, 203, 155);
+}
+
+/* For highlights and bold */
+.main div div div p span{
+    padding: 0;
+}
+
+/* For highlight color picker and add notes modal*/
+.main section div {
+    max-width: 450px;
+    max-height: min-content;
+    background-color: rgb(215, 203, 155); /* keep same colour as toolbar*/
+}
+
+/* For highlight color picker and add notes modal h1 text*/
+.main section div h1{
+    color: black;
+}
+
+/* For highlight color picker and add notes modal text area*/
+.main section div textarea{
+    color: black;
+}
+
+/* For highlight color picker and add notes modal button*/
+.main section div button{
+    color: black;
+    background-color: #996515;
+}
+
+/* hover card noted verse*/
+.main div div div p span span section span{
+    color: black;
+    background-color: transparent;
+    border-bottom: .2px solid #333;
+}
+
+/*hover card section*/
+.main div div div p span span section{
+    color: transparent;
+    background: rgb(215, 203, 155);
+    transform: translate(50%,-50%);
+
+}
+
+/*related to comment and the position of the comment emoji before modal appears*/
+.main div div div p span span::before {
+    position: relative;
+}
+
+/*related to comment and the style of area surrounding commented text*/
+.main div div div p span span {
+    border: none ;
+}
