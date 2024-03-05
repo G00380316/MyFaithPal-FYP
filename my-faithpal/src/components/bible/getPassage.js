@@ -1,36 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { getBible } from "@/app/api/bible/getBible";
 
-export default function DisplayPassage() {
-    const [bibleData, setBibleData] = useState("");
+export default function DisplayPassage({ selectedBook, selectedChapter }) {
+    
+    const [bibleData, setBibleData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-        const data = await getBible();
-        setBibleData(data);
+    const fetchData = async () => {
+        try {
+        setLoading(true);
+
+        const data = await getBible(selectedBook, selectedChapter);
+        setBibleData(data.verses || []);
+        } catch (error) {
+        console.error('Error fetching Bible data:', error);
+        setError(error.message || 'An error occurred while fetching data');
+        } finally {
+        setLoading(false);
+        }
     };
 
     fetchData();
-    }, []);
+    }, [selectedBook, selectedChapter]);
 
-    const passagesArray = Object.values(bibleData);
+    if (loading) {
+    return <p>Loading...</p>;
+    }
+
+    if (error) {
+    return <p>Error: {error}</p>;
+    }
 
     return (
-        <div>
-        <br></br>
-        {passagesArray.map((passage, index) => (
+    <div>
+        <br />
+        {bibleData.map((passage, index) => (
         <div key={index}>
-        <h2>{passage.reference}</h2>
-        <p dangerouslySetInnerHTML={{ __html: passage.content }} />
+            <h2>{passage.reference}</h2>
+            <p dangerouslySetInnerHTML={{ __html: passage.text }} />
         </div>
-    ))}
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
+        ))}
+        <br />
     </div>
     );
 }

@@ -1,40 +1,40 @@
 "use client"
 
-import React from "react";
+import React, { useState } from "react";
 import Dropdown from "@/components/bible/dropdown";
 import styles from "@/app/(pages)/(userPages)/bible/bible.module.css";
 import DisplayPassage from "@/components/bible/getPassage";
+import { optionsBooks } from "@/util/bible/bookOptions";
+import { optionsChapters } from "@/util/bible/chapterOptions";
+//import { optionsVerses } from "@/util/versesOptions";
 
-const optionsBooks = [
-    { value: 'Genesis 1', label: 'Genesis' },
-    { value: 'Exodus 1', label: 'Exodus' },
-    { value: 'Leviticus 1', label: 'Leviticus' },
-];
+export default function Bible() {
+    const [selectedBook, setSelectedBook] = useState(optionsBooks[0].value); // Default to the first book
+    const [selectedChapter, setSelectedChapter] = useState(optionsChapters[0].value); // Default to the first chapter
 
-const optionsChapters = [
-    { value: '1', label: '1' },
-    { value: '2', label: '2' },
-    { value: '3', label: '3' },
-];
+    const handleBookSelect = (selectedOption) => {
+    setSelectedBook(selectedOption.value);
+    console.log('Selected Book:', selectedOption.value);
+    };
 
-const handleOptionSelect = (selectedOption) => {
-        console.log(`Selected option: ${selectedOption}`);
-}
-    
-export default function bible() {
+    const handleChapterSelect = (selectedOption) => {
+    setSelectedChapter(selectedOption.value);
+    console.log('Selected Chapter:', selectedOption.value);
+    };
+
     return (
-    <>
-    <nav className={styles.nav}>
+    <main className={styles.main}>
+        <nav className={styles.nav}>
         <div>
-        <Dropdown options={optionsBooks} onSelect={handleOptionSelect} />
-            </div>
-            <div>
-                <Dropdown options={optionsChapters} onSelect={handleOptionSelect} />
-            </div>
-    </nav>
-    <div>
-    <DisplayPassage/>
-    </div>
-    </>
-    )
+            <Dropdown options={optionsBooks} onSelect={handleBookSelect} />
+        </div>
+        <div>
+            <Dropdown options={optionsChapters} onSelect={handleChapterSelect} />
+        </div>
+        </nav>
+        <div>
+        <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} />
+        </div>
+    </main>
+    );
 }
