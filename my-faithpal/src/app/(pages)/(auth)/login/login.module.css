@@ -1,0 +1,12 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Set the height to 100% of the viewport height */
+    font-family: "Montserrat", sans-serif;
+    background: linear-gradient(#F2D2BD,#FBCEB1);
+    background-image: url("/auth3.jpg");
+    background-size: cover;
+    background-position: center;
+}
+

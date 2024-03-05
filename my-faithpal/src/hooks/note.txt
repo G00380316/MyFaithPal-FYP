@@ -1,0 +1,7 @@
+https://zapier.com/blog/webhook-vs-api/
+
+Learned that webhooks are meant for sending out new data whilst API is a full
+-exchange so you can hooks a limited API or a Subset
+
+APIs are manual—they need to be asked to pull or modify data. Webhooks automatically 
+send data in response to a specific event, without any request from another software. Webhooks are a subset of APIs and are therefore far more limited than APIs—they can only send information. APIs are more versatile.
