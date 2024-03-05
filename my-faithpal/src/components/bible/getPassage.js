@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { getBible } from "@/app/api/bible/getBible";
-import { Editor, useDomValue } from 'reactjs-editor';
-import ReactDOMServer from 'react-dom/server';
-import styles from "./passage.module.css";
+import { getBible } from "@/app/api/(bible)/bible/getBible";
+import { baseUrl, postRequest } from '@/util/service';
 import { useSession } from 'next-auth/react';
+import { useEffect, useRef, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Editor, useDomValue } from 'reactjs-editor';
+import styles from "./passage.module.css";
 
 export default function DisplayPassage({ selectedBook, selectedChapter, selectedVerse , selectedTranslation, saveClicked }) {
     
@@ -37,7 +38,7 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
         }
     }, [saveClicked]);
 
-    const handleSave = () => {
+    const handleSave = async() => {
         const updatedDomValue = {
         key: dom?.key,
         props: dom?.props,
@@ -46,23 +47,44 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
         verse: selectedVerse,
         translation: transRef,
         _id: session?.user?._id,
-    };
+        };
 
+        let newRef = PassageRef + selectedVerse + selectedTranslation;
 
-    let newChange = localStorage.setItem(`dom${PassageRef}${selectedVerse}${selectedTranslation}${session?.user?._id}`, JSON.stringify(updatedDomValue))
-    console.log("Saved",newChange);
+        const passageExists = await postRequest(`${baseUrl}bible/save/changes`, JSON.stringify({
+            key: updatedDomValue.key, props: updatedDomValue.props, type: updatedDomValue.type, ref: newRef, user: updatedDomValue._id,
+        }));
+
+        if (passageExists.error) {
+            console.log(passageExists.error);
+        }
+        else {
+            console.log("Yayyy passage was saved successfully",passageExists);
+        }
+    //let newChange = localStorage.setItem(`dom${PassageRef}${selectedVerse}${selectedTranslation}${session?.user?._id}`, JSON.stringify(updatedDomValue))
+    //console.log("Saved",newChange);
     notify()
     }
 
-    useEffect(()=>  {
-        if (localStorage.getItem(`dom${PassageRef}${selectedVerse}${selectedTranslation}${session?.user?._id}`)) {
-            var persistedDom = localStorage.getItem(`dom${PassageRef}${selectedVerse}${selectedTranslation}${session?.user?._id}`)
-            console.log(persistedDom);
-            setDom(JSON.parse(persistedDom))
+    useEffect(() => {
+        const fetchPassageData = async () => {
+
+            const user = session?.user?._id;
+            const ref = PassageRef + selectedVerse + selectedTranslation;
+            
+            const getPassage = await postRequest(`${baseUrl}bible/get/changes`, JSON.stringify({ ref, user }));
+
+            if (getPassage) {
+                //var persistedDom = localStorage.getItem(`dom${PassageRef}${selectedVerse}${selectedTranslation}${session?.user?._id}`)
+                const receivedPassage = JSON.stringify(getPassage);
+                console.log(receivedPassage);
+                setDom(JSON.parse(receivedPassage));
+            }
+            else {
+                setDom(editorRef.current)
+            }
         }
-        else {
-            setDom(editorRef.current)
-        }
+        fetchPassageData()
     },  [bibleData])
 
     useEffect(() => {
