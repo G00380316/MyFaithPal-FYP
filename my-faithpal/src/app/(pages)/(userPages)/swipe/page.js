@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import styles from "@/app/(pages)/(userPages)/swipe/swipe.module.css"
 
 export default function swipe() {
 return (
-<div>
+<main className={styles.main}>
     <h1>swipe</h1>
-</div>
+</main>
 )
 }
