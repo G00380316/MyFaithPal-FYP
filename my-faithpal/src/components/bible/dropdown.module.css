@@ -1,0 +1,39 @@
+.dropdown button {
+    cursor: pointer;
+    background-color: rgb(215, 203, 155);
+    border: 0;
+    border-radius: 4px;
+    font-weight: 600;
+    width: 200px;
+    padding: 10px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+}
+
+.dropdown button:hover {
+    background-color: transparent;
+}
+
+.dropdown select {
+    cursor: pointer;
+    border: 0;
+    border-radius: 4px;
+    font-weight: 600;
+    margin: 0 10px;
+    width: 200px;
+    padding: 10px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+}
+
+.dropdown select option{
+    cursor: pointer;
+    border: 0;
+    border-radius: 4px;
+    font-weight: 600;
+    margin: 0 10px;
+    width: 200px;
+    padding: 10px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+}

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { bookInfo } from '@/util/bible/Filter/bookInfo';
 import { translationOptions } from '@/util/bible/translationOptions';
 import { oebbookInfo } from '@/util/bible/Filter/oebBooks';
+import styles from '@/components/bible/dropdown.module.css';
 
-const Dropdown = ({ onSelectionChange }) => {
+const Dropdown = ({ onSelectionChange, onSaveClick }) => {
 
     const [selectedTranslation, setSelectedTranslation] = useState("");
     const [selectedBook, setSelectedBook] = useState("Genesis");
@@ -60,10 +61,14 @@ const Dropdown = ({ onSelectionChange }) => {
         }
     };
 
+    const handleSaveButtonClick = () => {
+        onSaveClick();
+        console.log("parent class")
+    };
 
     return (
-        <div>
-            <label htmlFor="books" style={{marginRight: 5 , marginLeft: 5 , color: "#996515"}}>Select a Book:</label>
+        <div className={styles.dropdown}>
+            <label htmlFor="books" style={{marginRight: 5 , marginLeft: 5 , color: "#996515"}}></label>
             <select id="books" value={selectedBook} onChange={handleBookChange} style={{marginRight: 5 , marginLeft: 5}}>
                 {selectedTranslation === "oeb-us" || selectedTranslation === "oeb-cw" ? (
                     Object.keys(oebbookInfo).map(book => (
@@ -76,14 +81,14 @@ const Dropdown = ({ onSelectionChange }) => {
                 )}
             </select>
 
-            <label htmlFor="chapters" style={{marginRight: 5 , marginLeft: 5 , color: "#996515"}}>Select a Chapter:</label>
+            <label htmlFor="chapters" style={{marginRight: 5 , marginLeft: 5 , color: "#996515"}}></label>
             <select id="chapters" value={selectedChapter} onChange={handleChapterChange} style={{marginRight: 5 , marginLeft: 5}}>
                 {chapters.map(chapter => (
                     <option key={chapter} value={chapter}>Chapter {chapter}</option>
                 ))}
             </select>
 
-            <label htmlFor="verses" style={{marginRight: 5 , marginLeft: 5, color: "#996515"}}>Select a Verse:</label>
+            <label htmlFor="verses" style={{marginRight: 5 , marginLeft: 5, color: "#996515"}}></label>
             <select id="verses" value={selectedVerse} onChange={handleVerseChange} style={{marginRight: 5 , marginLeft: 5}}>
                 <option value="">Select a Verse</option>
                 {verses.map((verse, index) => (
@@ -91,13 +96,17 @@ const Dropdown = ({ onSelectionChange }) => {
                 ))}
             </select>
 
-            <label htmlFor="translation" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}>Select a Translation:</label>
+            <label htmlFor="translation" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}></label>
             <select id="translation" value={selectedTranslation} onChange={handleTranslationChange} style={{ marginRight: 5, marginLeft: 5 }}>
                 <option value="">Select a translation</option>
                 {translationOptions.map((option, index) => (
                     <option key={index} value={option.value}>{option.label}</option>
                 ))}
             </select>
+            <label htmlFor="save" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}></label>
+            <button style={{ marginRight: 5, marginLeft: 5 }} onClick={handleSaveButtonClick}>
+                Save
+            </button>
         </div>
     );
 };
