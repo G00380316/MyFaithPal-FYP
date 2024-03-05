@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { bookInfo } from '@/util/bible/Filter/bookInfo';
 import { translationOptions } from '@/util/bible/translationOptions';
 import { oebbookInfo } from '@/util/bible/Filter/oebBooks';
+import styles from '@/components/bible/dropdown.module.css';
 
-const Dropdown = ({ onSelectionChange }) => {
+const Dropdown = ({ onSelectionChange, onSaveClick }) => {
 
     const [selectedTranslation, setSelectedTranslation] = useState("");
     const [selectedBook, setSelectedBook] = useState("Genesis");
@@ -60,11 +61,16 @@ const Dropdown = ({ onSelectionChange }) => {
         }
     };
 
+    const handleSaveButtonClick = () => {
+        onSaveClick();
+        console.log("parent class")
+    };
 
     return (
-        <div>
-            <label htmlFor="books" style={{marginRight: 5 , marginLeft: 5 , color: "#996515"}}>Select a Book:</label>
-            <select id="books" value={selectedBook} onChange={handleBookChange} style={{marginRight: 5 , marginLeft: 5}}>
+    <div className={styles.dropdown}>
+        <label htmlFor="books" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}></label>
+        <div className={styles.customSelect}>
+            <select id="books" value={selectedBook} onChange={handleBookChange}>
                 {selectedTranslation === "oeb-us" || selectedTranslation === "oeb-cw" ? (
                     Object.keys(oebbookInfo).map(book => (
                         <option key={book} value={book}>{book}</option>
@@ -75,30 +81,43 @@ const Dropdown = ({ onSelectionChange }) => {
                     ))
                 )}
             </select>
+        </div>
 
-            <label htmlFor="chapters" style={{marginRight: 5 , marginLeft: 5 , color: "#996515"}}>Select a Chapter:</label>
-            <select id="chapters" value={selectedChapter} onChange={handleChapterChange} style={{marginRight: 5 , marginLeft: 5}}>
+        <label htmlFor="chapters" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}></label>
+        <div className={styles.customSelect}>
+            <select id="chapters" value={selectedChapter} onChange={handleChapterChange}>
                 {chapters.map(chapter => (
                     <option key={chapter} value={chapter}>Chapter {chapter}</option>
                 ))}
             </select>
+        </div>
 
-            <label htmlFor="verses" style={{marginRight: 5 , marginLeft: 5, color: "#996515"}}>Select a Verse:</label>
-            <select id="verses" value={selectedVerse} onChange={handleVerseChange} style={{marginRight: 5 , marginLeft: 5}}>
+        <label htmlFor="verses" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}></label>
+        <div className={styles.customSelect}>
+            <select id="verses" value={selectedVerse} onChange={handleVerseChange}>
                 <option value="">Select a Verse</option>
                 {verses.map((verse, index) => (
                     <option key={index} value={verse}>Verse {verse}</option>
                 ))}
             </select>
+        </div>
 
-            <label htmlFor="translation" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}>Select a Translation:</label>
-            <select id="translation" value={selectedTranslation} onChange={handleTranslationChange} style={{ marginRight: 5, marginLeft: 5 }}>
+        <label htmlFor="translation" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}></label>
+        <div className={styles.customSelect}>
+            <select id="translation" value={selectedTranslation} onChange={handleTranslationChange}>
                 <option value="">Select a translation</option>
                 {translationOptions.map((option, index) => (
                     <option key={index} value={option.value}>{option.label}</option>
                 ))}
             </select>
         </div>
+
+        <div className={styles.customButton}>
+            <button onClick={handleSaveButtonClick}>
+                Save
+            </button>
+        </div>
+    </div>
     );
 };
 
