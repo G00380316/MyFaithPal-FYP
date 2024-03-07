@@ -3,7 +3,7 @@
 import Chatrooms from "@/components/chat/chat";
 import { useContext } from "react";
 import { ChatContext } from "@/context/chatContext";
-import styles from "@/app/(pages)/(userPages)/(chatProvider)/chat/page.module.css";
+import styles from "@/app/(pages)/(userPages)/chat/page.module.css";
 import PotentialChats from "@/components/chat/potentialChats";
 import ChatBox from "@/components/chat/chatBox";
 
