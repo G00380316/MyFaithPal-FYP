@@ -11,9 +11,7 @@
         flex-direction: column;
         background: rgb(114, 109, 93);
         border-radius: 5px;
-        max-width: 140vh;
-        width: 98%;
-        margin-bottom: 20px;
+        width: 100%;
     }
 
     .messages {
@@ -79,7 +77,7 @@
     .chat_input {
         display: flex;
         width: 100%;
-        background: rgb(30, 30, 30);
+        background: transparent;
         padding: 1rem;
     }
 
@@ -111,4 +109,53 @@
         border-bottom: 2px solid #543c00;
         background: #a17300;
         color: #ada48b;
+    }
+
+    .chat_input button {
+        display: none !important;
+    }
+
+
+    .chat_input input[type=checkbox]{
+        height: 0;
+        width: 0;
+        visibility: hidden;
+    }
+
+    .chat_input label {
+        cursor: pointer;
+        margin-top: 4px;
+        margin-left: 5px;
+        text-indent: -9999px;
+        width: 75px;
+        height: 45px;
+        background: grey;
+        display: block;
+        border-radius: 45px;
+        position: relative;
+    }
+
+    .chat_input label:after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 5px;
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        border-radius: 90px;
+        transition: 0.8s;
+    }
+
+    .chat_input input:checked + label {
+        background: #bada55;
+    }
+
+    .chat_input input:checked + label:after {
+        left: calc(50% - 5px);
+        transform: translateX(-10%);
+    }
+
+    .chat_input label:active:after {
+        width: 130px;
     }

@@ -64,8 +64,15 @@ export default function QuestionModal() {
             </div>
         </div>
             <div className={styles.chat_input}>
-                <InputEmojiWithRef value={textMessage} onChange={setTextMessage} onEnter={handleKeyPress}  fontFamily="nunito" borderColor="rgba(72,112,223,0.2)" />
-                <button className={styles.send_button} onClick={() => sendTextMessage(textMessage , currentChat._id , setTextMessage)}>Send</button>
+                    <InputEmojiWithRef
+                    value={textMessage}
+                    onChange={setTextMessage}
+                    onEnter={handleKeyPress}
+                    fontFamily="nunito"
+                    borderColor="rgba(72,112,223,0.2)"
+                    disableRecent={true}
+                    placeholder="Ask your Rabbi AI a Question? Dont be shy..." />
+                <input type="checkbox" id="switch" /><label for="switch">Toggle</label>
             </div>
         </div >
     );
