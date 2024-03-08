@@ -1,37 +1,60 @@
-import axios from "axios";
 import dotenv from 'dotenv';
 import express from 'express';
+import OpenAI from "openai";
 import { connectMongoDB } from '../lib/mongo.js';
+import Response from '../models/response.js';
 
     const router = express.Router();
-    dotenv.config();
+    const openai = new OpenAI();
     
-    const apiKey = 'YOUR_OPENAI_API_KEY';
+    dotenv.config();
 
     router.get('/', (req, res) => {
-        res.send(`Hello, this is the Ai Route this is your key ${apiKey}`);
+        res.send(`Hello, this is the Ai Route make sure your key is in the .env`);
     })
 
     router.post('/create', async (req, res) => {
         
-        const { question } = req.body;
+        const { question , aichatroom } = req.body;
             
-        const prompt = 'Translate the following English text to French: "Hello, how are you?"';
+        const prompt = "Answer this question only if it's related to the Bible or Christianity and in a Christian or Bible context:  " + question;
 
         try {
-            const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
-                prompt: prompt,
+            const response = await openai.chat.completions.create({
+                model: "gpt-3.5-turbo",
+                messages: [{ role: "user", content: prompt }],
                 max_tokens: 50,
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                },
             });
 
-            const answer = response.data.choices[0].text;
-            console.log('ChatGPT Response:', answer);
+            const id_AI = process.env.AI_ID;
+
+            await connectMongoDB();
+
+            const answer = response.choices[0];
+            
+            console.log('ChatGPT Response:', answer.message.content);
+
+            const aiReponse = await Response.create({aichatroom, user: id_AI , text: answer.message.content , data: answer , prompt});
+
+            res.status(201).json({ response: aiReponse });
         } catch (error) {
             console.error('Error calling OpenAI ChatGPT:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    })
+
+    router.get('/get/:aichatroomId', async (req, res) => {
+        const aichatroom = req.params.aichatroomId;
+
+        try {
+            await connectMongoDB();
+
+            const responses = await Response.find({ aichatroom })
+
+            res.status(200).json(responses);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(error);
         }
     })
 

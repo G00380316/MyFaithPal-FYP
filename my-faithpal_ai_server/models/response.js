@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema, models } = mongoose;
 
-const promptSchema = new Schema({
+const responseSchema = new Schema({
     aichatroom: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
@@ -17,10 +17,18 @@ const promptSchema = new Schema({
         type: String,
         required: true,
     },
+    data: {
+        type: mongoose.Schema.Types.Mixed,
+        required: true
+    },
+    prompt: {
+        type: String,
+        required: false,
+    }
 },
     { timestamps: true }
 );
 
-const Prompt = models.Prompt || mongoose.model("Prompt", promptSchema);
+const Response = models.Response || mongoose.model("Response", responseSchema);
 
-export default Prompt;
+export default Response;

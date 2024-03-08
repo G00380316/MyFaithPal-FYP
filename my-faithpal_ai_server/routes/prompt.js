@@ -11,12 +11,12 @@ dotenv.config();
     })
 
     router.post('/create', async (req, res) => {
-    const { chatroom, user , text } = req.body;
+    const { aichatroom, user , text } = req.body;
         
     try {
         await connectMongoDB();
             
-        const response = await Prompt.create({chatroom, user , text});
+        const response = await Prompt.create({aichatroom, user , text});
 
         res.status(200).json(response);
         } catch (error) {
@@ -25,7 +25,7 @@ dotenv.config();
         }
     })
     
-    router.get('/get/:chatroomId', async (req, res) => {
+    router.get('/get/:aichatroomId', async (req, res) => {
         const chatroom = req.params.chatroomId;
 
         try {
