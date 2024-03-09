@@ -1,4 +1,5 @@
 export const baseUrl = "http://localhost:5000/"
+export const aiUrl = "http://localhost:80/"
 
 export const postRequest = async (url, body) => {
 

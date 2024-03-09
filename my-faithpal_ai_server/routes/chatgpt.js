@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import OpenAI from "openai";
 import { connectMongoDB } from '../lib/mongo.js';
-import Response from '../models/response.js';
+import Response from '../models/messages.js';
 
     const router = express.Router();
     const openai = new OpenAI();
@@ -34,7 +34,7 @@ import Response from '../models/response.js';
             
             console.log('ChatGPT Response:', answer.message.content);
 
-            const aiReponse = await Response.create({aichatroom, user: id_AI , text: answer.message.content , data: answer , prompt});
+            const aiReponse = await Response.create({ aichatroom, user: id_AI , text: answer.message.content , data: answer , prompt });
 
             res.status(201).json({ response: aiReponse });
         } catch (error) {

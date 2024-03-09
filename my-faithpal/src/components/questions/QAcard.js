@@ -1,38 +1,38 @@
 "use client"
 
-import { ChatContext } from '@/context/chatContext';
-import styles from "./qa.module.css";
-import { useFetchRecipientUser } from '@/hooks/useChatboxFetchRecipient';
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import { useFetchRecipientUser } from '@/hooks/openAI/useFetchRecipient';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
+import styles from "./qa.module.css";
+import { AIChatContext } from '@/context/aiChatContext';
 
 export default function QuestionModal() {
     
     const { data: session } = useSession();
-    const { currentChat, messages, isMessagesLoading , sendTextMessage} = useContext(ChatContext);
-    const { recipientUser } = useFetchRecipientUser(currentChat);
+    const { currentAIChat, messages, isMessagesLoading , sendTextMessage} = useContext(AIChatContext);
+    const { recipientUser } = useFetchRecipientUser(currentAIChat);
     const [textMessage, setTextMessage] = useState("");
     const scroll = useRef();
 
     const handleKeyPress = () => {
         // Call the function to send the message when Enter is pressed
-        sendTextMessage(textMessage, currentChat._id, setTextMessage);
+        sendTextMessage(textMessage, currentAIChat._id, setTextMessage);
     };
 
     useEffect(() => {
         scroll.current?.scrollIntoView({ behaviour: "smooth" })
     }, [messages,recipientUser]);
 
-    /*
-    console.log( "This is chatBox current Chat: ",currentChat)
+    
+    console.log( "This is chatBox AI current Chat: ",currentAIChat)
     console.log("This is chatBox recipient User: ", recipientUser)
     console.log("These are messages:", messages)
-    console.log("Message input: ", textMessage)
-    */
+    //console.log("Message input: ", textMessage)
     
-    if (recipientUser)
+    
+    if (!recipientUser)
         return (
         <p style={{ textAlign: "center", marginTop: 10,width: "100%" }}>
             No conversation selected yet...

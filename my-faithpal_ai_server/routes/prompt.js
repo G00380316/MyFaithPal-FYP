@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import { connectMongoDB } from '../lib/mongo.js';
-import Prompt from '../models/prompt.js';
+import Prompt from '../models/messages.js';
 
 const router = express.Router();
 dotenv.config();
@@ -26,12 +26,12 @@ dotenv.config();
     })
     
     router.get('/get/:aichatroomId', async (req, res) => {
-        const chatroom = req.params.chatroomId;
+        const aichatroom = req.params.aichatroomId;
 
         try {
             await connectMongoDB();
 
-            const prompts = await Prompt.find({ chatroom })
+            const prompts = await Prompt.find({ aichatroom })
 
             res.status(200).json(prompts);
         } catch (error) {

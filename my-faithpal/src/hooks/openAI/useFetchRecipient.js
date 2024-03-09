@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-export const useFetchRecipientUser = ( userChats ) => {
+export const useFetchRecipientUser = ( userAiChats ) => {
     
     const { data: session } = useSession();
     const [recipientUser, setRecipientUser] = useState(null);
     const [error, setError] = useState(null);
 
-    console.log("userChats Info ", userChats);
+    console.log("userChats Info ", userAiChats);
 
     useEffect(() => {
         const getUser = async () => {
 
-            const recipientId = userChats.rUser?.participants // Extract participants array from each chat
+            const recipientId = userAiChats?.participants // Extract participants array from each chat
         .flat() // Flatten the array of arrays
         .filter(id => id !== session?.user?._id);// Find all participant IDs that are not the current user's ID
 
             if (!recipientId) return null;
 
-            //console.log("recipientID Info", recipientId);
+            console.log("recipientID Info", recipientId);
 
             try {
                     console.log("Sending Recipient", recipientId);
@@ -33,7 +33,7 @@ export const useFetchRecipientUser = ( userChats ) => {
 
                     const userData  = await response.json();
 
-                    //console.log("Data Received by API Route in Hook", userData.user);
+                    console.log("Data Received by API Route in Hook", userData.user);
 
                     if (response.error) {
                         setError(response.error);
@@ -47,7 +47,7 @@ export const useFetchRecipientUser = ( userChats ) => {
         };
 
         getUser();
-    }, [userChats]);
+    }, [userAiChats]);
 
     return {recipientUser};
 };

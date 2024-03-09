@@ -1,9 +1,9 @@
-import { ChatContext } from '@/context/chatContext';
-import { useFetchRecipientUser } from '@/hooks/useChatboxFetchRecipient';
-import React, { useContext, useState, useRef, useEffect} from 'react'
 import styles from "@/components/chat/chat.module.css";
+import { ChatContext } from '@/context/chatContext';
+import { useFetchRecipientUser } from '@/hooks/chat/useChatboxFetchRecipient';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
 
 export default function chatBox() {
