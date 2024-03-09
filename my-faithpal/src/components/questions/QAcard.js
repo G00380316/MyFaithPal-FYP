@@ -1,12 +1,12 @@
 "use client"
 
+import { AIChatContext } from '@/context/aiChatContext';
 import { useFetchRecipientUser } from '@/hooks/openAI/useFetchRecipient';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
 import styles from "./qa.module.css";
-import { AIChatContext } from '@/context/aiChatContext';
 
 export default function QuestionModal() {
     
@@ -34,8 +34,8 @@ export default function QuestionModal() {
     
     if (!recipientUser)
         return (
-        <p style={{ textAlign: "center", marginTop: 10,width: "100%" }}>
-            No conversation selected yet...
+        <p style={{ textAlign: "center", marginTop: 10,width: "100%",fontWeight: 900 }}>
+            No conversation selected yet...Refresh the page
         </p>
         );
     
