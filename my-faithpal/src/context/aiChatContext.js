@@ -5,7 +5,7 @@ import { aiUrl, getRequest, postRequest } from "@/util/service";
 import { useSession } from "next-auth/react";
 import { io } from "socket.io-client";
 import  dotenv  from "dotenv";
-import { set } from "mongoose";
+import { redirect } from "next/navigation";
 
 export const AIChatContext = createContext();
 dotenv.config();
@@ -16,14 +16,12 @@ export const AIChatContextProvider = ({ children }) => {
     const [aiUserChats, setaiUserChats] = useState(null);
     const [isaiUserChatsLoading, setIsaiUserChatsLoading] = useState(false);
     const [aiUserChatsError, setaiUserChatsError] = useState(null);
-    const [potentialChats, setPotentialChats] = useState([]);
     const [currentAIChat, setCurrentAIChat] = useState(null);
     const [messages, setMessages] = useState(null);
     const [isMessagesLoading, setIsMessagesLoading] = useState(false);
     const [messagesError, setMessagesError] = useState(null);
     const [sendTextMessageError, setSendTextMessageError] = useState(null);
     const [newMessage, setNewMessage] = useState(null);
-    const [newResponse, setNewResponse] = useState(null);
     const [socket, setSocket] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
 
@@ -143,7 +141,8 @@ export const AIChatContextProvider = ({ children }) => {
                 if (response != null) {
                     setCurrentAIChat(response);
                 } else {
-                    createChat(session?.user?._id)
+                    createChat(session?.user?._id);
+                    redirect("/question");
                 }
             }
         };
@@ -217,7 +216,7 @@ export const AIChatContextProvider = ({ children }) => {
         setNewMessage(response.response);
         setMessages((prev) => [...prev, response.response]);
 
-    }, [setNewMessage, setMessages, sendTextMessageError, aiUrl]);
+    }, [setNewMessage, setMessages, aiUrl]);
 
 
     /*
@@ -227,7 +226,7 @@ export const AIChatContextProvider = ({ children }) => {
 
     //updateCurrentAIChat pass value in provider if you need later
     return (
-        <AIChatContext.Provider value={{ sendResponse, onlineUsers,sendTextMessage,aiUserChats,potentialChats, currentAIChat,createChat , messages, isMessagesLoading , messagesError ,isaiUserChatsLoading, aiUserChatsError }}>
+        <AIChatContext.Provider value={{ sendResponse, onlineUsers,sendTextMessage,aiUserChats, currentAIChat,createChat , messages, isMessagesLoading , messagesError ,isaiUserChatsLoading, aiUserChatsError }}>
             {children}
         </AIChatContext.Provider>
     );

@@ -56,7 +56,7 @@ export default function QuestionModal() {
                 <div className={styles.messages}>
                         {messages && messages.map((message, index) =>
                             <div key={index} className={message?.user === session?.user?._id ? styles.message : styles.user_message} ref={scroll}>
-                    <span>{message.text}</span>
+                    <span className={message?.user === session?.user?._id ? "" : styles.letter}>{message.text}</span>
                     <span className={styles.date}>{moment(message.createdAt).calendar()}</span>
                             </div>
             )}
