@@ -210,14 +210,15 @@ export const AIChatContextProvider = ({ children }) => {
         console.log("AI---Sending text message to send message", response.text);
 
         if (response.error) {
-            return sendTextMessageError(response.error);
+            setSendTextMessageError(response);
+            return sendTextMessageError;
         }
+
 
         setNewMessage(response.response);
         setMessages((prev) => [...prev, response.response]);
 
     }, [setNewMessage, setMessages, aiUrl]);
-
 
     /*
     const updateCurrentAIChat = useCallback(async (chat) => {
@@ -225,6 +226,7 @@ export const AIChatContextProvider = ({ children }) => {
     }, []);*/
 
     //updateCurrentAIChat pass value in provider if you need later
+    
     return (
         <AIChatContext.Provider value={{ sendResponse, onlineUsers,sendTextMessage,aiUserChats, currentAIChat,createChat , messages, isMessagesLoading , messagesError ,isaiUserChatsLoading, aiUserChatsError }}>
             {children}
