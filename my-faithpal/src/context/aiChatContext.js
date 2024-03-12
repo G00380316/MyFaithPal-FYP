@@ -5,7 +5,6 @@ import { aiUrl, getRequest, postRequest } from "@/util/service";
 import { useSession } from "next-auth/react";
 import { io } from "socket.io-client";
 import  dotenv  from "dotenv";
-import { redirect } from "next/navigation";
 
 export const AIChatContext = createContext();
 dotenv.config();
@@ -142,7 +141,7 @@ export const AIChatContextProvider = ({ children }) => {
                     setCurrentAIChat(response);
                 } else {
                     createChat(session?.user?._id);
-                    redirect("/question");
+                    window.location.reload();
                 }
             }
         };
@@ -186,7 +185,8 @@ export const AIChatContextProvider = ({ children }) => {
         }));
 
         if (response.error) {
-                return sendTextMessageError(response);
+            setSendTextMessageError(response);
+            return sendTextMessageError;
         }
 
         setNewMessage(response);

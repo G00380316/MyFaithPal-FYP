@@ -11,7 +11,7 @@ export default function footer() {
 return (
     <footer className={styles.footer}>
     <div className={styles.div}>
-        <p className={styles.p}>Hey there <span>{session?.user?.name}</span>, Welcome!!!</p>
+        <p className={styles.p}>Hey <span>{session?.user?.name}</span>, Welcome!!!</p>
         <p className={styles.p}>_______________________________________________________________________________________</p>
     </div>
 </footer>

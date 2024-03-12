@@ -14,7 +14,7 @@ export default function navbar() {
         <Link href='/'><h1>MYFAITHPAL</h1></Link>
         <h1  style={{ height: 50 }}>_____________________</h1>
         <Link href='/bible'><p style={{ fontSize: 20 }}>Bible</p></Link>
-        <Link href='/explore'><p style={{ fontSize: 20 }}>Explore</p></Link>
+        <Link href='/feed'><p style={{ fontSize: 20 }}>Feed</p></Link>
         <Link href='/questions'><p style={{ fontSize: 20 }}>Questions</p></Link>
         <Link href='/chat'><p style={{fontSize: 20}}>Chat</p></Link>
         {session ? (
