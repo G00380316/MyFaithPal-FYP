@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import OpenAI from "openai";
-import axios from 'axios';
 import { connectMongoDB } from '../lib/mongo.js';
 import Response from '../models/messages.js';
 
@@ -48,11 +47,9 @@ import Response from '../models/messages.js';
         const aichatroom = req.params.aichatroomId;
 
         try {
-            await axios.post("http://localhost:80/faithpalAI/webscrape");
-            
             await connectMongoDB();
 
-            const responses = await Response.find({ aichatroom })
+            const responses = await Response.find({ aichatroom });
 
             res.status(200).json(responses);
         } catch (error) {
