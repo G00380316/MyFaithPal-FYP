@@ -192,7 +192,7 @@ export const AIChatContextProvider = ({ children }) => {
         setNewMessage(response);
         setMessages((prev) => [...prev, response]);
         setTextMessage("");
-        sendResponse(response.text, currentAIChat?._id);
+        sendResponse(response.text, response.aichatroom);
         
     }, [session, setNewMessage, setMessages, sendTextMessageError, aiUrl]);
 
