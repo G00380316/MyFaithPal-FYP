@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
 
 router.post('/webscrape', async (req, res) => {
     try {
+        
         // Fetched the HTML of the page I want to scrape
         const { data } = await axios.get(process.env.SCRAPE_URL);
 
@@ -37,12 +38,13 @@ router.post('/webscrape', async (req, res) => {
         });
 
         questions.push(QA);
-        
+
         const checkData = await sourceKnowledge.create({ question: QA.question, answer: QA.answer });
 
         console.dir(checkData);
 
         let existingQuestions = [];
+
         try {
             const fileData = await fs.promises.readFile("question.json", "utf-8");
             existingQuestions = JSON.parse(fileData);
