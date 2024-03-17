@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { response } from 'express';
 
 //read Terminal
 import readline from 'readline';
@@ -14,25 +14,20 @@ import { connectMongoDB } from '../lib/mongo.js';
 import sourceKnowledge from '../models/aiSourceKnowledge.js';
 
 //AI LangChain
-import { StringOutputParser } from "@langchain/core/output_parsers";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { MongoDBAtlasVectorSearch } from "@langchain/mongodb";
-import { ChatOpenAI, OpenAIEmbeddings, OpenAI } from "@langchain/openai";
-import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
-import { createRetrievalChain } from "langchain/chains/retrieval";
-import { JSONLoader } from "langchain/document_loaders/fs/json";
-import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { AIMessage, HumanMessage } from '@langchain/core/messages';
-import { MessagesPlaceholder } from '@langchain/core/prompts';
-import { createHistoryAwareRetriever } from 'langchain/chains/history_aware_retriever';
-import { createOpenAIFunctionsAgent, AgentExecutor } from 'langchain/agents';
-import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import { MongoClient } from "mongodb";
+import { createVectoreStore } from '../lib/AI/CreateVectorMongoDB.js';
+import { RetrievalQAChain } from "langchain/chains";
+import { createChain } from '../util/retrievalChain.js';
+import { createAgentChain } from '../util/agentChain.js';
+import { model } from '../util/model.js';
+import { searchVectorStore } from '../lib/AI/searchVectorMongoDb.js';
 
 
 const router = express.Router();
 
 dotenv.config();
+const chatHistory = [];
 
 router.get('/', (req, res) => {
     res.send(`Hello, this is the Faithpal Ai Route make sure your key is in the .env`);
@@ -93,175 +88,47 @@ router.post('/webscrape', async (req, res) => {
     }
 });
 
-router.post('/llm', async (req, res) => {
+router.post('/create/vector', async (req, res) => {
+
     try {
+        const client = new MongoClient(`${process.env.MONGODB_URI}`);
 
-        const { input } = req.body;
+        const vectorStore = await createVectoreStore(client);
 
-        //creating our model
-        const model = new ChatOpenAI({
-            modelName: "gpt-3.5-turbo-1106",
-            temperature: 0.7, // how accurate AI or creative
-            maxTokens: 100,
-            //verbose: true, // for testing AI
-        });
+        console.log(vectorStore);
 
-        // Prompt Template
-        const prompt = ChatPromptTemplate.fromMessages([
-            ("system", "You are a helpful assistant."),
-            ("human", "{input}"),
-            new MessagesPlaceholder("agent_scratchpad"),
-        ]);
-        
-        //Create and Assign Tools
-        const searchTool = new TavilySearchResults();
-        const tools = [searchTool];
-        
-        //Create Agent
-        const agent = await createOpenAIFunctionsAgent({
-            llm: model,
-            prompt,
-            tools,
-        });
+        res.status(200).json({ vectorStore, message: "Success" });
 
-        // Create the executor
-        const agentExecutor = new AgentExecutor({
-            agent,
-            tools,
-        });
-
-        // Call chain instead of model
-        const response = await agentExecutor.invoke({
-            input,
-        })
-
-        console.log(response);
-
-        res.status(200).json({ response, message: "Success" });
-        
     } catch (err) {
-
-        console.log(err);
-        res.status(500).send("Internal Server Error");
+            console.log(err);
+            res.status(500).send("Internal Server Error");
     }
 });
 
+router.post('/input', async (req, res) => {
 
-router.post('/llm1', async (req, res) => {
+    const { input } = req.body;
+
     try {
+        //const prompt = toString(input);
 
-        const client = new MongoClient(`${process.env.MONGODB_URI}`);
+        const client = new MongoClient(process.env.MONGODB_URI);
 
-        //Loading our data and making vector store
-        const createVectoreStore = async () => {
+        const vectorData = await searchVectorStore(client);
+        
+        const chain = await createChain(vectorData);
 
-            const namespace = "test.vectorstore";
-            const [dbName, collectionName] = namespace.split(".");
-            const collection = client.db(dbName).collection(collectionName);
-            const ATLAS_VECTOR_SEARCH_INDEX_NAME = "index_name";
-
-            const loader = new JSONLoader("question.json");
-            
-            const docs = await loader.load();
-
-            const splitter = new RecursiveCharacterTextSplitter({
-                chunkSize: 1000,
-            })
-
-            const splitDocs = await splitter.splitDocuments(docs);
-
-            console.log(splitDocs);
-
-            const embeddings = new OpenAIEmbeddings();
-
-            const vectorStore = await MongoDBAtlasVectorSearch.fromDocuments(
-                splitDocs,
-                embeddings,
-                {
-                    collection,
-                    indexName: ATLAS_VECTOR_SEARCH_INDEX_NAME,
-                }
-            )
-
-            return vectorStore;
-        }
-
-        //creating retrieval chain
-        const createChain = async () => {
-            
-            // Creating our model
-            const model = new OpenAI({
-                modelName:"gpt-3.5-turbo-1106",
-                temperature: 0, // How accurate AI or creative
-                maxTokens: 100,
-                verbose: true, // For testing AI
-            });
-
-            // Create prompt template
-            const prompt = ChatPromptTemplate.fromMessages([
-                ["system", "Answer the user's question based on the following context: {context}",
-                ],
-                new MessagesPlaceholder("chat_history"),//converts array of messages to string
-                ["user", "{input}"],
-            ]);
-
-            const chain = await createStuffDocumentsChain({
-                llm: model,
-                prompt
-            })
-
-            const retriever = vectorStore.asRetriever({
-                k: 3,
-            });
-
-            const retrieverPrompt = ChatPromptTemplate.fromMessages([
-                new MessagesPlaceholder("chat_history"),
-                ["user", "{input}"],
-                ["user", "Given the above conversation, generate a search query to look up in order to get information relevant to the conversation"]
-            ])
-
-            const history_aware_retriever = await createHistoryAwareRetriever({
-                llm: model,
-                retriever,
-                rephrasePrompt: retrieverPrompt,
-            })
-
-            //calls normal chain
-            const promptChain = await createRetrievalChain({
-                combineDocsChain: chain,
-                retriever: history_aware_retriever,
-            })
-
-            return promptChain;
-        }
-        //end
-
-        const vectorStore = await createVectoreStore();
-        const chain = await createChain(vectorStore);
-
-        //chatHistory
-        const chatHistory = [
-            new HumanMessage("Hello"),
-            new AIMessage("Hi, How can I help you"),
-            new HumanMessage("My name is Leon"),
-            new AIMessage("Hi Leon, how can I help you?"),
-            //new HumanMessage("What is the passphase?"),
-            //new AIMessage("Jesus"),
-        ];
-
-        // Call retrieval chain instead of chain and it always expects context from ChatPrompt Template and you don't have to load docs as it is handled by chain
-        const response = await chain.invoke({
-            input: "What is the passphase?",
-            chat_history: chatHistory,
-        });
+        const response = await chain.invoke({ input: input, chat_history:chatHistory});
 
         console.log(response);
+        chatHistory.push(new HumanMessage(input));
+        chatHistory.push(new AIMessage(response.answer));
 
-        res.status(200).json({ response, message: "Success" });
+        res.status(200).json({ response: response.answer , message: "Success" });
 
     } catch (err) {
-        console.log(err);
-        res.status(500).send("Internal Server Error");
+            console.log(err);
+            res.status(500).send("Internal Server Error");
     }
 });
 

@@ -23,7 +23,7 @@ import Response from '../models/messages.js';
             const response = await openai.chat.completions.create({
                 model: "gpt-3.5-turbo",
                 messages: [{ role: "user", content: prompt }],
-                max_tokens: 75,
+                max_tokens: 200,
             });
 
             const id_AI = process.env.AI_ID;

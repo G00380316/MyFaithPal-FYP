@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@dqbd/tiktoken": "^1.0.13",
     "@langchain/core": "^0.1.48",
     "@langchain/mongodb": "^0.0.1",
     "@langchain/openai": "^0.0.20",

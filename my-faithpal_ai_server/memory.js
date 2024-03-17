@@ -45,18 +45,18 @@
         })
     })
 
-    /*
+    
     // Using the Chain Classes
     const chain = new ConversationChain({
         llm: model,
         prompt,
         memory
     });
-    */
+    
 
     // Using LCEL
     //const chain = prompt.pipe(model);
-    
+    /*
     const chain = RunnableSequence.from([
         {
             input: (initialInput) => initialInput.input,
@@ -68,7 +68,7 @@
         },
         prompt,
         model
-    ])
+    ])*/
 
     /*console.log(await memory.loadMemoryVariables());
     const inputs = {
@@ -83,16 +83,16 @@
         output: response.content
     })*/
 
-    console.log(await memory.loadMemoryVariables());
+    //console.log(await memory.loadMemoryVariables());
     const inputs1 = {
         input: "What is the passphrase."
     };
 
     const response1 = await chain.invoke(inputs1);
     
-    await memory.saveContext(inputs1, {
-        output: response1.content
-    })
+    //await memory.saveContext(inputs1, {
+       // output: response1.content
+    //})
         
     console.log(response1);
     

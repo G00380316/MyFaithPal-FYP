@@ -75,7 +75,7 @@ import { MongoClient } from "mongodb";
         name: "passphase_search",
         description: "Use this tool when looking for the Passphase",
     });
-    const tools = [searchTool, retrieverTool];
+    const tools = [retrieverTool];
     
     //Create Agent
     const agent = await createOpenAIFunctionsAgent({
@@ -97,7 +97,7 @@ import { MongoClient } from "mongodb";
     });
 
     const chatHistory = [];
-
+    
     const askQuestion = () => {
         rl.question("User: ", async (input) => {
 
@@ -114,7 +114,8 @@ import { MongoClient } from "mongodb";
 
             console.log("Agent: ", response.output);
             chatHistory.push(new HumanMessage(input));
-            chatHistory.push(new AIMessage(response.output))
+            chatHistory.push(new AIMessage(response.output));
+            //console.log(chatHistory);
             askQuestion()
         });
     };
