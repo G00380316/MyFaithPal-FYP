@@ -7,6 +7,8 @@ import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
 import styles from "./qa.module.css";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function QuestionModal() {
     
@@ -16,6 +18,26 @@ export default function QuestionModal() {
     const [textMessage, setTextMessage] = useState("");
     const [isToggled, setIsToggled] = useState(false);
     const scroll = useRef();
+    const notify = () => toast("Switched to FaithPalAI", {
+    position: "bottom-left",
+    style: {
+        backgroundColor: "rgb(215, 203, 155)",
+        color: "#996515",
+        maxWidth: "fit-content",
+        padding: 10
+    },
+    hideProgressBar: false
+    });
+    const secondNotify = () => toast("Switched to OpenAI", {
+    position: "bottom-left",
+    style: {
+        backgroundColor: "rgb(215, 203, 155)",
+        color: "#996515",
+        maxWidth: "fit-content",
+        padding: 10
+    },
+    hideProgressBar: false
+    });
 
     const handleKeyPress = () => {
         // Call the function to send the message when Enter is pressed
@@ -24,6 +46,12 @@ export default function QuestionModal() {
 
     const handleToggle = () => {
         setIsToggled(!isToggled);
+        if (!isToggled) {
+            notify();
+        }
+        else {
+            secondNotify();
+        }
     };
 
     useEffect(() => {
@@ -79,6 +107,8 @@ export default function QuestionModal() {
                     placeholder="Ask your Rabbi AI a Question? Dont be shy..." />
             <input type="checkbox" id="switch" checked={isToggled} onChange={handleToggle} /><label for="switch">{isToggled ? 'ON' : 'OFF'}</label>
             </div>
+            <ToastContainer/>
         </div >
+        
     );
 }
