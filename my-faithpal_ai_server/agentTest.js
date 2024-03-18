@@ -22,7 +22,7 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
     
     //creating our model
     const model = new ChatOpenAI({
-        modelName: "gpt-3.5-turbo",
+        modelName: "gpt-3.5-turbo-1106",
         temperature: 0.7, // how accurate AI or creative
         maxTokens: 100,
         //verbose: true, // for testing AI
@@ -30,7 +30,7 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
 
     // Prompt Template
     const prompt = ChatPromptTemplate.fromMessages([
-        ("system", "I am a pastor and my name is Job."),
+        ("system", "You are a helpful assistant."),
         new MessagesPlaceholder("chat_history"),
         ("human", "{input}"),
         new MessagesPlaceholder("agent_scratchpad"),
@@ -45,25 +45,30 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
         output: process.stdout,
     });
 
-    const aichatroom = "65eb4dbd53ff36d9c3fcb706";
+    const aichatroom = "65eb4dbd53ff36d9c3fcb707";
 
     connectMongoDB();
     const chatHistory = await ChatHistory.findOne({ aichatroom });
     const storeChatHistory = [];
 
-    if (chatHistory != null && storeChatHistory == null) {
-        for (let i = 0; i < chatHistory.messages.length; i++) {
-            if (chatHistory.messages[i] % 2 === 0) {
-                storeChatHistory.push(new HumanMessage(chatHistory.messages[i].content));
-            }
-            else {
-                storeChatHistory.push(new AIMessage(chatHistory.messages[i].content));
-            }
-        }
+    if (chatHistory != null) {
+            chatHistory.messages.forEach((message, index) => {
+                if (index % 2 === 0) {
+                    storeChatHistory.push(new HumanMessage(message.content));
+                } else {
+                    storeChatHistory.push(new AIMessage(message.content));
+                }
+            });
+            console.log(storeChatHistory);
+        } else {
+            const check = await ChatHistory.create({ messages: storeChatHistory, aichatroom });
+            console.log(check);
     }
 
     const askQuestion = () => {
         rl.question("User: ", async (input) => {
+
+            connectMongoDB();
 
             if (input.toLowerCase() === "exit") {
                 rl.close();
@@ -102,17 +107,13 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
                 chat_history: storeChatHistory,
             });
 
-            connectMongoDB();
             console.log("Agent: ", response.output);
             storeChatHistory.push(new HumanMessage(input));
             storeChatHistory.push(new AIMessage(response.output));
-            const check = await ChatHistory.findOne({ aichatroom });
-            if (check == null) {
-                await ChatHistory.create({ messages: storeChatHistory , aichatroom });
-            }
-            else {
-                await ChatHistory.updateOne({ messages: storeChatHistory, aichatroom });
-            }
+            const updatedHistory = await ChatHistory.findOneAndUpdate({ aichatroom }, { $set: { messages: storeChatHistory } });
+            
+            //console.log(updatedHistory);
+
             askQuestion()
         });
     };

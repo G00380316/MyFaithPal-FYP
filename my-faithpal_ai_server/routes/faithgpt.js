@@ -7,12 +7,11 @@ import * as cheerio from 'cheerio';
 
 //Data
 import fs from 'fs';
-import { connectMongoDB } from '../lib/mongo.js';
+import { connectMongoDB } from '../lib/AI/mongo.js';
 import sourceKnowledge from '../models/aiSourceKnowledge.js';
 
 //AI LangChain
 import { AIMessage, HumanMessage } from '@langchain/core/messages';
-import { MongoClient } from "mongodb";
 import { createVectoreStore } from '../lib/AI/CreateVectorMongoDB.js';
 import { model } from '../util/model.js';
 import { searchVectorStore } from '../lib/AI/searchVectorMongoDB.js';
@@ -22,11 +21,11 @@ import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import ChatHistory from "../models/llmHistory.js";
 import { createRetrieverTool } from "langchain/tools/retriever";
 import { createOpenAIFunctionsAgent, AgentExecutor } from 'langchain/agents';
+import { MongoClient } from "mongodb";
 
 const router = express.Router();
 
 dotenv.config();
-const storeChatHistory = [];
 
 router.get('/', (req, res) => {
     res.send(`Hello, this is the Faithpal Ai Route make sure your key is in the .env`);
@@ -111,10 +110,11 @@ router.post('/input', async (req, res) => {
     try {
 
         const client = new MongoClient(`${process.env.MONGODB_URI}`);
+        connectMongoDB();
 
         // Prompt Template
         const prompt = ChatPromptTemplate.fromMessages([
-            ("system", "I am a pastor and my name is Job."),
+            ("system", "You are a helpful assistant."),
             new MessagesPlaceholder("chat_history"),
             ("human", "{input}"),
             new MessagesPlaceholder("agent_scratchpad"),
@@ -122,21 +122,24 @@ router.post('/input', async (req, res) => {
         
         const searchTool = new TavilySearchResults();
 
-        connectMongoDB();
         const chatHistory = await ChatHistory.findOne({ aichatroom });
+        const storeChatHistory = [];
 
-        if (chatHistory != null && storeChatHistory == null) {
-            for (let i = 0; i < chatHistory.messages.length; i++) {
-                    if (chatHistory.messages[i] % 2 === 0) {
-                        storeChatHistory.push(new HumanMessage(chatHistory.messages[i].content));
-                    }
-                    else {
-                        storeChatHistory.push(new AIMessage(chatHistory.messages[i].content));
-                    }
+        if (chatHistory != null) {
+            chatHistory.messages.forEach((message, index) => {
+                if (index % 2 === 0) {
+                    storeChatHistory.push(new HumanMessage(message.content));
+                } else {
+                    storeChatHistory.push(new AIMessage(message.content));
                 }
+            });
+            //console.log(storeChatHistory);
+        } else {
+            const check = await ChatHistory.create({ messages: storeChatHistory, aichatroom });
+            console.log(check);
         }
 
-        const vectorStore = await searchVectorStore(client, input);
+        const vectorStore = await searchVectorStore(client ,input);
 
         const retriever = await vectorStore.asRetriever({
             k: 5,
@@ -144,10 +147,10 @@ router.post('/input', async (req, res) => {
 
         const retrieverTool = createRetrieverTool(retriever,{
             name: "passphase_search",
-            description: "Use this tool when looking for the Passphase",
+            description: "Use this tool when looking for the Passphrase or any question religion based",
         });
 
-        const tools = [retrieverTool, searchTool];
+        const tools = [retrieverTool/*, searchTool*/];
 
         const agent = await createOpenAIFunctionsAgent({
             llm: model,
@@ -167,19 +170,12 @@ router.post('/input', async (req, res) => {
             chat_history: storeChatHistory,
         });
 
-        connectMongoDB();
-        console.log("Agent: ", response.output);
+        console.log("Agent: ", response);
         storeChatHistory.push(new HumanMessage(input));
         storeChatHistory.push(new AIMessage(response.output));
-        const check = await ChatHistory.findOne({ aichatroom });
-        if (check == null) {
-            await ChatHistory.create({ messages: storeChatHistory , aichatroom });
-        }
-        else {
-            await ChatHistory.updateOne({ messages: storeChatHistory, aichatroom });
-        }
-
-        res.status(200).json({ response: response.output , message: "Success" });
+        const updatedHistory = await ChatHistory.findOneAndUpdate({ aichatroom }, { $set: { messages: storeChatHistory } });
+        
+        res.status(200).json({ response: response.output, message: "Success" });
 
     } catch (err) {
             console.log(err);
