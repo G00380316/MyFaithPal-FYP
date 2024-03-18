@@ -20,12 +20,12 @@ export const searchVectorStore = async (client, input) => {
                 }
             )
     
-            const result = await vectorStore.maxMarginalRelevanceSearch(query, {
-                k: 5,
-            });
-            
+            //const result = await vectorStore.maxMarginalRelevanceSearch(query, {
+               // k: 5,
+            // });
             //works better
             //const retrieverOutput = await vectorStore.similaritySearch(query, 5);
+            //console.log (result)
 
             return vectorStore;
 }
