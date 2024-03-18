@@ -22,6 +22,7 @@ import ChatHistory from "../models/llmHistory.js";
 import { createRetrieverTool } from "langchain/tools/retriever";
 import { createOpenAIFunctionsAgent, AgentExecutor } from 'langchain/agents';
 import { MongoClient } from "mongodb";
+import Response from '../models/messages.js';
 
 const router = express.Router();
 
@@ -109,6 +110,7 @@ router.post('/input', async (req, res) => {
 
     try {
 
+        const id_AI = process.env.AI_ID;
         const client = new MongoClient(`${process.env.MONGODB_URI}`);
         connectMongoDB();
 
@@ -174,8 +176,9 @@ router.post('/input', async (req, res) => {
         storeChatHistory.push(new HumanMessage(input));
         storeChatHistory.push(new AIMessage(response.output));
         const updatedHistory = await ChatHistory.findOneAndUpdate({ aichatroom }, { $set: { messages: storeChatHistory } });
+        const displayChat = await Response.create({ aichatroom, user: id_AI, text: response.output, data: response, prompt: input});
         
-        res.status(200).json({ response: response.output, message: "Success" });
+        res.status(200).json({ response: displayChat, message: `Ai: ${response.output }` });
 
     } catch (err) {
             console.log(err);

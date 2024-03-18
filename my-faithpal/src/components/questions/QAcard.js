@@ -14,11 +14,16 @@ export default function QuestionModal() {
     const { currentAIChat, messages, isMessagesLoading , sendTextMessage} = useContext(AIChatContext);
     const { recipientUser } = useFetchRecipientUser(currentAIChat);
     const [textMessage, setTextMessage] = useState("");
+    const [isToggled, setIsToggled] = useState(false);
     const scroll = useRef();
 
     const handleKeyPress = () => {
         // Call the function to send the message when Enter is pressed
-        sendTextMessage(textMessage, currentAIChat._id, setTextMessage);
+        sendTextMessage(textMessage, currentAIChat._id, setTextMessage, isToggled);
+    };
+
+    const handleToggle = () => {
+        setIsToggled(!isToggled);
     };
 
     useEffect(() => {
@@ -72,7 +77,7 @@ export default function QuestionModal() {
                     borderColor="rgba(72,112,223,0.2)"
                     disableRecent={true}
                     placeholder="Ask your Rabbi AI a Question? Dont be shy..." />
-                <input type="checkbox" id="switch" /><label for="switch">Toggle</label>
+            <input type="checkbox" id="switch" checked={isToggled} onChange={handleToggle} /><label for="switch">{isToggled ? 'ON' : 'OFF'}</label>
             </div>
         </div >
     );

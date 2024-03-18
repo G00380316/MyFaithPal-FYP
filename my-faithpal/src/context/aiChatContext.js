@@ -173,7 +173,7 @@ export const AIChatContextProvider = ({ children }) => {
         getMessages();
     }, [currentAIChat]);
 
-    const sendTextMessage = useCallback( async (textMessage, currentAIChatID, setTextMessage) => {
+    const sendTextMessage = useCallback( async (textMessage, currentAIChatID, setTextMessage, isToggled) => {
         if (!textMessage) return console.log("No input");
 
         console.log("Sending AIChatroom ID to send message", currentAIChatID)
@@ -192,31 +192,55 @@ export const AIChatContextProvider = ({ children }) => {
         setNewMessage(response);
         setMessages((prev) => [...prev, response]);
         setTextMessage("");
-        sendResponse(response.text, response.aichatroom);
+        sendResponse(response.text, response.aichatroom, isToggled);
         
     }, [session, setNewMessage, setMessages, sendTextMessageError, aiUrl]);
 
         
-    const sendResponse = useCallback(async (textMessage, currentAIChatID) => {
+    const sendResponse = useCallback(async (textMessage, currentAIChatID, isToggled) => {
         if (!textMessage) return console.log("No input");
 
-        const response = await postRequest(`${aiUrl}ai/create`, JSON.stringify({
-            aichatroom: currentAIChatID,
-            question: textMessage,
-        }));
+        let response;
 
-        console.log("AI---Sending AIChatroom ID to send message", response?.response?.text);
-        console.log("AI---Sending User ID to send message", response.user);
-        console.log("AI---Sending text message to send message", response.text);
+        if (isToggled == false) {
 
-        if (response.error) {
-            setSendTextMessageError(response);
-            return sendTextMessageError;
+            response = await postRequest(`${aiUrl}ai/create`, JSON.stringify({
+                aichatroom: currentAIChatID,
+                question: textMessage,
+            }));
+
+            console.log("AI---Sending AIChatroom ID to send message", response?.response?.text);
+            console.log("AI---Sending User ID to send message", response.user);
+            console.log("AI---Sending text message to send message", response.text);
+
+            if (response.error) {
+                setSendTextMessageError(response);
+                return sendTextMessageError;
+            }
+
+            setNewMessage(response.response);
+            setMessages((prev) => [...prev, response.response]);
+
+        } else {
+            
+            response = await postRequest(`${aiUrl}faithpalAI/input`, JSON.stringify({
+                aichatroom: currentAIChatID, input: textMessage
+            }));
+
+            
+            console.log("AI---Sending AIChatroom ID to send message", response?.response?.text);
+            console.log("AI---Sending User ID to send message", response.user);
+            console.log("AI---Sending text message to send message", response.text);
+
+            if (response.error) {
+                setSendTextMessageError(response);
+                return sendTextMessageError;
+            }
+
+            setNewMessage(response.response);
+            setMessages((prev) => [...prev, response.response]);
+
         }
-
-
-        setNewMessage(response.response);
-        setMessages((prev) => [...prev, response.response]);
 
     }, [setNewMessage, setMessages, aiUrl]);
 
