@@ -77,16 +77,15 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
 
             const vectorStore = await searchVectorStore(client, input);
 
-            let retriever = await vectorStore.maxMarginalRelevanceSearch(input, {
-                k: 5
+            const retriever = await vectorStore.asRetriever({
+                k: 5,
             });
-
-            console.log(retriever)
 
             const retrieverTool = createRetrieverTool(retriever,{
-                name: "context",
-                description: "Before using any other methods",
+                name: "passphase_search",
+                description: "Use this tool when looking for the Passphase",
             });
+
 
             const tools = [retrieverTool, searchTool];
 

@@ -181,8 +181,10 @@ router.post('/input', async (req, res) => {
         res.status(200).json({ response: displayChat, message: `Ai: ${response.output }` });
 
     } catch (err) {
+
             console.log(err);
             res.status(500).send("Internal Server Error");
+        
     }
 });
 
