@@ -45,19 +45,18 @@ router.post('/webscrape', async (req, res) => {
         const listItems = $(".content");
 
         const questions = [];
-        const QA = { question: "", answer: "" };
+        const QA = { context: ""};
 
         connectMongoDB();
 
         // Iterate through each list item and extract text
         listItems.each((idx, el) => {
-            QA.question = $(el).children("h1").children("*[itemprop = 'name headline']").text();
-            QA.answer = $(el).children("*[itemprop = 'articleBody']").text();
+            QA.context = $(el).children("h1").children("*[itemprop = 'name headline']").text() + $(el).children("*[itemprop = 'articleBody']").text() + "\n\n\n\n";
         });
 
         questions.push(QA);
 
-        const checkData = await sourceKnowledge.create({ question: QA.question, answer: QA.answer });
+        const checkData = await sourceKnowledge.create({ context: QA.context });
 
         console.dir(checkData);
 

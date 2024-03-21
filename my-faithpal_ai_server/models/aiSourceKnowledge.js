@@ -3,18 +3,12 @@ import mongoose from "mongoose";
 const { Schema, models } = mongoose;
 
 const AISKnowledgeSchema = new Schema({
-    question: {
+    context: {
         type: String,
         required: true,
         unique: true,
-        ref:"Question",
+        ref:"QA",
     },
-    answer: {
-        type: String,
-        required: true,
-        unique: true,
-        ref:"Answer"
-    }
 },
     { timestamps: true }
 );

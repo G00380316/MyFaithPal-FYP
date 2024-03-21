@@ -15,7 +15,7 @@ export const createVectoreStore = async (client) => {
             const docs = await loader.load();
 
             const splitter = new RecursiveCharacterTextSplitter({
-                chunkSize: 1000, chunkOverlap: 0, separators: ["\n\n", "\n", " "],
+                chunkSize: 1000, chunkOverlap: 0, separators: ["\n\n\n\n"],
             })
 
             const splitDocs = await splitter.splitDocuments(docs);
