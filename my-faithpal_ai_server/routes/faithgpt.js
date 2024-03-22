@@ -23,6 +23,7 @@ import { createRetrieverTool } from "langchain/tools/retriever";
 import { createOpenAIFunctionsAgent, AgentExecutor } from 'langchain/agents';
 import { MongoClient } from "mongodb";
 import Response from '../models/messages.js';
+import AISKnowledge from '../models/aiSourceKnowledge.js';
 
 const router = express.Router();
 
@@ -58,23 +59,7 @@ router.post('/webscrape', async (req, res) => {
 
         const checkData = await sourceKnowledge.create({ context: QA.context });
 
-        console.dir(checkData);
-
-        let existingQuestions = [];
-
-        try {
-            const fileData = await fs.promises.readFile("question.json", "utf-8");
-            existingQuestions = JSON.parse(fileData);
-        } catch (err) {
-            if (err.code !== 'ENOENT') {
-                console.error("Error reading existing data from file:", err);
-            }
-        }
-
-        const mergedQuestions = existingQuestions.concat(questions);
-
-        await fs.promises.writeFile("question.json", JSON.stringify(mergedQuestions, null, 2));
-        console.log("Successfully written data to file");
+        console.log(checkData);
 
         res.status(201).json({ response: checkData, message: "Scraping completed successfully!" });
         
@@ -187,6 +172,56 @@ router.post('/input', async (req, res) => {
             console.log(err);
             res.status(500).send("Internal Server Error");
         
+    }
+});
+
+router.post('/fix/json', async (req, res) => {
+    try {
+        
+        connectMongoDB();
+
+        let FormattedData = [];
+
+        const loadData = await AISKnowledge.find();
+
+        console.log(loadData);
+
+        loadData.forEach(obj => FormattedData.push({ context: obj.context }));
+
+        //console.log(FormattedData);
+
+        await fs.promises.writeFile("question.json", JSON.stringify(FormattedData, null, 2));
+
+        res.status(200).json({ response: FormattedData, message: "Json fixed successfully!" });
+        
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+
+    }
+});
+
+router.post('/load/json', async (req, res) => {
+    try {
+        
+        connectMongoDB();
+
+        let FormattedData = [];
+
+        const loadData = await AISKnowledge.find();
+
+        console.log(loadData);
+
+        loadData.forEach(obj => FormattedData.push({ context: obj.context }));
+
+        res.status(200).json({ response: FormattedData, message: "Json sent successfully!" });
+        
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+
     }
 });
 
