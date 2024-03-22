@@ -77,15 +77,18 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
 
             const vectorStore = await searchVectorStore(client, input);
             //Working really well implementing for app
-            let retriever = await vectorStore.maxMarginalRelevanceSearch(input, {
-                k: 5
+            const retriever = await vectorStore.asRetriever({
+                k: 5,
+                vectorStore,
+                verbose: true
             });
 
             console.log(retriever)
             
-            const retrieverTool = createRetrieverTool(retriever,{
-                name: "context",
-                description: "Before using any other methods",
+            const retrieverTool = createRetrieverTool(retriever, {
+                name: "Retriever",
+                description: "Use this tool when looking for answers you don't know or religion based questions",
+                document_prompt: "{input}"
             });
 
             const tools = [retrieverTool, searchTool];

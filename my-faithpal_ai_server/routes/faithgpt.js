@@ -144,11 +144,14 @@ router.post('/input', async (req, res) => {
 
         const retriever = await vectorStore.asRetriever({
             k: 5,
+            vectorStore,
+            verbose: true
         });
 
-        const retrieverTool = createRetrieverTool(retriever,{
-            name: "passphase_search",
-            description: "Use this tool when looking for the Passphrase or any question religion based",
+        const retrieverTool = createRetrieverTool(retriever, {
+            name: "Retriever",
+            description: "Use this tool when looking for answers you don't know or religion based questions",
+            document_prompt: "{input}"
         });
 
         const tools = [retrieverTool/*, searchTool*/];
@@ -171,7 +174,7 @@ router.post('/input', async (req, res) => {
             chat_history: storeChatHistory,
         });
 
-        console.log("Agent: ", response);
+        console.log("Agent: ", response.output);
         storeChatHistory.push(new HumanMessage(input));
         storeChatHistory.push(new AIMessage(response.output));
         const updatedHistory = await ChatHistory.findOneAndUpdate({ aichatroom }, { $set: { messages: storeChatHistory } });
