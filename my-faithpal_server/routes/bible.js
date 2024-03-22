@@ -40,9 +40,12 @@ router.post('/save/changes', async (req, res) => {
         console.log('user:', user);
 
         res.status(201).json(newChangedPassage);
+
     } catch (error) {
+
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
+
     }
 });
 
@@ -56,31 +59,28 @@ router.post('/get/changes', async (req, res) => {
         const passage = await Passage.findOne({ ref , user })
 
         res.status(200).json(passage);
+
     } catch (error) {
+
         console.error(`Error: ${error.message}`);
         res.status(500).json({ error: 'Internal Server Error' });
+
     }
 });
 
-router.get('/test', async (req, res) => {
+router.get('/random', async (req, res) => {
     try {
-        const apiUrl = 'https://api.scripture.api.bible/v1/bibles/9879dbb7cfe39e4d-04/chapters/GEN.1?include-chapter-numbers=true&include-verse-numbers=true';
-        const apiKey = process.env.API_KEY;
+        const apiUrl = 'http://127.0.0.1:4567/?random=verse';
 
-        if (!apiKey) {
-            throw new Error('API key is missing');
-        }
-
-        const response = await axios.get(apiUrl, {
-            headers: {
-                'api-key': apiKey
-            },
-        });
+        const response = await axios.get(apiUrl);
 
         res.json(response.data);
+
     } catch (error) {
+
         console.error(`Error: ${error.message}`);
         res.status(500).json({ error: 'Internal Server Error' });
+
     }
 });
 
@@ -94,9 +94,12 @@ router.get('/:passage', async (req, res) => {
         const response = await axios.get(apiUrl);
 
         res.json(response.data);
+
     } catch (error) {
+
         console.error(`Error: ${error.message}`);
         res.status(500).json({ error: 'Internal Server Error' });
+
     }
 });
 
@@ -114,9 +117,12 @@ router.get('/:passage/:translation', async (req, res) => {
         const response = await axios.get(apiUrl);
 
         res.json(response.data);
+
     } catch (error) {
+
         console.error(`Error: ${error.message}`);
         res.status(500).json({ error: 'Internal Server Error' });
+        
     }
 });
 

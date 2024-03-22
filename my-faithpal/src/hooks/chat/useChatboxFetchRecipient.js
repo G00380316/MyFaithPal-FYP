@@ -39,8 +39,8 @@ export const useFetchRecipientUser = ( userChats ) => {
                         setError(response.error);
                     } else {
                         setRecipientUser( userData.user );
-                    }
-               // }
+                }
+                
             } catch (error) {
                 setError(error.message);
                 return error;

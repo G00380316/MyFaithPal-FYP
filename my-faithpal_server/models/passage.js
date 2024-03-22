@@ -13,10 +13,10 @@ const passageSchema = new Schema({
     type: {
         type: String,
     },
+    
     ref: {
         type: String,
         required: true,
-        unique: true,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -26,6 +26,8 @@ const passageSchema = new Schema({
 },
     {timestamps: true}
 );
+
+passageSchema.index({ ref: 1, user: 1 }, { unique: true });
 
 const Passage = models.Passage || mongoose.model('Passage', passageSchema);
 export default Passage;
