@@ -1,4 +1,4 @@
-import styles from "@/app/(pages)/(auth)/profile/profile.module.css"
+import styles from "@/app/(pages)/(userPages)/profile/profile.module.css"
 import UserInfo from "@/components/forms/userInfo";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -12,7 +12,7 @@ export default async function profile() {
 
     return (
     <main className={styles.main}>
-        <UserInfo />
+            <UserInfo />
     </main>
     )
 }
