@@ -11,7 +11,7 @@ export default function feed() {
     <main className={styles.main}>
         <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
             <Grid>
-                <Stack mar>
+                <Stack>
                     <Card
                     color="warning"
                     invertedColors
@@ -21,13 +21,13 @@ export default function feed() {
                 </Stack>
             </Grid>
                 <Grid>
-                    <Stack mar  spacing={1} marginTop={1} >
+                    <Stack spacing={1} marginTop={1} >
                         <CreatePosts />
                         <Posts/>
                     </Stack>
                 </Grid>
                 <Grid>
-                    <Stack mar>
+                    <Stack>
                         <Card
                         color="success"
                         invertedColors

@@ -5,9 +5,8 @@ import Post from './post';
 export default function Posts() {
     
     return (
-        <Stack mar spacing={1} >
+        <Stack spacing={1} >
             <Post />
-            
             <Card
             color="neutral"
             invertedColors
