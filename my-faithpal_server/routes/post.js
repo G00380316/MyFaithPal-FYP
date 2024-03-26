@@ -43,14 +43,13 @@ router.post('/create', async (req, res) => {
     }
 });
 
-router.post('/update/:postId', async (req, res) => {
+router.post('/update', async (req, res) => {
 
-    const { postId } = req.params;
-    const { content, likes } = req.body;
+    const { postId, likes } = req.body;
 
     try {
 
-        const updatedPost = await Post.findByIdAndUpdate(postId, { content, likes }, { new: true });
+        const updatedPost = await Post.findByIdAndUpdate(postId, { likes }, { new: true });
 
         res.status(200).json(updatedPost);
 
@@ -83,10 +82,10 @@ router.get('/user/:userId', async (req, res) => {
     }
 });
 
-// GET find a specific post by ID
-router.get('/:postId', async (req, res) => {
+// POST find a specific post by ID
+router.post('/byId', async (req, res) => {
 
-    const { postId } = req.params;
+    const { postId } = req.body;
 
     try {
 

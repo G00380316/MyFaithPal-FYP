@@ -1,19 +1,113 @@
 import * as React from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Avatar from '@mui/joy/Avatar';
-import Box from '@mui/joy/Box';
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import CardOverflow from '@mui/joy/CardOverflow';
-import IconButton from '@mui/joy/IconButton';
-import Typography from '@mui/joy/Typography';
-import MoreHoriz from '@mui/icons-material/MoreHoriz';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import ModeCommentOutlined from '@mui/icons-material/ModeCommentOutlined';
+import { AspectRatio,Avatar, Box, Card , CardContent , CardOverflow , IconButton, Typography, Divider, Link } from '@mui/joy';
+import { MoreHoriz, FavoriteBorder , Favorite, ModeCommentOutlined} from '@mui/icons-material';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
-import { Divider, Link } from '@mui/joy';
+import { useState } from 'react';
+import moment from 'moment';
+import { baseUrl, postRequest } from '@/util/service';
+import { useSession } from 'next-auth/react';
 
-export default function Post() {
+export default function Post({ _id, content, media, likes, user, createdAt }) {
+
+    const [UserData, setUserData] = useState("");
+    const [isLiked, setLiked] = useState(false);
+    const [newPostInfo, setnewPostInfo] = useState("");
+    const { data: session } = useSession();
+
+    React.useEffect(() => {
+        const checkIFLike = async () => {
+
+            const response = await fetch(`${baseUrl}post/byId`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ postId: _id }),
+            });
+
+            const postData = await response.json();
+
+            if (postData?.likes?.includes(session?.user?._id)) {
+                setLiked(true);
+            } else {
+                setLiked(false);
+            }
+        }
+
+        checkIFLike();
+
+    }, [session]);
+
+    React.useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+
+                const response = await fetch(`/api/userByID`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ user }),
+                });
+
+                const userData = await response.json();
+
+                console.log(userData)
+                setUserData(userData || "");
+                
+            } catch (error) {
+                
+                console.error('Error getting User Data:', error);
+                setError(error.message || 'An error occurred while getting data');
+
+            }
+        }
+
+        fetchData();
+    }, [user]);
+
+
+    const handleLikes = async () => {
+
+        if (!isLiked) {
+
+            setLiked(true);
+
+            const newLikesArray = likes.includes(session?.user?._id) ? likes : [...likes, session?.user?._id];
+
+            console.log(newLikesArray)
+            console.log(_id)
+            
+            const updatedPost = await postRequest(`${baseUrl}post/update`, JSON.stringify({
+                postId: _id,
+                likes: newLikesArray,
+            }))
+
+            setnewPostInfo(updatedPost);
+
+            console.log("Added like to: ", updatedPost);
+
+        } else {
+            
+            setLiked(false);
+
+            const newLikesArray = likes.filter(id => id !== session?.user?._id);
+
+            console.log(newLikesArray)
+            console.log(_id)
+
+            const updatedPost = await postRequest(`${baseUrl}post/update`, JSON.stringify({
+                postId: _id,
+                likes: newLikesArray,
+            }))
+
+            setnewPostInfo(updatedPost);
+            
+            console.log("Removed like from: ", updatedPost);
+        }
+    }
+    
     return (
         <Card
         variant="outlined"
@@ -45,14 +139,14 @@ export default function Post() {
                 sx={{ p: 0.5, border: '2px solid', borderColor: 'background.body' }}
             />
             </Box>
-            <Typography fontWeight="lg">Enoch Abiodun</Typography>
+                <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
             <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
             <MoreHoriz />
             </IconButton>
         </CardContent>
         <CardOverflow>
             <AspectRatio>
-            <img src="auth2.jpg" alt="" loading="lazy" />
+                    <img src={media} alt="" loading="lazy" />
             </AspectRatio>
             </CardOverflow>
         <CardContent>
@@ -63,7 +157,7 @@ export default function Post() {
             fontWeight="lg"
             textColor="text.primary"
             >
-            8.1M Likes
+                {newPostInfo?.likes?.length || likes.length} Likes
             </Link>
             <Typography fontSize="sm">
             <Link
@@ -72,9 +166,9 @@ export default function Post() {
                 fontWeight="lg"
                 textColor="text.primary"
             >
-                Enoch Abiodun
+                {UserData?.user?.name}
             </Link>{' '}
-            The React component library you always wanted
+            {content}
             </Typography>
             <Link
             component="button"
@@ -91,13 +185,13 @@ export default function Post() {
             fontSize="10px"
             sx={{ color: 'text.tertiary', my: 0.5 }}
             >
-            2 DAYS AGO
+                    {moment(createdAt).calendar()}
             </Link>
         </CardContent>
         <Divider/>
         <CardContent orientation="horizontal" sx={{ display: 'flex', justifyContent: 'space-around'}}>
-            <IconButton variant="plain" color="neutral" size="sm" title='Favourite'>
-                <FavoriteBorder />
+            <IconButton variant="plain" color="neutral" size="sm" title='Favourite' onClick={handleLikes}>
+                {isLiked ? <Favorite /> : <FavoriteBorder />}
             </IconButton>
             <IconButton variant="plain" color="neutral" size="sm" title='Comment'>
                 <ModeCommentOutlined />
