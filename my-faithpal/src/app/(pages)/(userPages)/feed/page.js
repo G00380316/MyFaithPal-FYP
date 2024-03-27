@@ -6,6 +6,20 @@ import Card from '@mui/joy/Card';
 import CreatePosts from '@/components/feed/createPosts.js';
 import Posts from '@/components/feed/posts';
 
+const Styles = {
+    root: {
+        maxHeight: '90vh',
+        overflowY: 'scroll',
+        '&::-webkit-scrollbar': {
+        width: '0.1em'
+        },
+        '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(0,0,0,0.1)',
+        borderRadius: '0.25em'
+        }
+    }
+};
+
 export default function feed() {
     return (
     <main className={styles.main}>
@@ -21,7 +35,7 @@ export default function feed() {
                 </Stack>
             </Grid>
                 <Grid>
-                    <Stack spacing={1} marginTop={1} >
+                    <Stack spacing={1} marginTop={1} maxWidth={500} sx={Styles.root}>
                         <CreatePosts />
                         <Posts/>
                     </Stack>

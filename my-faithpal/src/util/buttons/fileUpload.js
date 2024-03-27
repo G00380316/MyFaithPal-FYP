@@ -41,8 +41,31 @@ export default function InputFileUpload({ post, text }) {
 
 
     const handleSubmit = async () => {
+
+        if (!file && !text) return;
         
-        if (!file) return;
+        if (!file) {
+
+            try {
+
+                setUploading(true);
+
+                
+                const sendData = await postRequest(`${baseUrl}post/create`, JSON.stringify({
+                    user: session?.user?._id,
+                    content: text,
+                    media: "",
+                }))
+
+                setUploading(false);
+                
+            } catch (error) {
+                
+                console.log(error);
+                setUploading(false);
+
+            }
+        };
 
         console.log("Passed check there is a file attemping upload: ", file);
 
@@ -63,8 +86,8 @@ export default function InputFileUpload({ post, text }) {
 
             const sendData = await postRequest(`${baseUrl}post/create`, JSON.stringify({
                 user: session?.user?._id,
-                content: text,
-                media: data.fileDetails.fileUrl,
+                content: text ,
+                media: data?.fileDetails?.fileUrl,
             }))
 
             console.log("This was data sent to backend: ",sendData);

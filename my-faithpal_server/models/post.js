@@ -17,12 +17,21 @@ const postSchema = new Schema({
         required: false,
     },
     likes: {
-        type: Array,
-        required: false,
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        }],
+        validate: {
+            validator: function (likes) {
+                // Convert the likes array to a Set to remove duplicates
+                const uniqueLikes = new Set(likes);
+
+                return uniqueLikes.size === likes.length;
+            },
+            message: props => `Duplicate ObjectId found in 'likes' array.`,
+        },
     },
-},
-    { timestamps: true }
-);
+}, { timestamps: true });
 
 const Post = models.Post || mongoose.model("Post", postSchema);
 export default Post;

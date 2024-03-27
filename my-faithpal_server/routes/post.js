@@ -28,6 +28,9 @@ router.post('/create', async (req, res) => {
         if (!media) {
             newPost = await Post.create({ user, content });
         }
+        else if (!content) {
+            newPost = await Post.create({ user, media });
+        }
         else if (media){
             newPost = await Post.create({ user, content, media });
         }

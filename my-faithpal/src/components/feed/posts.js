@@ -11,6 +11,7 @@ export default function Posts() {
         const [PostData, setPostData] = useState([]);
         const [loading, setLoading] = useState(true);
         const [error, setError] = useState(null);
+        const { data: session } = useSession();
 
         useEffect(() => {
         const fetchData = async () => {
@@ -33,7 +34,7 @@ export default function Posts() {
 
         fetchData();
         
-        }, []);
+        }, [session]);
     
     if (loading) {
         return <p>Loading...</p>;

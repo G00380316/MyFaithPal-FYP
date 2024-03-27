@@ -39,10 +39,12 @@ export default function createPosts() {
     const { data: session } = useSession();
 
     const handleSubmitPost = () => {
-        
+
         setPost(true);
         console.log("This is the final Post text: ", text);
         handleClose();
+        window.location.reload();
+    
     }
 
     React.useEffect(() => {
@@ -92,7 +94,7 @@ export default function createPosts() {
                             //maxRows={4}
                             startDecorator={
                                     <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
-                                        <div style={{ overflowY: 'auto', maxHeight: 25 }}> {/* Adjust maxHeight as needed */}
+                                        <div style={{ overflowY: 'auto', maxHeight: 25 }}>
                                             {emojis.map((emoji, index) => (
                                                 <IconButton key={index} variant="outlined" color="neutral" onClick={() => setText(`${text}${emoji}`)}>
                                                     {emoji}
