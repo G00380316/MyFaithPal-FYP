@@ -5,6 +5,8 @@ import styles from "@/components/forms/form.module.css"
 import { useState } from "react";
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
+import { CardContent, Divider,Typography} from "@mui/joy";
+import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 
 export default function LoginForm() {
 
@@ -15,9 +17,12 @@ export default function LoginForm() {
     const router = useRouter();
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
         try {
+            if (!email || !password) return;
+
             const res = await signIn("credentials", {
                 email, password, redirect: false
             });
@@ -55,11 +60,25 @@ export default function LoginForm() {
                         <div className={styles.error}>
                             {error}
                         </div>)}
+                    <Divider sx={{ margin: 1 }} />
+                        <button onClick={() => signIn("google")}>
+                        <CardContent orientation="horizontal" sx={{alignItems: "center", justifyContent: "space-evenly", m: 'auto',}}>
+                            <Google sx={{ml: 'auto'}}/>
+                            <Typography sx={{m: 'auto'}}>Continue with Google</Typography>
+                        </CardContent>
+                        </button>
+                        <button onClick={() => signIn("facebook")}>
+                            <CardContent orientation="horizontal" sx={{alignItems: "center", justifyContent: "space-evenly", m: 'auto',}}>
+                                <Facebook sx={{ml: 'auto'}}/>
+                                <Typography sx={{m: 'auto'}}>Continue with Facebook</Typography>
+                            </CardContent>
+                        </button>
+                    <Divider sx={{ margin: 1 }} />
+                    <div style={{marginBottom:5}}>
+                        <button><Link href='/register'>Sign up</Link></button>
+                    </div>
                 </div>
             </form>
-            <div className={styles.link}>
-                <Link href='/register'><p className={styles.p}>Haven't registered yet click here!!!</p></Link>
-            </div>
         </div>
     )
 }

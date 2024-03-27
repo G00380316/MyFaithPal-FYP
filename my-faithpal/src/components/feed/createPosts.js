@@ -128,7 +128,7 @@ export default function createPosts() {
                     <CardContent orientation='horizontal'>
                         <Avatar
                         size="sm"
-                        src="avatar.png"
+                            src={session?.user?.image || `avatar.png`}
                         sx={{ p: 0.5, border: '2px solid', borderColor: 'background.body' }}
                         />
                         <Button color='Transparent' sx={{

@@ -1,3 +1,4 @@
+import { TrendingUpTwoTone } from "@mui/icons-material";
 import mongoose, { Schema, models } from "mongoose";
 
 const userSchema = new Schema({
@@ -7,11 +8,12 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
+        //unique: true,
         required: true,
     },
     password: {
         type: String,
-        required: true,
+        required: false,
     },
     image: {
         type: String,

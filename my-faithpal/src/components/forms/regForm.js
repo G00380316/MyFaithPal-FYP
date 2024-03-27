@@ -4,6 +4,8 @@ import Link from "next/link"
 import styles from "@/components/forms/form.module.css"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Divider,IconButton} from "@mui/joy";
+
 
 export default function regForm() {
 
@@ -19,14 +21,17 @@ export default function regForm() {
     console.log(password);
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
-        if (!name || !email || !password) {
-            setError("All fields are necessary");
-            return;
-        }
-
         try {
+            if (!email || !password) return;
+
+            if (!name || !email || !password) {
+                setError("All fields are necessary");
+                return;
+            }
+
             const resUserExists = await fetch('api/userCheck', {
                 method: 'POST',
                 headers: {
@@ -98,10 +103,13 @@ export default function regForm() {
                         {error}
                     </div>)}
                 </div>
+                <Divider sx={{ margin: 1 }} />
+                    <p className={styles.description}>Click Sign In to Login in with Google, Facbook or LinkedIn</p>
+                <Divider sx={{mt: 1}}/>
             </form>
-            <div className ={styles.link}>
-                <Link href='/login'><p className={styles.p}>Login</p></Link>
-                <Link href='/'><p className={styles.p}>Go Home</p></Link>
+            <div>
+                    <button className ={styles.button}><Link href='/login'>Sign in</Link></button>
+                    <button className ={styles.button}><Link href='/'>Go Home</Link></button>
             </div>
         </div>
     )

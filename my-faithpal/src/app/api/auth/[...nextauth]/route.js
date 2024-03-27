@@ -1,7 +1,9 @@
 import { connectMongoDB } from "@/lib/mongo";
 import User from "@/models/user";
 import NextAuth from "next-auth/next";
-import CredentialsProvider  from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
 import bcrypt from "bcryptjs";
 
 export const authOptions = {
@@ -33,6 +35,14 @@ export const authOptions = {
                 }
             },
         }),
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+        }),
+        FacebookProvider({
+            clientId: process.env.FACEBOOK_CLIENT_ID,
+            clientSecret: process.env.FACEBOOK_CLIENT_SECRET
+        }),
     ],
     session: {
         strategy: "jwt",
@@ -49,6 +59,29 @@ export const authOptions = {
             //console.log("session callback", { token, user, session })
             return session;
         },
+        async signIn({ profile }) {
+            console.log("Details:",profile)
+
+            try {
+                await connectMongoDB();
+
+                const userExist = await User.findOne({ email: profile.email });
+
+                if (!userExist) {
+                    const user = await User.create({
+                        email: profile.name, name: profile.name, image: profile.picture?.data?.url,
+                    })
+
+                    console.log(user)
+
+                }
+
+                return true
+            } catch (error) {
+                console.log(error)
+                return false
+            }
+        }
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
