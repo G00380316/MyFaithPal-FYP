@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import FormControl from '@mui/joy/FormControl';
-import { Avatar, Card, CardContent, Button, Typography, Divider, Textarea, ButtonGroup, IconButton, Tooltip  } from '@mui/joy';
+import { Avatar, Card, CardContent, Button, Typography, Divider, Textarea, ButtonGroup, IconButton  } from '@mui/joy';
 import { Fade, Modal, Box, Backdrop } from '@mui/material';
 import InputFileUpload from '@/util/buttons/fileUpload';
 import { useSession } from 'next-auth/react';
@@ -43,8 +43,7 @@ export default function createPosts() {
         setPost(true);
         console.log("This is the final Post text: ", text);
         handleClose();
-        window.location.reload();
-    
+
     }
 
     React.useEffect(() => {
@@ -55,6 +54,7 @@ export default function createPosts() {
             
         }
     }, [post]);
+
 
     return (
         <main>
@@ -81,7 +81,7 @@ export default function createPosts() {
                             <CardContent orientation='horizontal'>
                                 <Avatar
                                 size="sm"
-                                src="avatar.png"
+                                src={session?.user?.image || "avatar.png"}
                                 sx={{ p: 0.5, border: '2px solid', borderColor: 'background.body' }}
                                     />
                             <Typography>{session?.user?.name}</Typography>
@@ -112,7 +112,7 @@ export default function createPosts() {
                             />
                         </Card>
                         <Divider sx={{ border: "0.5px solid" }} />
-                        <Card orientation= "horizontal" variant="outlined"sx={{border:"none"}} >
+                        <Card orientation= "horizontal" variant="outlined"sx={{border:"none", overflow:"auto"}} >
                             <CardContent sx={{ alignItems: "end"}}>
                                 <ButtonGroup color='nuetral'>
                                     <InputFileUpload post={post} text={text}/>

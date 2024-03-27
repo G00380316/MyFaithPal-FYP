@@ -58,7 +58,8 @@ export default function InputFileUpload({ post, text }) {
                 }))
 
                 setUploading(false);
-                
+                window.location.reload();
+
             } catch (error) {
                 
                 console.log(error);
@@ -93,6 +94,7 @@ export default function InputFileUpload({ post, text }) {
             console.log("This was data sent to backend: ",sendData);
 
             setUploading(false);
+            window.location.reload();
             
         } catch (error) {
 

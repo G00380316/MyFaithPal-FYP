@@ -14,7 +14,7 @@ export default function Post({ _id, content, media, likes, user, createdAt }) {
     const [newPostInfo, setnewPostInfo] = useState("");
     const { data: session } = useSession();
     const [expanded, setExpanded] = useState(false);
-    const contentLengthToShow = 2;
+    const contentLengthToShow = 50;
 
     const toggleExpanded = () => {
         setExpanded(!expanded);
@@ -59,7 +59,7 @@ export default function Post({ _id, content, media, likes, user, createdAt }) {
 
                 const userData = await response.json();
 
-                console.log(userData)
+                console.log("Need", userData)
                 setUserData(userData || "");
                 
             } catch (error) {
@@ -151,7 +151,7 @@ export default function Post({ _id, content, media, likes, user, createdAt }) {
                 >
                 <Avatar
                     size="sm"
-                    src="avatar.png"
+                    src={UserData?.user?.image || 'avatar.png'}
                     sx={{ p: 0.5, border: '2px solid', borderColor: 'background.body' }}
                 />
                 </Box>

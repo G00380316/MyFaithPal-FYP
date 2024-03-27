@@ -49,6 +49,14 @@ export const authOptions = {
     },
     callbacks: {
         async jwt({ token, user, session }) {
+            
+            if (!user) {//allow for facebook and google accounts to have session _id so they can use app functionalities
+                const user = await User.findOne({ email: token.email });
+
+                if (user?._id) token._id = user._id;
+                //console.log("jwt callback", { token, user, session })
+                return token;
+            }
             //pass id to token
             if (user?._id) token._id = user._id;
             //console.log("jwt callback", { token, user, session })
@@ -59,28 +67,69 @@ export const authOptions = {
             //console.log("session callback", { token, user, session })
             return session;
         },
-        async signIn({ profile }) {
-            console.log("Details:",profile)
+        async signIn({ profile , credentials}) {
+            console.log("Details:", profile)
+            //console.log("Details:", credentials)
+            
+            if (credentials) {
+                const { email, password } = credentials;
+                
+                try {
+                    await connectMongoDB();
+                    const user = await User.findOne({ email });
 
-            try {
-                await connectMongoDB();
+                    if (!user) {
+                        return null;
+                    }
 
-                const userExist = await User.findOne({ email: profile.email });
+                    const passwordCheck = await bcrypt.compare(password, user.password)
 
-                if (!userExist) {
-                    const user = await User.create({
-                        email: profile.name, name: profile.name, image: profile.picture?.data?.url,
-                    })
+                    if (!passwordCheck) {
+                        return null;
+                    }
 
-                    console.log(user)
-
+                    return { _id: user.id, name: user.name, email: user.email };
+                } catch (error) {
+                    console.log("Error: ", error);
                 }
-
-                return true
-            } catch (error) {
-                console.log(error)
-                return false
             }
+            
+            if (profile) {
+                try {
+                    await connectMongoDB();
+
+                    const userExist = await User.findOne({ email: profile.email });
+
+                    if (!userExist) {
+                        if (profile?.iss === 'https://accounts.google.com') {
+                                
+                                const user = await User.create({
+                                    email: profile.email, name: profile.name, image: profile.picture,
+                                })
+
+                            console.log(user)
+
+                        } else {
+                                
+                                const user = await User.create({
+                                email: profile.email, name: profile.name, image: profile.picture?.data?.url,
+                                })
+                            
+                            console.log(user)
+                            
+                        }
+
+                        
+
+                        }
+
+                        return true
+                } catch (error) {
+                    console.log(error)
+                    return false
+                }
+            }
+        
         }
     },
     secret: process.env.NEXTAUTH_SECRET,

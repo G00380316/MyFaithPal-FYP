@@ -60,25 +60,25 @@ export default function LoginForm() {
                         <div className={styles.error}>
                             {error}
                         </div>)}
-                    <Divider sx={{ margin: 1 }} />
-                        <button onClick={() => signIn("google")}>
+                </div>
+            </form>
+            <Divider sx={{ margin: 1 }} />
+                        <button onClick={() => signIn("google")} className ={styles.button}>
                         <CardContent orientation="horizontal" sx={{alignItems: "center", justifyContent: "space-evenly", m: 'auto',}}>
                             <Google sx={{ml: 'auto'}}/>
                             <Typography sx={{m: 'auto'}}>Continue with Google</Typography>
                         </CardContent>
                         </button>
-                        <button onClick={() => signIn("facebook")}>
+                        <button onClick={() => signIn("facebook")} className ={styles.button}>
                             <CardContent orientation="horizontal" sx={{alignItems: "center", justifyContent: "space-evenly", m: 'auto',}}>
                                 <Facebook sx={{ml: 'auto'}}/>
                                 <Typography sx={{m: 'auto'}}>Continue with Facebook</Typography>
                             </CardContent>
                         </button>
-                    <Divider sx={{ margin: 1 }} />
-                    <div style={{marginBottom:5}}>
-                        <button><Link href='/register'>Sign up</Link></button>
-                    </div>
-                </div>
-            </form>
+            <Divider sx={{ margin: 1 }} />
+            <div style={{ marginBottom: 5 }}>
+                <button className ={styles.button}><Link href='/register'>Sign up</Link></button>
+            </div>
         </div>
     )
 }
