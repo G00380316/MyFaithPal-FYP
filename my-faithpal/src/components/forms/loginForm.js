@@ -6,7 +6,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { CardContent, Divider,Typography} from "@mui/joy";
-import { Facebook, Google, LinkedIn } from "@mui/icons-material";
+import { Facebook, Google } from "@mui/icons-material";
 
 export default function LoginForm() {
 
@@ -77,7 +77,7 @@ export default function LoginForm() {
                         </button>
             <Divider sx={{ margin: 1 }} />
             <div style={{ marginBottom: 5 }}>
-                <button className ={styles.button}><Link href='/register'>Sign up</Link></button>
+                <Link href='/register'><button className ={styles.button}>Sign up</button></Link>
             </div>
         </div>
     )

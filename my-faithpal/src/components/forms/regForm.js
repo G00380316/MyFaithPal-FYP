@@ -108,8 +108,8 @@ export default function regForm() {
                 <Divider sx={{mt: 1}}/>
             </form>
             <div>
-                    <button className ={styles.button}><Link href='/login'>Sign in</Link></button>
-                    <button className ={styles.button}><Link href='/'>Go Home</Link></button>
+                    <Link href='/login'><button className ={styles.button}>Sign in</button></Link>
+                    <Link href='/'><button className ={styles.button}>Go Home</button></Link>
             </div>
         </div>
     )
