@@ -13,7 +13,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
+    width: "50%",
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -79,12 +79,30 @@ export default function createPosts() {
                     <Divider sx={{border:"0.5px solid"}}/>
                         <Card sx={{ border: "none" }}>
                             <CardContent orientation='horizontal'>
-                                <Avatar
+                                <Box
+                                sx={{
+                                    position: 'relative',
+                                    '&::before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    bottom: 0,
+                                    right: 0,
+                                    m: '-2px',
+                                    borderRadius: '50%',
+                                    background:
+                                        'linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)',
+                                    },
+                                }}
+                                >
+                            <Avatar
                                 size="sm"
                                 src={session?.user?.image || "avatar.png"}
-                                sx={{ p: 0.5, border: '2px solid', borderColor: 'background.body' }}
+                                sx={{ borderColor: 'background.body' }}
                                     />
-                            <Typography>{session?.user?.name}</Typography>
+                                </Box>
+                                <Typography fontWeight="lg" sx={{mt:"3px"}}>{session?.user?.name}</Typography>
                             </CardContent>
                             <Textarea
                             placeholder="What's on your Spirit"
@@ -94,7 +112,7 @@ export default function createPosts() {
                             //maxRows={4}
                             startDecorator={
                                     <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
-                                        <div style={{ overflowY: 'auto', maxHeight: 25 }}>
+                                        <div style={{ overflowY: 'auto', maxHeight: 25}}>
                                             {emojis.map((emoji, index) => (
                                                 <IconButton key={index} variant="outlined" color="neutral" onClick={() => setText(`${text}${emoji}`)}>
                                                     {emoji}
@@ -126,11 +144,29 @@ export default function createPosts() {
             <FormControl>
                 <Card>
                     <CardContent orientation='horizontal'>
-                        <Avatar
-                        size="sm"
-                            src={session?.user?.image || `avatar.png`}
-                        sx={{ p: 0.5, border: '2px solid', borderColor: 'background.body' }}
-                        />
+                                <Box
+                                sx={{
+                                    position: 'relative',
+                                    '&::before': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    bottom: 7,
+                                    right: 0,
+                                    m: '-2px',
+                                    borderRadius: '50%',
+                                    background:
+                                        'linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)',
+                                    },
+                                }}
+                                >
+                                <Avatar
+                                    size="sm"
+                                    src={session?.user?.image || "avatar.png"}
+                                    sx={{ borderColor: 'background.body'}}
+                                        />
+                                </Box>
                         <Button color='Transparent' sx={{
                             minWidth: 400,
                             justifyContent: "start",

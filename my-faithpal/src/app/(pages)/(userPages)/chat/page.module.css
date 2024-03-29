@@ -1,20 +1,20 @@
     .body {
-        display: flex;
         flex: 1;
-        justify-content: left;
         font-family: "Nunito", sans-serif;
         background: rgb(182, 175, 149);
     }
 
     .chat_container {
-        margin-left: 40px;
         width: 100%;
-        padding: 11px;
+        padding: 25px;
+        padding-left: 100px;
+        padding-bottom: 50px;
     }
 
     .chat_box {
-        flex-grow: 1;
-        max-height: min-content;
+        display: flex;
+        flex-direction: column-reverse;
+        max-height: 100%;
         height: min-content;
         background: rgb(114, 109, 93);
         border-radius: 5px;

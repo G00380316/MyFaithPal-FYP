@@ -19,6 +19,7 @@ const postSchema = new Schema({
     likes: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
+            required: false,
             ref: "User",
         }],
         validate: {
@@ -29,6 +30,22 @@ const postSchema = new Schema({
                 return uniqueLikes.size === likes.length;
             },
             message: props => `Duplicate ObjectId found in 'likes' array.`,
+        },
+    },
+    saves: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            required: false,
+            ref: "User",
+        }],
+        validate: {
+            validator: function (saves) {
+                // Convert the likes array to a Set to remove duplicates
+                const uniqueLikes = new Set(saves);
+
+                return uniqueLikes.size === saves.length;
+            },
+            message: props => `Duplicate ObjectId found in 'saves' array.`,
         },
     },
 }, { timestamps: true });

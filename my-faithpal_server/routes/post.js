@@ -46,7 +46,7 @@ router.post('/create', async (req, res) => {
     }
 });
 
-router.post('/update', async (req, res) => {
+router.post('/update/likes', async (req, res) => {
 
     const { postId, likes } = req.body;
 
@@ -65,10 +65,28 @@ router.post('/update', async (req, res) => {
     }
 });
 
-// GET find all posts for a specific user
-router.get('/user/:userId', async (req, res) => {
+router.post('/update/saves', async (req, res) => {
 
-    const { userId } = req.params;
+    const { postId, saves } = req.body;
+
+    try {
+
+        const updatedPost = await Post.findByIdAndUpdate(postId, { saves }, { new: true });
+
+        res.status(200).json(updatedPost);
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({ error: 'Internal Server Error' });
+
+    }
+});
+
+router.post('/byUserId', async (req, res) => {
+
+    const { userId } = req.body;
 
     try {
 
@@ -85,7 +103,6 @@ router.get('/user/:userId', async (req, res) => {
     }
 });
 
-// POST find a specific post by ID
 router.post('/byId', async (req, res) => {
 
     const { postId } = req.body;
@@ -105,10 +122,9 @@ router.post('/byId', async (req, res) => {
     }
 });
 
-// DELETE a post by ID
-router.delete('/:postId', async (req, res) => {
+router.delete('/delete', async (req, res) => {
 
-    const { postId } = req.params;
+    const { postId } = req.body;
 
     try {
 

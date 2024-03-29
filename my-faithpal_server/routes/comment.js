@@ -16,12 +16,44 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/create', async (req, res) => {
-    const { post, user, content } = req.body;
+router.post('/findById', async (req, res) => {
+
+    const { _id } = req.body;
 
     try {
 
-        const newComment = await Comment.create({ post, user, content });
+        const comment = await Comment.findById({_id});
+
+        res.status(200).json(comment);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.post('/findByPost', async (req, res) => {
+
+    const { post } = req.body;
+
+    try {
+
+        const comments = await Comment.find({post});
+
+        res.status(200).json(comments);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.post('/create', async (req, res) => {
+    const { post, user, content, sendername , senderimage } = req.body;
+
+    try {
+
+        const newComment = await Comment.create({ post, user, content , sendername, senderimage});
 
         res.status(201).json(newComment);
 
@@ -31,10 +63,25 @@ router.post('/create', async (req, res) => {
     }
 });
 
-// POST update a comment (e.g., update content)
-router.post('/update/:commentId', async (req, res) => {
-    const { commentId } = req.params;
-    const { content } = req.body;
+router.post('/update/like', async (req, res) => {
+
+    const { likes, commentId } = req.body;
+
+    try {
+
+        const updatedComment = await Comment.findByIdAndUpdate(commentId, { likes }, { new: true });
+
+        res.status(200).json(updatedComment);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.post('/update/content', async (req, res) => {
+
+    const { content, commentId } = req.body;
 
     try {
 
@@ -48,9 +95,9 @@ router.post('/update/:commentId', async (req, res) => {
     }
 });
 
-// DELETE a comment by ID
-router.delete('/:commentId', async (req, res) => {
-    const { commentId } = req.params;
+router.delete('/delete', async (req, res) => {
+    
+    const { commentId } = req.body;
 
     try {
         const deletedComment = await Comment.findByIdAndDelete(commentId);

@@ -57,14 +57,23 @@ export const authOptions = {
                 //console.log("jwt callback", { token, user, session })
                 return token;
             }
+
             //pass id to token
             if (user?._id) token._id = user._id;
+            //passing in username to token
+            if (user?.username) token.username = user.username;
             //console.log("jwt callback", { token, user, session })
+
             return token;
         },
         async session({ session, token, user }) {
+
+            //then putting the _id in session from database
             if (token?._id) session.user._id = token._id;
+            //then putting the username in session from database
+            if (token?.username) session.user.username = token.username;
             //console.log("session callback", { token, user, session })
+
             return session;
         },
         async signIn({ profile , credentials}) {
@@ -107,7 +116,7 @@ export const authOptions = {
                                     email: profile.email, name: profile.name, image: profile.picture,
                                 })
 
-                            console.log(user)
+                            console.log("Created Google user",user)
 
                         } else {
                                 
@@ -115,13 +124,27 @@ export const authOptions = {
                                 email: profile.email, name: profile.name, image: profile.picture?.data?.url,
                                 })
                             
-                            console.log(user)
+                            console.log("Created Facebook user",user)
                             
                         }
-
+                    } else if (userExist) {
                         
+                        if (profile?.iss === 'https://accounts.google.com') {
+                            
+                            const updatedUser = await User.findOneAndUpdate({ email: profile.email }, {email: profile.email, name: profile.name, image: profile.picture}, { new: true });
 
+                            console.log("Updated Google user",updatedUser)
+
+                        } else {
+                            
+                            const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name, image: profile.picture?.data?.url }, { new: true });
+                            
+                            console.log("Updated Facebook user",updatedUser)
+                            
                         }
+                        
+                    
+                    }
 
                         return true
                 } catch (error) {

@@ -46,7 +46,7 @@ export default function Posts() {
     
     return (
         <main style={{marginBottom: 10}}>
-            <Stack spacing={1}>
+            <Stack spacing={1} >
                 {PostData.slice().reverse().map((post, index) => (
                     <Post
                         key={index}
@@ -54,6 +54,7 @@ export default function Posts() {
                         content={post.content}
                         media={post.media}
                         likes={post.likes}
+                        saves={post.saves}
                         user={post.user}
                         createdAt={post.createdAt} />
                 ))}
