@@ -1,6 +1,5 @@
     @import url('//fonts.googleapis.com/css?family=Raleway:800i');
     
-
     .date {
         font-size: 14px;
         color: rgb(180, 180, 180);
@@ -11,7 +10,7 @@
         flex-direction: column;
         background: rgb(114, 109, 93);
         border-radius: 5px;
-        width: 100%;
+        max-width: 100%;
     }
 
     .messages {
@@ -19,7 +18,6 @@
         display: flex;
         flex-direction: column;
         flex: 1;
-        overflow-y: auto;
         padding: 0 2rem;
         overflow-y: scroll;
         overflow-x: hidden;

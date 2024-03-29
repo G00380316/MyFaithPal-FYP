@@ -18,7 +18,7 @@ export default function QuestionModal() {
     const [textMessage, setTextMessage] = useState("");
     const [isToggled, setIsToggled] = useState(false);
     const scroll = useRef();
-    const notify = () => toast("Switched to FaithPalAI", {
+    const notify = () => toast("Switched to Solomon", {
     position: "bottom-left",
     style: {
         backgroundColor: "rgb(215, 203, 155)",

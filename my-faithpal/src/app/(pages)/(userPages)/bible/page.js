@@ -35,13 +35,13 @@ export default function Bible() {
 
     return (
         <main className={styles.main}>
-            <div className={styles.passage}>
+            <div className={styles.bible}>
                 <nav className={styles.nav}>
                     <div>
                         <Dropdown onSelectionChange={handleSelectionChange} onSaveClick={handleSaveButtonClick}/>
                     </div>
                 </nav>
-                <div>
+                <div className={styles.passage}>
                     <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} selectedTranslation={selectedTranslation} saveClicked={saveClicked} />
                 </div>
             </div>

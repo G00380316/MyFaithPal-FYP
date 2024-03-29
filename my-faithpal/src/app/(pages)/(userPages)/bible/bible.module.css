@@ -2,10 +2,10 @@
   flex: 1;
 }
 
-.passage {
-  overflow-y: auto;
-  height: 100vh;
+.bible {
+  height: auto;
 }
+
 .nav {
   padding: 10px;
   display: flex;
@@ -21,4 +21,8 @@
   backdrop-filter: blur(2px);
   border-radius: 10px;
   transition: 1s all cubic-bezier(0.86, 0, 0.07, 1) 0.2s;
+}
+
+.passage {
+  overflow-y: auto;
 }
