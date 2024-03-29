@@ -29,6 +29,10 @@ export const authOptions = {
                         return null;
                     }
 
+                    if (user.image) {
+                        return { _id: user.id, name: user.name, email: user.email, image: user.image };
+                    }
+
                     return { _id: user.id, name: user.name, email: user.email };
                 } catch (error) {
                     console.log("Error: ", error);
@@ -62,6 +66,8 @@ export const authOptions = {
             if (user?._id) token._id = user._id;
             //passing in username to token
             if (user?.username) token.username = user.username;
+            //passing in image to token
+            if (user?.image) token.image = user.image;
             //console.log("jwt callback", { token, user, session })
 
             return token;
@@ -72,6 +78,8 @@ export const authOptions = {
             if (token?._id) session.user._id = token._id;
             //then putting the username in session from database
             if (token?.username) session.user.username = token.username;
+            //then putting the username in session from database
+            if (token?.image) session.user.image = token.image;
             //console.log("session callback", { token, user, session })
 
             return session;
@@ -95,6 +103,10 @@ export const authOptions = {
 
                     if (!passwordCheck) {
                         return null;
+                    }
+
+                    if (user.image) {
+                        return { _id: user.id, name: user.name, email: user.email, image: user.image };
                     }
 
                     return { _id: user.id, name: user.name, email: user.email };
