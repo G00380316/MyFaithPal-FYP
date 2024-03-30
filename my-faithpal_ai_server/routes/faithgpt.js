@@ -100,7 +100,7 @@ router.post('/input', async (req, res) => {
 
         // Prompt Template
         const prompt = ChatPromptTemplate.fromMessages([
-            ("system", "You are a helpful assistant."),
+            ("ai", "You are a helpful friend and assistant and your name is Solomon, Answer questions only related to the Bible or Christianity and Answer referring to Bible and Christianity"),
             new MessagesPlaceholder("chat_history"),
             ("human", "{input}"),
             new MessagesPlaceholder("agent_scratchpad"),
@@ -134,9 +134,9 @@ router.post('/input', async (req, res) => {
         });
 
         const retrieverTool = createRetrieverTool(retriever, {
-            name: "Retriever",
-            description: "Use this tool when looking for answers you don't know or religion based questions",
-            document_prompt: "{input}"
+            name: "retriever",
+            description: "use this tool",
+            query: "{input}"
         });
 
         const tools = [retrieverTool/*, searchTool*/];
