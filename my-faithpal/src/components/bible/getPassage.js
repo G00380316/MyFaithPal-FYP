@@ -7,6 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Editor, useDomValue } from 'reactjs-editor';
 import styles from "./passage.module.css";
+import { Grid,Stack } from "@mui/joy";
+import { LoadingButton } from "@mui/lab";
 
 export default function DisplayPassage({ selectedBook, selectedChapter, selectedVerse , selectedTranslation, saveClicked }) {
     
@@ -107,7 +109,17 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
     }, [selectedBook, selectedChapter, selectedVerse , selectedTranslation]);
 
     if (loading) {
-        return <p>Loading...</p>;
+            return <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+                <Grid>
+                </Grid>
+                    <Grid>
+                        <Stack marginTop="35vh" alignItems="center">
+                        <LoadingButton loading variant="none" size='large'/>
+                        </Stack>
+                    </Grid>
+                    <Grid>
+                </Grid>
+        </Grid>;
     }
 
     if (error) {

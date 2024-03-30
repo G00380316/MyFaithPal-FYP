@@ -9,7 +9,8 @@ import InputEmojiWithRef from 'react-input-emoji';
 import styles from "./qa.module.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { Box } from '@mui/joy';
+import { Grid,Stack,Typography } from '@mui/joy';
+import { LoadingButton } from '@mui/lab';
 
 export default function QuestionModal() {
     
@@ -68,16 +69,36 @@ export default function QuestionModal() {
     
     if (!recipientUser)
         return (
-        <p style={{ textAlign: "center", marginTop: 10,width: "100%",fontWeight: 900 }}>
-            No conversation selected yet...Refresh the page
-        </p>
+            <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+                <Grid>
+                </Grid>
+                    <Grid>
+                        <Stack marginTop="35vh" alignItems="center">
+                        <LoadingButton loading variant="none" size='large'>
+                    </LoadingButton>
+                    <Typography>AI Conversation Loading</Typography>
+                        </Stack>
+                    </Grid>
+                    <Grid>
+                </Grid>
+        </Grid>
         );
     
         if (isMessagesLoading)
         return (
-        <p style={{ textAlign: "center", marginTop: 10,width: "100%" }}>
-            Loading chat...
-        </p>
+            <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+                <Grid>
+                </Grid>
+                    <Grid>
+                        <Stack marginTop="35vh" alignItems="center">
+                        <LoadingButton loading variant="none" size='large'>
+                    </LoadingButton>
+                    <Typography>Messages are Loading</Typography>
+                        </Stack>
+                    </Grid>
+                    <Grid>
+                </Grid>
+        </Grid>
         );
 
     return (

@@ -6,6 +6,8 @@ import { ChatContext } from "@/context/chatContext";
 import styles from "@/app/(pages)/(userPages)/chat/page.module.css";
 import PotentialChats from "@/components/chat/potentialChats";
 import ChatBox from "@/components/chat/chatBox";
+import { LoadingButton } from "@mui/lab";
+
 
 export default function Chat() {
 
@@ -16,7 +18,7 @@ export default function Chat() {
             <PotentialChats />
           <div style={{ display: "flex"}}>
             <div className={styles.chat_box} >
-            {isUserChatsLoading && <p>Loading chats...</p>}
+            {isUserChatsLoading && <LoadingButton loading variant="none"/>}
             {userChats?.slice().reverse().map((chat, index) => (
               <div className={styles.chat_box_item} key={index} onClick={() => updateCurrentChat( chat )}>
                 <Chatrooms rUser={chat} />

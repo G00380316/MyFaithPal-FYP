@@ -28,12 +28,13 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 
 
 export default function Sidebar() {
 
+    const { data: session } = useSession();
 
     return (
         <Sheet
@@ -65,10 +66,8 @@ export default function Sidebar() {
         <Box
         />
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-            <IconButton variant="soft" color="primary" size="sm">
-            <BrightnessAutoRoundedIcon />
-            </IconButton>
-            <Typography level="title-lg">Acme Co.</Typography>
+            <Avatar size="sm" src={session?.user?.image } sx={{ borderColor: 'background.body' }}/>
+            <Typography level="title-lg">{session?.user?.name}</Typography>
         </Box>
         <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
         <Box

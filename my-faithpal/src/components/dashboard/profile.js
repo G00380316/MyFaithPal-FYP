@@ -31,9 +31,14 @@ import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRou
 import VideocamRoundedIcon from '@mui/icons-material/VideocamRounded';
 import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import { useSession } from 'next-auth/react';
+import { Avatar } from '@mui/joy';
 
 
 export default function MyProfile() {
+
+    const { data: session } = useSession();
+
     return (
         <Box sx={{ flex: 1, width: '100%', height:`100vh`, overflow: "auto" }}>
             <Box sx={{ px: { xs: 2, md: 6 } }}>
@@ -139,8 +144,8 @@ export default function MyProfile() {
                     sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
                 >
                     <img
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                    srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                    src={session?.user?.image || ""}
+                    srcSet={session?.user?.image|| ""}
                     loading="lazy"
                     alt=""
                     />
@@ -230,9 +235,9 @@ export default function MyProfile() {
                     maxHeight={108}
                     sx={{ flex: 1, minWidth: 108, borderRadius: '100%' }}
                     >
-                    <img
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                        srcSet="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286&dpr=2 2x"
+                    <Avatar
+                        src={session?.user?.image || ""}
+                        srcSet={session?.user?.image || ""}
                         loading="lazy"
                         alt=""
                     />

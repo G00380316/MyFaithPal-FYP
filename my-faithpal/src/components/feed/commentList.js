@@ -1,7 +1,8 @@
 import Comment from './comment';
 import { React, useState, useEffect } from 'react'
-import { Stack, Box } from '@mui/joy';
+import { Stack, Box,Grid } from '@mui/joy';
 import { baseUrl, postRequest } from '@/util/service';
+import { LoadingButton } from '@mui/lab';
 
 const Styles = {
     root: {
@@ -52,7 +53,18 @@ export const CommentList = ({ postId,sentComment }) => {
     }, [postId,sentComment]);
 
     if (loading) {
-        return <p>Loading...</p>;
+            return <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+                <Grid>
+                </Grid>
+                    <Grid>
+                        <Stack marginTop="35vh" alignItems="center">
+                        <LoadingButton loading variant="none" size='large'>
+                    </LoadingButton>
+                        </Stack>
+                    </Grid>
+                    <Grid>
+                </Grid>
+        </Grid>;
     }
 
     if (error) {

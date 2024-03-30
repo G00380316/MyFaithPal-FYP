@@ -25,6 +25,8 @@
     .all_users {
         display: flex;
         margin-bottom: .5%;
+        overflow-x: hidden;
+        overflow-y: hidden;
     }
 
     .single_user {
@@ -35,6 +37,7 @@
         border-radius: 5px;
         margin-right: 0.5rem;
         position: relative;
+        white-space: nowrap;
     }
 
     .this_user_notifications {
@@ -93,7 +96,7 @@
         overflow-x: hidden;
     }
 
-    /* Basically controlls Chatbox*/
+    /* Basically controls Chatbox*/
     .messages {
         /*height: calc(100vh - 14.6rem);*/
         height: calc(100vh - 16.55rem);

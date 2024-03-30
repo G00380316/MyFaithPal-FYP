@@ -1,10 +1,11 @@
 "use client"
 
 import { React, useEffect, useState } from 'react'
-import { Stack } from '@mui/joy';
+import { Stack,Grid } from '@mui/joy';
 import Post from './post';
 import { baseUrl, getRequest } from '@/util/service';
 import { useSession } from 'next-auth/react';
+import { LoadingButton } from '@mui/lab';
 
 export default function Posts() {
     
@@ -37,7 +38,18 @@ export default function Posts() {
         }, [session]);
     
     if (loading) {
-        return <p>Loading...</p>;
+        return <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+            <Grid>
+            </Grid>
+                <Grid>
+                    <Stack marginTop="35vh" alignItems="center">
+                    <LoadingButton loading variant="none" size='large'>
+                </LoadingButton>
+                    </Stack>
+                </Grid>
+                <Grid>
+            </Grid>
+    </Grid>
     }
 
     if (error) {
