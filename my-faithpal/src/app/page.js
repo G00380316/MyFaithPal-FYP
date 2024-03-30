@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar/navbar.js";
 import Footer from "@/components/footer/footer";
 import { baseUrl, getRequest } from '@/util/service';
 import { useEffect, useState } from 'react';
+import { Box, Grid } from "@mui/joy";
 
 export default function Home() {
 
@@ -41,9 +42,9 @@ export default function Home() {
   //verse of the day
   //Find out more of what the word of God is trying to say to you today
   return (
-    <>
-    <Navbar/>
-      <main className={styles.main}>
+    <Box display="flex" flexDirection="column" width="100%" height="100vh">
+        <Navbar/>
+        <main className={styles.main}>
         <div className={styles.center}>
           <div style={{ borderWidth: 20, borderColor: 'black', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
               <li style={{color: "transparent", maxWidth:1000, overflow:"auto"}}>
@@ -56,7 +57,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-    <Footer/>
-    </>
+    </Box>
   );
 }

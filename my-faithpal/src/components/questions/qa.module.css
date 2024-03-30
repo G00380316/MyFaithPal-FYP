@@ -6,21 +6,27 @@
     }
 
     .chat_box {
-        display: flex;
-        flex-direction: column;
         background: rgb(114, 109, 93);
         border-radius: 5px;
-        max-width: 100%;
     }
 
     .messages {
-        max-height: calc(100vh - 10rem);
+        max-height: calc(100vh - 14rem);
         display: flex;
         flex-direction: column;
         flex: 1;
         padding: 0 2rem;
         overflow-y: scroll;
         overflow-x: hidden;
+    }
+
+    .messages::-webkit-scrollbar {
+    width: 0rem;
+    }
+    
+    .messages::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 0.25em;
     }
 
     .chat_header {
@@ -36,9 +42,7 @@
     }
 
     .messages_box {
-        height: 90vh;
         padding-right: 3px;
-        flex-grow: 0;
         align-items: top;
         gap: 13px;
     }
@@ -69,7 +73,7 @@
 
     .letter {
         display: inline-block;
-        animation: bounce 0.9s infinite alternate;
+        animation: bounce 0.5s infinite alternate;
     }
 
     .message {
@@ -101,8 +105,7 @@
     
     .chat_messages {
         border: 2px solid rgb(127, 125, 117);
-        padding: 1px;
-        height: 85vh;
+        padding: 5px;
     }
 
     .chat_input {

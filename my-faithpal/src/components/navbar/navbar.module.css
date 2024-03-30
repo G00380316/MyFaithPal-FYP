@@ -1,6 +1,6 @@
 .nav {
-    height: 120px;
-    /*padding: 100px;*/
+    width: 100vw;
+    padding: 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;

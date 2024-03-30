@@ -5,6 +5,7 @@ import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
+import { Avatar } from "@mui/joy";
 
 export default function chatBox() {
 
@@ -46,11 +47,12 @@ export default function chatBox() {
   
   return (
     <div className={styles.chat_box}>
-    <div className={styles.chat_header}>
+      <div className={styles.chat_header}>
+        <Avatar size="sm" src={recipientUser?.image || ""} sx={{ borderColor: 'background.body' }}/>
+          <div className={styles.user_card}></div>
       <span>{recipientUser?.name}</span>
       </div>
       <div className={styles.chat_messages}>
-      <div className={styles.messages_box}>
         <div className={styles.messages}>
         {messages && messages.map((message, index) => <div  key={index} className={message?.user === session?.user?._id ? styles.message : styles.user_message} ref={scroll}>
           <span>{message.text}</span>
@@ -58,7 +60,6 @@ export default function chatBox() {
               </div>
             )}
           </div>
-        </div>
       </div>
       <div className={styles.chat_input}>
         <InputEmojiWithRef value={textMessage} onChange={setTextMessage} onEnter={handleKeyPress}  fontFamily="nunito" borderColor="rgba(72,112,223,0.2)" />

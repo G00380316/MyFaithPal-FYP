@@ -30,7 +30,7 @@ export default function Chat( userChats ) {
                 <span className={isUserOnline ? styles.user_online_chats : ""}></span>
                 <div style={{display: "flex" , flexDirection:"column",alignItems: 'flex-end'}}>
                     <div className={styles.date}>{moment(userChats?.rUser?.createdAt).calendar()}</div>
-                    <div className={styles.this_user_notifications}>2</div>
+                    {/*<div className={styles.this_user_notifications}>2</div>*/}
                 </div>
             </div>
             

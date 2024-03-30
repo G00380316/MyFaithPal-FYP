@@ -4,6 +4,22 @@ import React, { useState, useEffect } from "react";
 import Dropdown from "@/components/bible/dropdown";
 import styles from "@/app/(pages)/(userPages)/bible/bible.module.css";
 import DisplayPassage from "@/components/bible/getPassage";
+import { Stack } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
+
+const Styles = {
+    root: {
+        maxHeight: '90vh',
+        overflowY: 'scroll',
+        '&::-webkit-scrollbar': {
+        width: '0.1em'
+        },
+        '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderRadius: '0.25em'
+        }
+    }
+};
 
 export default function Bible() {
     const [selectedBook, setSelectedBook] = useState("Genesis");
@@ -34,17 +50,13 @@ export default function Bible() {
 
 
     return (
-        <main className={styles.main}>
-            <div className={styles.bible}>
-                <nav className={styles.nav}>
-                    <div>
+            <Grid  container direction="column">
+                <Stack spacing={1} sx={Styles.root}>
+                    <div className={styles.nav}>
                         <Dropdown onSelectionChange={handleSelectionChange} onSaveClick={handleSaveButtonClick}/>
                     </div>
-                </nav>
-                <div className={styles.passage}>
-                    <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} selectedTranslation={selectedTranslation} saveClicked={saveClicked} />
-                </div>
-            </div>
-        </main>
+                        <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} selectedTranslation={selectedTranslation} saveClicked={saveClicked} />
+                </Stack>
+            </Grid>
     );
 }

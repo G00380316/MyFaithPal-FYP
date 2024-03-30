@@ -9,6 +9,7 @@ import InputEmojiWithRef from 'react-input-emoji';
 import styles from "./qa.module.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import { Box } from '@mui/joy';
 
 export default function QuestionModal() {
     
@@ -109,6 +110,5 @@ export default function QuestionModal() {
             </div>
             <ToastContainer/>
         </div >
-        
     );
 }

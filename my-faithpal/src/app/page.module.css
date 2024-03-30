@@ -1,11 +1,11 @@
 .main {
   display: flex;
   width: 100%;
+  height: 100%;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 6rem;
-  min-height: 100vh;
   background-image: url("/bible_homepage_bg.jpeg");
   background-position: center;
   background-repeat: no-repeat;

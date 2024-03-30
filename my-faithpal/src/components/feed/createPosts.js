@@ -98,7 +98,7 @@ export default function createPosts() {
                                 >
                             <Avatar
                                 size="sm"
-                                src={session?.user?.image || "avatar.png"}
+                                src={session?.user?.image || ""}
                                 sx={{ borderColor: 'background.body' }}
                                     />
                                 </Box>
@@ -163,7 +163,7 @@ export default function createPosts() {
                                 >
                                 <Avatar
                                     size="sm"
-                                    src={session?.user?.image || "avatar.png"}
+                                    src={session?.user?.image || ""}
                                     sx={{ borderColor: 'background.body'}}
                                         />
                                 </Box>

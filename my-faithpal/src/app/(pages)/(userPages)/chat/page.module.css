@@ -1,34 +1,43 @@
-    .body {
-        flex: 1;
-        font-family: "Nunito", sans-serif;
-        background: rgb(182, 175, 149);
-    }
+.body {
+    font-family: "Nunito", sans-serif;
+    background: rgb(182, 175, 149);
+    height: 100vh
+}
 
-    .chat_container {
-        width: 100%;
-        padding: 25px;
-        padding-left: 100px;
-        padding-bottom: 50px;
-    }
+.chat_container {
+    font-family: "Nunito", sans-serif;
+    background: rgb(182, 175, 149);
+    padding: 10px;
+}
 
-    .chat_box {
-        display: flex;
-        flex-direction: column-reverse;
-        max-height: 100%;
-        height: min-content;
-        background: rgb(114, 109, 93);
-        border-radius: 5px;
-    }
+/*chatrooms*/
+.chat_box {
+    background: rgb(114, 109, 93);
+    border-radius: 5px;
+    height: calc(100vh - 8rem);
+    overflow-y: scroll;
+    width: 425px;
+}
 
-    .chat_box_item {
-        border-bottom: 10px ridge rgb(127, 125, 117);
-        border-radius: 0px;
-    }
+.chat_box_item {
+    border-bottom: 12px ridge rgb(127, 125, 117);
+    border-radius: 0px;
+}
 
-    .chat_box_right {
-        margin-left: 20px; /* Adjust as needed */
-        width: 100%;
-    }
+.chat_box_right {
+    margin-left: 20px; /* Adjust as needed */
+    width: 100%;
+}
+
+.chat_box::-webkit-scrollbar {
+    display: none;
+}
+
+.chat_box::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 0.25em;
+}
+
 /*
     // Notification
     .notifications {

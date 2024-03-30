@@ -12,13 +12,12 @@ export default function Chat() {
   const { userChats, isUserChatsLoading, updateCurrentChat } = useContext(ChatContext);
 
   return (
-    <div className={styles.body}>
       <div className={styles.chat_container}>
             <PotentialChats />
           <div style={{ display: "flex"}}>
             <div className={styles.chat_box} >
             {isUserChatsLoading && <p>Loading chats...</p>}
-            {userChats?.map((chat, index) => (
+            {userChats?.slice().reverse().map((chat, index) => (
               <div className={styles.chat_box_item} key={index} onClick={() => updateCurrentChat( chat )}>
                 <Chatrooms rUser={chat} />
               </div>
@@ -29,6 +28,5 @@ export default function Chat() {
             </div>
           </div>
         </div>
-      </div>
   );
 }

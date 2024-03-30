@@ -47,9 +47,9 @@ export default function Posts() {
     return (
         <main style={{marginBottom: 10}}>
             <Stack spacing={1} >
-                {PostData.slice().reverse().map((post, index) => (
+                {PostData.slice().reverse().map((post) => (
                     <Post
-                        key={index}
+                        key={post._id}
                         _id={post._id}
                         content={post.content}
                         media={post.media}

@@ -34,6 +34,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     const [isLiked, setLiked] = useState(false);
     const [isSaved, setSaved] = useState(false);
     const [newPostInfo, setnewPostInfo] = useState([]);
+    const [newSaveInfo, setnewSaveInfo] = useState([]);
+    const [newLikeInfo, setnewLikeInfo] = useState([]);
     const { data: session } = useSession();
     const [expanded, setExpanded] = useState(false);
     const [commentData, setCommentData] = useState([]);
@@ -95,7 +97,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setLiked(false);
             }
 
-            setnewPostInfo(updatedPost);
+            //setnewPostInfo(updatedPost);
+            setnewLikeInfo(updatedPost?.likes?.length.toString())
 
             console.log("Added like to: ", updatedPost);
 
@@ -117,7 +120,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setLiked(false);
             }
 
-            setnewPostInfo(updatedPost);
+            //setnewPostInfo(updatedPost);
+            setnewLikeInfo(updatedPost?.likes?.length.toString())
             
             console.log("Removed like from: ", updatedPost);
         }
@@ -142,7 +146,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setSaved(false);
             }
 
-            setnewPostInfo(updatedPost);
+            //setnewPostInfo(updatedPost);
+            setnewSaveInfo(updatedPost?.saves?.length.toString())
 
             console.log("Added save to: ", updatedPost);
 
@@ -164,7 +169,9 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setSaved(false);
             }
 
-            setnewPostInfo(updatedPost);
+        
+            //setnewPostInfo(updatedPost);
+            setnewSaveInfo(updatedPost?.saves?.length.toString())
             
             console.log("Removed save from: ", updatedPost);
         }
@@ -212,17 +219,21 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
             if (postData?.likes?.includes(session?.user?._id)) {
                 setLiked(true);
                 setnewPostInfo(postData.likes)
+                setnewLikeInfo(postData?.likes?.length.toString())
             } else {
                 setLiked(false);
                 setnewPostInfo(postData.likes)
+                setnewLikeInfo(postData?.likes?.length.toString())
             }
 
             if (postData?.saves?.includes(session?.user?._id)) {
                 setSaved(true);
                 setnewPostInfo(postData.saves)
+                setnewSaveInfo(postData?.saves?.length.toString())
             } else {
                 setSaved(false);
                 setnewPostInfo(postData.saves)
+                setnewSaveInfo(postData?.saves?.length.toString())
             }
         }
 
@@ -258,6 +269,10 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
         fetchData();
     }, [user]);
 
+    //console.log("this is new like count", newPostInfo?.likes?.length)
+    //console.log("this is new save count", newPostInfo?.saves?.length)
+    console.log("this is new like count", newLikeInfo)
+    console.log("this is new save count", newSaveInfo)
 
     //no text
     if (!content) {
@@ -305,8 +320,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                     >
                                         <Avatar
                                             size="sm"
-                                            src={UserData?.user?.image || 'avatar.png'}
-                                             sx={{ borderColor: 'background.body' }}
+                                            src={UserData?.user?.image || ""}
+                                            sx={{ borderColor: 'background.body' }}
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
@@ -335,7 +350,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                             fontWeight="lg"
                                                             textColor="text.primary"
                                                         >
-                                                            {newPostInfo?.length || newPostInfo?.likes?.length || (!newPostInfo ? likes.length : 0)} Likes
+                                                            {newLikeInfo} Likes
                                                         </Link>
                                                         <Link
                                                             component="button"
@@ -398,8 +413,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                     >
                     <Avatar
                         size="sm"
-                        src={UserData?.user?.image || 'avatar.png'}
-                         sx={{ borderColor: 'background.body' }}
+                        src={UserData?.user?.image || ""}
+                        sx={{ borderColor: 'background.body' }}
                     />
                     </Box>
                         <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
@@ -423,15 +438,15 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                 >
                                     {UserData?.user?.name}
                                 </Link>
-                                <Link
+                                {/*<Link
                                     component="button"
                                     underline="none"
                                     fontSize="sm"
                                     fontWeight="lg"
                                     textColor="text.primary"
                                 >
-                                    {newPostInfo?.length || newPostInfo?.likes?.length || (!newPostInfo ? likes.length : 0)} Likes
-                                </Link>
+                                    {newLikeInfo} Likes
+                                </Link>*/}
                             </CardContent>
                     </Typography>
                     <CardContent orientation='horizontal' sx={{ justifyContent: "space-between" }}>
@@ -456,14 +471,15 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 <Divider/>
                 <CardContent orientation="horizontal" sx={{ display: 'flex', justifyContent: 'space-around'}}>
                     <IconButton variant="plain" color="neutral" size="sm" title='Favourite' onClick={handleLikes}>
-                        {isLiked ? <Favorite /> : <FavoriteBorder />}
+                            {isLiked ? <Favorite /> : <FavoriteBorder />}
+                            {newLikeInfo === "0" ? "" : newLikeInfo}
                     </IconButton>
                     <IconButton variant="plain" color="neutral" size="sm" title='Comment' onClick={handleOpen}>
                         <ModeCommentOutlined />
                     </IconButton>
                     <IconButton variant="plain" color="neutral" size="sm" title='Bookmark' onClick={handleSaves}>
                             {isSaved ? <Bookmark /> : <BookmarkBorderRoundedIcon />}
-                            {newPostInfo?.length || newPostInfo?.saves?.length || (!newPostInfo ? saves.length : "")}
+                            {newSaveInfo === "0" ? "" : newSaveInfo}
                     </IconButton>
                 </CardContent>
             </Card>
@@ -512,8 +528,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         >
                                             <Avatar
                                                 size="sm"
-                                                src={UserData?.user?.image || 'avatar.png'}
-                                                 sx={{ borderColor: 'background.body' }}
+                                                src={UserData?.user?.image || ""}
+                                                sx={{ borderColor: 'background.body' }}
                                             />
                                             </Box>
                                                 <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
@@ -558,7 +574,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                             fontWeight="lg"
                                                             textColor="text.primary"
                                                         >
-                                                            {newPostInfo?.length || newPostInfo?.likes?.length || (!newPostInfo ? likes.length : 0)} Likes
+                                                            {newLikeInfo} Likes
                                                         </Link>
                                                         <Link
                                                             component="button"
@@ -621,8 +637,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 >
                 <Avatar
                     size="sm"
-                    src={UserData?.user?.image || 'avatar.png'}
-                     sx={{ borderColor: 'background.body' }}
+                    src={UserData?.user?.image || ""}
+                    sx={{ borderColor: 'background.body' }}
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
@@ -642,15 +658,15 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                     {UserData?.user?.name}
                                 </Link>{' '}
                             </Typography>
-                                <Link
+                                {/*<Link
                                     component="button"
                                     underline="none"
                                     fontSize="sm"
                                     fontWeight="lg"
                                     textColor="text.primary"
                                 >
-                                    {newPostInfo?.length || newPostInfo?.likes?.length || (!newPostInfo ? likes.length : 0)} Likes
-                            </Link>
+                                    {newLikeInfo} Likes
+                                </Link>*/}
                         </CardContent>
                         <Box sx={{maxWidth:"100%",overflowWrap: 'break-word',whiteSpace: 'pre-line'}}>
                                     {expanded ? content : content.substring(0, contentLengthToShow)}
@@ -689,14 +705,15 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
             <Divider/>
             <CardContent orientation="horizontal" sx={{ display: 'flex', justifyContent: 'space-around'}}>
                 <IconButton variant="plain" color="neutral" size="sm" title='Favourite' onClick={handleLikes}>
-                    {isLiked ? <Favorite /> : <FavoriteBorder />}
+                            {isLiked ? <Favorite /> : <FavoriteBorder />}
+                            {newLikeInfo === "0" ? "" : newLikeInfo}
                 </IconButton>
                 <IconButton variant="plain" color="neutral" size="sm" title='Comment' onClick={handleOpen}>
                         <ModeCommentOutlined />
                 </IconButton>
                 <IconButton variant="plain" color="neutral" size="sm" title='Bookmark' onClick={handleSaves}>
                             {isSaved ? <Bookmark /> : <BookmarkBorderRoundedIcon />}
-                            {newPostInfo?.length || newPostInfo?.saves?.length || (!newPostInfo ? saves.length : "")}
+                            {newSaveInfo === "0" ? "" : newSaveInfo}
                 </IconButton>
             </CardContent>
             </Card>
@@ -749,8 +766,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                     >
                                         <Avatar
                                             size="sm"
-                                            src={UserData?.user?.image || 'avatar.png'}
-                                             sx={{ borderColor: 'background.body' }}
+                                            src={UserData?.user?.image || ""}
+                                            sx={{ borderColor: 'background.body' }}
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
@@ -795,7 +812,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                                 fontWeight="lg"
                                                                 textColor="text.primary"
                                                             >
-                                                                {newPostInfo?.length || newPostInfo?.likes?.length || (!newPostInfo ? likes.length : 0)} Likes
+                                                                {newLikeInfo} Likes
                                                             </Link>
                                                             <Link
                                                                 component="button"
@@ -858,8 +875,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 >
                 <Avatar
                     size="sm"
-                    src={UserData?.user?.image || 'avatar.png'}
-                     sx={{ borderColor: 'background.body' }}
+                    src={UserData?.user?.image || ""}
+                    sx={{ borderColor: 'background.body' }}
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
@@ -884,15 +901,15 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                     {UserData?.user?.name}
                                 </Link>{' '}
                             </Typography>
-                                <Link
+                                {/*<Link
                                     component="button"
                                     underline="none"
                                     fontSize="sm"
                                     fontWeight="lg"
                                     textColor="text.primary"
                                 >
-                                    {newPostInfo?.length || newPostInfo?.likes?.length || (!newPostInfo ? likes.length : 0)} Likes
-                            </Link>
+                                    {newLikeInfo} Likes
+                            </Link>*/}
                         </CardContent>
                         <Box sx={{maxWidth:"100%",overflowWrap: 'break-word',whiteSpace: 'pre-line'}}>
                                     {expanded ? content : content.substring(0, contentLengthToShow)}
@@ -931,14 +948,15 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
             <Divider/>
             <CardContent orientation="horizontal" sx={{ display: 'flex', justifyContent: 'space-around'}}>
                 <IconButton variant="plain" color="neutral" size="sm" title='Favourite' onClick={handleLikes}>
-                    {isLiked ? <Favorite /> : <FavoriteBorder />}
+                        {isLiked ? <Favorite /> : <FavoriteBorder />}
+                        {newLikeInfo === "0" ? "" : newLikeInfo}
                 </IconButton>
                 <IconButton variant="plain" color="neutral" size="sm" title='Comment' onClick={handleOpen}>
                         <ModeCommentOutlined />
                 </IconButton>
                 <IconButton variant="plain" color="neutral" size="sm" title='Bookmark' onClick={handleSaves}>
                         {isSaved ? <Bookmark /> : <BookmarkBorderRoundedIcon />}
-                        {newPostInfo?.length || newPostInfo?.saves?.length || (!newPostInfo ? saves.length : "")}
+                        {newSaveInfo === "0" ? "" : newSaveInfo}
                     </IconButton>
             </CardContent>
             </Card>
