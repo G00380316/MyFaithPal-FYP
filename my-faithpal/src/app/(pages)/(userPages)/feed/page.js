@@ -10,7 +10,7 @@ const Styles = {
         maxHeight: '90vh',
         overflowY: 'scroll',
         '&::-webkit-scrollbar': {
-        width: '0.1em'
+        display: 'none'
         },
         '&::-webkit-scrollbar-thumb': {
         backgroundColor: 'rgba(0,0,0,0.1)',

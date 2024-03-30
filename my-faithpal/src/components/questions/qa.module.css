@@ -11,7 +11,7 @@
     }
 
     .messages {
-        max-height: calc(100vh - 14rem);
+        height: calc(100vh - 14rem);
         display: flex;
         flex-direction: column;
         flex: 1;
@@ -78,7 +78,6 @@
 
     .message {
         display: flex;
-        flex: 1;
         flex-direction: column;
         color: white;
         background: #166355;

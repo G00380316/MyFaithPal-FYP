@@ -140,7 +140,6 @@
 
     .message {
         display: flex;
-        flex: 1;
         flex-direction: column;
         color: white;
         background: #166355;
