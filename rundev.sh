@@ -11,3 +11,5 @@ sleep 5 # Adjust this if necessary
 
 # Run Faithpal
 npm run dev --prefix my-faithpal
+
+echo "Succes servers should be running"
