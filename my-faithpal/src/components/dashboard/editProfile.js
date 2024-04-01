@@ -40,7 +40,7 @@ export default function EditProfile() {
     }
 
     console.log(file)
-    
+
     const handleSave = async (e) => {
         
         e.preventDefault();
@@ -130,6 +130,21 @@ export default function EditProfile() {
             console.log("Error whilst Updating: ", error);
         }
     };
+
+    React.useEffect(() => {
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImageSrc(reader.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+
+            setImageSrc(null);
+
+        }
+    }, [file]);
+
     
     return (
         <Box>
@@ -164,8 +179,8 @@ export default function EditProfile() {
                         sx={{ flex: 1, minWidth: 120, borderRadius: '100%' }}
                     >
                         <img
-                        src={session?.user?.image || ""}
-                        srcSet={session?.user?.image|| ""}
+                        src={imageSrc ||session?.user?.image}
+                        srcSet={imageSrc ||session?.user?.image}
                         loading="lazy"
                         alt=""
                         />
