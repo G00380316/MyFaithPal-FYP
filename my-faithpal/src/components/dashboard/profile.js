@@ -46,7 +46,7 @@ export default function MyProfile() {
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                 <Avatar
-                variant="outlined"
+                variant="none"
                 size="sm"
                 src={session?.user?.image}
                 />
