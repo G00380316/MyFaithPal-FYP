@@ -59,6 +59,8 @@ export const authOptions = {
                 const user = await User.findOne({ email: token.email });
 
                 if (user?._id) token._id = user._id;
+
+                if (user?.image) token.image = user.image;
                 //console.log("jwt callback", { token, user, session })
                 return token;
             }

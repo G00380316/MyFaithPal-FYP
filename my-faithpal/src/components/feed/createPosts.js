@@ -55,6 +55,7 @@ export default function createPosts() {
         }
     }, [post]);
 
+    console.log("this is what your looking for",session?.user?.image)
 
     return (
         <main>
