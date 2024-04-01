@@ -68,6 +68,26 @@ router.post('/get/changes', async (req, res) => {
     }
 });
 
+router.post('/get/user/changes', async (req, res) => {
+
+    const { user } = await req.body;
+
+    try {
+        await connectMongoDB();
+
+        const passage = await Passage.find({ user })
+
+        res.status(200).json(passage);
+
+    } catch (error) {
+
+        console.error(`Error: ${error.message}`);
+        res.status(500).json({ error: 'Internal Server Error' });
+
+    }
+});
+
+
 router.get('/random', async (req, res) => {
     try {
         const apiUrl = 'http://127.0.0.1:4567/?random=verse';

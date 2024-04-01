@@ -14,6 +14,7 @@ import EditProfile from './editProfile';
 import { signOut, useSession } from 'next-auth/react';
 import YourPosts from './userPosts/yourPosts';
 import SavedPosts from './savedPosts/savedPosts';
+import Highlights from './higlights/highlights';
 
 const Styles = {
     root: {
@@ -112,7 +113,7 @@ export default function MyProfile() {
                 {selectedTab === 0 && <EditProfile />}
                 {selectedTab === 1 && <YourPosts/>}
                 {selectedTab === 2 && <SavedPosts/>}
-                {selectedTab === 3 && <div>3</div>}
+                {selectedTab === 3 && <Highlights/>}
                 {selectedTab === 4 && <div>4</div>}
                 {selectedTab === 5 && <div>5</div>}
             </Stack>
