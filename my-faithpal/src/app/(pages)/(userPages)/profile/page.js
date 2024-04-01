@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import MyProfile from "@/components/dashboard/profile";
-import Sidebar from "@/components/dashboard/sidebar";
 
 export default async function profile() {
 
@@ -14,7 +13,6 @@ export default async function profile() {
 
     return (
     <main className={styles.main}>
-            <Sidebar/>
             <MyProfile/>
             {/*<UserInfo />*/}
     </main>

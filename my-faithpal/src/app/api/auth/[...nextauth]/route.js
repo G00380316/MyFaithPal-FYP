@@ -143,22 +143,40 @@ export const authOptions = {
                         
                         if (profile?.iss === 'https://accounts.google.com') {
                             
-                            const updatedUser = await User.findOneAndUpdate({ email: profile.email }, {email: profile.email, name: profile.name, image: profile.picture}, { new: true });
+                            if (userExist.image) {
+                                const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name }, { new: true });
+                                console.log("Updated Google user", updatedUser)
+                                
+                                return true
 
-                            console.log("Updated Google user",updatedUser)
+                            } else {
+                                const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name, image: profile.picture }, { new: true });
+                                console.log("Updated Google user",updatedUser)
+                                
+                                return true
+
+                            }
+
+                            
 
                         } else {
                             
-                            const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name, image: profile.picture?.data?.url }, { new: true });
-                            
-                            console.log("Updated Facebook user",updatedUser)
-                            
-                        }
-                        
-                    
-                    }
+                            if (userExist.image) {
 
-                        return true
+                                const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name }, { new: true });
+                                console.log("Updated Facebook user",updatedUser)
+                                
+                                return true
+
+                            } else {
+
+                                const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name, image: profile.picture?.data?.url }, { new: true });
+                                console.log("Updated Facebook user",updatedUser)
+                                
+                                return true
+                            }
+                        }
+                    }
                 } catch (error) {
                     console.log(error)
                     return false

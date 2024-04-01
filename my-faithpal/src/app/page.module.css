@@ -30,10 +30,18 @@
   color: #996515;
   border-width: 3px;
   border-color: #996515;
-  padding: 15px;
-  padding-left: 40px;
-  padding-right: 40px;
-  border-radius: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 600;
+  margin: 0 10px;
+  width: 200px;
+  padding: 10px 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease;
+}
+
+.button:hover {
+    background-color: transparent;
 }
 
 /* Enable hover only on non-touch devices */

@@ -2,7 +2,7 @@
 
 import { React, useEffect, useState } from 'react'
 import { Stack,Grid } from '@mui/joy';
-import Post from './post';
+import Post from './savePost';
 import { baseUrl, getRequest } from '@/util/service';
 import { useSession } from 'next-auth/react';
 import { LoadingButton } from '@mui/lab';
@@ -20,6 +20,7 @@ export default function Posts() {
                 setLoading(true);
 
                 const data = await getRequest(`${baseUrl}post/`);
+
                 setPostData(data || []);
                 console.log("All Posts", data);
 
@@ -55,22 +56,30 @@ export default function Posts() {
     if (error) {
         return <p>Error: {error}</p>;
     }
-    
+
     return (
-        <main style={{marginBottom: 30}}>
-            <Stack spacing={1} >
-                {PostData.slice().reverse().map((post) => (
-                    <Post
-                        key={post._id}
-                        _id={post._id}
-                        content={post.content}
-                        media={post.media}
-                        likes={post.likes}
-                        saves={post.saves}
-                        user={post.user}
-                        createdAt={post.createdAt} />
-                ))}
-            </Stack>
+        <main style={{ marginBottom: 125 }}>
+            <Grid  container direction="horizontal" justifyContent="space-around" alignItems="stretch">
+            <Grid>
+            </Grid>
+                <Grid>
+                    <Stack spacing={1} marginTop={1} width={1000}>
+                        {PostData.filter(post => post.saves?.some(save => save === session?.user?._id)).slice().reverse().map((post) => (
+                            <Post
+                                key={post._id}
+                                _id={post._id}
+                                content={post.content}
+                                media={post.media}
+                                likes={post.likes}
+                                saves={post.saves}
+                                user={post.user}
+                                createdAt={post.createdAt} />
+                            ))}
+                    </Stack>
+                </Grid>
+                <Grid>
+                </Grid>
+            </Grid>
         </main>
     )
 

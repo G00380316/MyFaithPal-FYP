@@ -11,7 +11,7 @@
     }
 
     .messages {
-        height: calc(100vh - 14rem);
+        height: calc(100vh - 13.8rem);
         display: flex;
         flex-direction: column;
         flex: 1;
