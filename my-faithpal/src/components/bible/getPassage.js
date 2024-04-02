@@ -45,7 +45,7 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
         key: dom?.key,
         props: dom?.props,
         type: dom?.type,
-        ref: PassageRef,
+        reference: PassageRef,
         verse: selectedVerse,
         translation: transRef,
         _id: session?.user?._id,
@@ -54,7 +54,7 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
         let newRef = PassageRef + selectedVerse + selectedTranslation;
 
         const passageExists = await postRequest(`${baseUrl}bible/save/changes`, JSON.stringify({
-            key: updatedDomValue.key, props: updatedDomValue.props, type: updatedDomValue.type, ref: newRef, user: updatedDomValue._id,
+            key: updatedDomValue.key, props: updatedDomValue.props, type: updatedDomValue.type, reference: newRef, user: updatedDomValue._id,
         }));
 
         if (passageExists.error) {
@@ -72,9 +72,9 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
         const fetchPassageData = async () => {
 
             const user = session?.user?._id;
-            const ref = PassageRef + selectedVerse + selectedTranslation;
+            const reference = PassageRef + selectedVerse + selectedTranslation;
             
-            const getPassage = await postRequest(`${baseUrl}bible/get/changes`, JSON.stringify({ ref, user }));
+            const getPassage = await postRequest(`${baseUrl}bible/get/changes`, JSON.stringify({ reference, user }));
 
             if (getPassage) {
                 //var persistedDom = localStorage.getItem(`dom${PassageRef}${selectedVerse}${selectedTranslation}${session?.user?._id}`)

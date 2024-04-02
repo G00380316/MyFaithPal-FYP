@@ -12,20 +12,20 @@ router.get('/', (req, res) => {
 })
 
 router.post('/save/changes', async (req, res) => {
-    const { key , props , type , ref , user } = req.body;
+    const { key , props , type , reference , user } = req.body;
 
     try {
         await connectMongoDB();
 
-        console.log('before search ref:', ref);
+        console.log('before search ref:', reference);
         console.log('before search user:', user);
 
-        const passage = await Passage.findOne({ ref, user });
+        const passage = await Passage.findOne({ reference, user });
         
         console.log(passage)
         
         if (passage) {
-            const updatedPassage = await Passage.updateOne({ ref, user }, { $set: { key, props, type } });
+            const updatedPassage = await Passage.updateOne({ reference, user }, { $set: { key, props, type } });
 
             if (updatedPassage) {
                 return res.status(202).json(updatedPassage)
@@ -34,9 +34,9 @@ router.post('/save/changes', async (req, res) => {
             return res.status(200).json(passage);
         };
             
-        const newChangedPassage = await Passage.create({ key , props , type , ref , user});
+        const newChangedPassage = await Passage.create({ key , props , type , reference , user});
 
-        console.log('ref:', ref);
+        console.log('ref:', reference);
         console.log('user:', user);
 
         res.status(201).json(newChangedPassage);
@@ -51,12 +51,12 @@ router.post('/save/changes', async (req, res) => {
 
 router.post('/get/changes', async (req, res) => {
 
-    const { ref, user } = await req.body;
+    const { reference, user } = await req.body;
 
     try {
         await connectMongoDB();
 
-        const passage = await Passage.findOne({ ref , user })
+        const passage = await Passage.findOne({ reference , user })
 
         res.status(200).json(passage);
 

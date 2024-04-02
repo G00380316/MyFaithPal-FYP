@@ -8,13 +8,15 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import NotesIcon from '@mui/icons-material/Notes';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import { Avatar, Box, IconButton, Stack, Tab, TabList, Tabs, Typography, tabClasses } from '@mui/joy';
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import EditProfile from './editProfile';
 
 import { signOut, useSession } from 'next-auth/react';
 import YourPosts from './userPosts/yourPosts';
 import SavedPosts from './savedPosts/savedPosts';
 import Highlights from './higlights/highlights';
+import { baseUrl, postRequest } from '@/util/service';
+import Notes from './notes/notes';
 
 const Styles = {
     root: {
@@ -34,10 +36,28 @@ export default function MyProfile() {
 
     const { data: session } = useSession();
     const [selectedTab, setSelectedTab] = React.useState(0);
+    const [highlights, setHighlights] = React.useState([]);
+    const [notes, setNotes] = React.useState([]);
 
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
     };
+
+    
+    useEffect(() => {
+        const fetchPassageData = async () => {
+
+            const user = session?.user?._id;
+            
+            const getPassage = await postRequest(`${baseUrl}bible/get/user/changes`, JSON.stringify({ user }));
+            
+            setHighlights(getPassage);
+            setNotes(getPassage);
+        }
+
+        fetchPassageData()
+
+    }, [session]);
 
     return (
         <Box sx={{ flex: 1, width: '100%', height:`90vh`, overflow: "hidden" }}>
@@ -113,8 +133,8 @@ export default function MyProfile() {
                 {selectedTab === 0 && <EditProfile />}
                 {selectedTab === 1 && <YourPosts/>}
                 {selectedTab === 2 && <SavedPosts/>}
-                {selectedTab === 3 && <Highlights/>}
-                {selectedTab === 4 && <div>4</div>}
+                {selectedTab === 3 && <Highlights highlights={highlights} />}
+                {selectedTab === 4 && <Notes notes={notes} />}
                 {selectedTab === 5 && <div>5</div>}
             </Stack>
         </Box>

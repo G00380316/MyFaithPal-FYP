@@ -1,8 +1,8 @@
 import React from 'react';
 import Grid from '@mui/joy/Grid';
-import HighlightCard from './highlightBox';
+import NoteCard from './noteBox';
 
-let HighlightArray = [];
+let NotesArray = [];
 let reference;
 
 function findSpans(obj, parentObj = null, parentKey = null) {
@@ -12,17 +12,18 @@ function findSpans(obj, parentObj = null, parentKey = null) {
             reference = obj.reference
         }
 
-        if (obj?.props?.children?.[0]?.props?.children?.[1]?.props?.className?.includes("highlight")) {
+        if (obj?.props?.children?.[0]?.props?.children?.[1]?.props?.className?.includes("comment")) {
             if (parentObj && parentKey !== null) {
                 
                 const child = parentObj?.[1]?.props?.children?.[0].props?.children?.[1]?.props?.children?.[0];
+                const comment = parentObj?.[1]?.props?.children?.[0].props?.children?.[1]?.props?.children?.[1]?.props?.children?.[1];
                 const verse = parentObj?.[0]?.props?.children?.[0];
-                //console.log("higlight verse: ", child);
+                //console.log("note verse: ", child);
                 
-                if (!HighlightArray.some(item => item?.highlight === child)) {
-                    //console.log("Found highlight: ", parentObj);
-                    HighlightArray.push({ highlight: child , ref: reference, verse});
-                    console.log("Found highlight array: ", HighlightArray);
+                if (!NotesArray.some(item => item?.note === child)) {
+                    //console.log("Found note: ", parentObj);
+                    NotesArray.push({ note: child , ref: reference, verse , comment});
+                    console.log("Found note array: ", NotesArray);
                 }
             }
         } else if (Array.isArray(obj)) {
@@ -40,19 +41,20 @@ function findSpans(obj, parentObj = null, parentKey = null) {
     }
 }
 
-export default function Highlights({highlights}) {
+export default function Notes({notes}) {
 
-    findSpans(highlights);
+    findSpans(notes);
 
     return (
         <main style={{marginBottom: 100}}>
             <Grid container spacing={2} marginTop={2} padding={1} overflow={"scroll"}>
-                {HighlightArray.map((highlight, index) => (
+                {NotesArray.map((note, index) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-                        <HighlightCard
-                            highlight={highlight?.highlight}
-                            reference={highlight?.ref}
-                            verse={highlight?.verse}
+                        <NoteCard
+                            note={note?.note}
+                            reference={note?.ref}
+                            verse={note?.verse}
+                            comment={note?.comment}
                         />
                     </Grid>
                 ))}
