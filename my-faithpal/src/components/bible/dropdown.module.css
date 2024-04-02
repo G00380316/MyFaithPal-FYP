@@ -39,6 +39,14 @@
     margin-left: 10px;
 }
 
+.customButtonC {
+    margin-left: 10px;
+}
+
+.customButtonC:hover {
+    background-color: rgb(165, 42, 42);
+}
+
 .customSelect select option:checked,
 .customSelect option:hover {
     background-color: rgb(215, 203, 155);

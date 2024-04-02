@@ -17,6 +17,7 @@ import SavedPosts from './savedPosts/savedPosts';
 import Highlights from './higlights/highlights';
 import { baseUrl, postRequest } from '@/util/service';
 import Notes from './notes/notes';
+import Support from './support/support';
 
 const Styles = {
     root: {
@@ -135,7 +136,7 @@ export default function MyProfile() {
                 {selectedTab === 2 && <SavedPosts/>}
                 {selectedTab === 3 && <Highlights highlights={highlights} />}
                 {selectedTab === 4 && <Notes notes={notes} />}
-                {selectedTab === 5 && <div>5</div>}
+                {selectedTab === 5 && <Support/>}
             </Stack>
         </Box>
     );

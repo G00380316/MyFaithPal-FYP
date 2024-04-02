@@ -48,7 +48,7 @@ export default function Notes({notes}) {
     return (
         <main style={{marginBottom: 100}}>
             <Grid container spacing={2} marginTop={2} padding={1} overflow={"scroll"}>
-                {NotesArray.map((note, index) => (
+                {NotesArray.slice().reverse().map((note, index) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                         <NoteCard
                             note={note?.note}

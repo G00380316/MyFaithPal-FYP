@@ -4,7 +4,7 @@ import { translationOptions } from '@/util/bible/translationOptions';
 import { oebbookInfo } from '@/util/bible/Filter/oebBooks';
 import styles from '@/components/bible/dropdown.module.css';
 
-const Dropdown = ({ onSelectionChange, onSaveClick }) => {
+const Dropdown = ({ onSelectionChange, onSaveClick, onClearClick }) => {
 
     const [selectedTranslation, setSelectedTranslation] = useState("");
     const [selectedBook, setSelectedBook] = useState("Genesis");
@@ -66,8 +66,20 @@ const Dropdown = ({ onSelectionChange, onSaveClick }) => {
         console.log("parent class")
     };
 
+    const handleClearButtonClick = () => {
+        onClearClick();
+        console.log("parent class")
+    };
+
     return (
     <div className={styles.dropdown}>
+        
+        <div className={styles.customButtonC}>
+            <button onClick={handleClearButtonClick}>
+                Clear
+            </button>
+        </div>
+        
         <label htmlFor="books" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}></label>
         <div className={styles.customSelect}>
             <select id="books" value={selectedBook} onChange={handleBookChange}>

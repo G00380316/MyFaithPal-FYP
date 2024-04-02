@@ -47,7 +47,7 @@ export default function Highlights({highlights}) {
     return (
         <main style={{marginBottom: 100}}>
             <Grid container spacing={2} marginTop={2} padding={1} overflow={"scroll"}>
-                {HighlightArray.map((highlight, index) => (
+                {HighlightArray.slice().reverse().map((highlight, index) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                         <HighlightCard
                             highlight={highlight?.highlight}

@@ -125,6 +125,7 @@ export default function NoteCard({note, verse, reference, comment}) {
                                     {expanded1 ? "less" : "more"}
                                 </Link>
                         )}
+                        <Box/>
                         <CopyTextButton text={`"${note}"\n${reference}:${verse} ${translation.trim()}\n\nComment: ${comment}`}/>
                     </Box>
                 </CardContent>

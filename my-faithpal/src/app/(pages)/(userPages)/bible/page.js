@@ -27,6 +27,7 @@ export default function Bible() {
     const [selectedVerse, setSelectedVerse] = useState("");
     const [selectedTranslation, setSelectedTranslation] = useState("");
     const [saveClicked, setSaveClicked] = useState(false);
+    const [clearClicked, setClearClicked] = useState(false);
 
     const handleSelectionChange = (book, chapter, verse, translation) => {
         setSelectedBook(book);
@@ -40,6 +41,11 @@ export default function Bible() {
         console.log("Update saveClicked state to: ", saveClicked);
     };
 
+    const handleClearButtonClick = () => {
+        setClearClicked(true);
+        console.log("Update clearClicked state to: ", clearClicked);
+    };
+
     useEffect(() => {
         if (saveClicked) {
             console.log("Save operation completed.");
@@ -48,14 +54,21 @@ export default function Bible() {
         }
     }, [saveClicked]);
 
+    useEffect(() => {
+        if (clearClicked) {
+            console.log("Clear operation completed.");
+            // Reset saveClicked back to false
+            setClearClicked(false);
+        }
+    }, [clearClicked]);
 
     return (
             <Grid  container direction="column">
                 <Stack spacing={1} sx={Styles.root}>
                     <div className={styles.nav}>
-                        <Dropdown onSelectionChange={handleSelectionChange} onSaveClick={handleSaveButtonClick}/>
+                        <Dropdown onSelectionChange={handleSelectionChange} onSaveClick={handleSaveButtonClick} onClearClick={handleClearButtonClick}/>
                     </div>
-                        <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} selectedTranslation={selectedTranslation} saveClicked={saveClicked} />
+                        <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} selectedTranslation={selectedTranslation} saveClicked={saveClicked} clearClicked={clearClicked}/>
                 </Stack>
             </Grid>
     );

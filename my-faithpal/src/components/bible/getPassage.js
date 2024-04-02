@@ -10,7 +10,7 @@ import styles from "./passage.module.css";
 import { Grid,Stack } from "@mui/joy";
 import { LoadingButton } from "@mui/lab";
 
-export default function DisplayPassage({ selectedBook, selectedChapter, selectedVerse , selectedTranslation, saveClicked }) {
+export default function DisplayPassage({ selectedBook, selectedChapter, selectedVerse , selectedTranslation, saveClicked, clearClicked }) {
     
     const { dom, setDom } = useDomValue();
     const [bibleData, setBibleData] = useState([]);
@@ -18,6 +18,17 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
     const [error, setError] = useState(null);
     const editorRef = useRef(null);
     const notify = () => toast("Thanks...Saved!!!", {
+    position: "bottom-left",
+    style: {
+        backgroundColor: "rgb(215, 203, 155)",
+        color: "#996515",
+        maxWidth: "fit-content",
+        padding: 10
+    },
+    hideProgressBar: false
+    });
+
+    const notifyC = () => toast("Oh Oh saves have been cleared!!!", {
     position: "bottom-left",
     style: {
         backgroundColor: "rgb(215, 203, 155)",
@@ -39,6 +50,40 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
             console.log("Save received")
         }
     }, [saveClicked]);
+
+    useEffect(() => {
+        if (clearClicked) {
+            handleClear();
+            console.log("Request to Clear received")
+        }
+    }, [clearClicked]);
+
+    const handleClear = async () => {
+        const updatedDomValue = {
+        key: dom?.key,
+        props: dom?.props,
+        type: dom?.type,
+        reference: PassageRef,
+        verse: selectedVerse,
+        translation: transRef,
+        _id: session?.user?._id,
+        };
+
+        let newRef = PassageRef + selectedVerse + selectedTranslation;
+
+        const passageExists = await postRequest(`${baseUrl}bible/clear/changes`, JSON.stringify({
+            reference: newRef, user: updatedDomValue._id,
+        }));
+
+        if (passageExists.error) {
+            console.log(passageExists.error);
+        }
+        else {
+            console.log("Passage has been deleted",passageExists);
+        }
+
+    notifyC()
+    }
 
     const handleSave = async() => {
         const updatedDomValue = {

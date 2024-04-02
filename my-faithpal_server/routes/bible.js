@@ -68,6 +68,25 @@ router.post('/get/changes', async (req, res) => {
     }
 });
 
+router.post('/clear/changes', async (req, res) => {
+
+    const { reference, user } = await req.body;
+
+    try {
+        await connectMongoDB();
+
+        const passage = await Passage.findOneAndDelete({ reference , user })
+
+        res.status(202).json(passage);
+
+    } catch (error) {
+
+        console.error(`Error: ${error.message}`);
+        res.status(500).json({ error: 'Internal Server Error' });
+
+    }
+});
+
 router.post('/get/user/changes', async (req, res) => {
 
     const { user } = await req.body;
