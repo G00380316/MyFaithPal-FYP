@@ -1,11 +1,8 @@
-"use client"
-
-import { baseUrl, postRequest } from '@/util/service';
 import { Grid, Stack } from '@mui/joy';
 import { LoadingButton } from '@mui/lab';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import PotentialChats from './search';
+import { useState } from 'react';
+import SearchPeople from './search';
 
 export default function People() {
     
@@ -38,8 +35,8 @@ export default function People() {
             <Grid>
             </Grid>
                 <Grid>
-                    <Stack spacing={1} marginTop={1} width={1000}>
-                        <PotentialChats/>
+                    <Stack spacing={1} marginTop={1}>
+                        <SearchPeople/>
                     </Stack>
                 </Grid>
                 <Grid>
