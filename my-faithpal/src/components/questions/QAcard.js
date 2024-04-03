@@ -29,10 +29,10 @@ export default function QuestionModal() {
     const handleToggle = () => {
         setIsToggled(!isToggled);
         if (!isToggled) {
-            NotifyCustom({text:`Switched to OpenAI`});
+            NotifyCustom({text:`Switched to Solomon`});
         }
         else {
-            NotifyCustom({text:`Switched to Solomon`});
+            NotifyCustom({ text: `Switched to OpenAI` });
         }
     };
 

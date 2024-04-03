@@ -194,6 +194,13 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
         }
     }
 
+    const handleSelect = (isLiked ,newLikeInfo, isSaved, newSaveInfo) => {
+        setSaved(isSaved);
+        setLiked(isLiked);
+        setnewLikeInfo(newLikeInfo);
+        setnewSaveInfo(newSaveInfo);
+    }
+
     //useEffects
     React.useEffect(() => {
         const fetchData = async () => {
@@ -235,21 +242,21 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
 
             if (postData?.likes?.includes(session?.user?._id)) {
                 setLiked(true);
-                setnewPostInfo(postData.likes)
+                //setnewPostInfo(postData.likes)
                 setnewLikeInfo(postData?.likes?.length.toString())
             } else {
                 setLiked(false);
-                setnewPostInfo(postData.likes)
+                //setnewPostInfo(postData.likes)
                 setnewLikeInfo(postData?.likes?.length.toString())
             }
 
             if (postData?.saves?.includes(session?.user?._id)) {
                 setSaved(true);
-                setnewPostInfo(postData.saves)
+                //setnewPostInfo(postData.saves)
                 setnewSaveInfo(postData?.saves?.length.toString())
             } else {
                 setSaved(false);
-                setnewPostInfo(postData.saves)
+                //setnewPostInfo(postData.saves)
                 setnewSaveInfo(postData?.saves?.length.toString())
             }
         }
@@ -342,7 +349,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                         <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        {session ? (<DropdownMenu/>):
+                                        {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                 <MoreHoriz />
@@ -441,7 +448,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                     />
                     </Box>
                         <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                    {session ? (<DropdownMenu/>):
+                    {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                     (<>
                         <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                             <MoreHoriz />
@@ -559,7 +566,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             />
                                             </Box>
                                                 <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                            {session ? (<DropdownMenu/>):
+                                            {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                                             (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                 <MoreHoriz />
@@ -674,7 +681,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                {session ? (<DropdownMenu/>):
+                {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                 (<>
                     <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                         <MoreHoriz />
@@ -806,7 +813,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        {session ? (<DropdownMenu/>):
+                                        {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                 <MoreHoriz />
@@ -921,7 +928,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                {session ? (<DropdownMenu/>):
+                {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                 (<>
                     <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                         <MoreHoriz />

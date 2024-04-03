@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import { NotifyCustom } from '@/util/notify';
 import React from 'react';
 
-export default function Comment({_id,content,likes,user,createdAt,postId,}) {
+export default function Comment({_id,content,likes,user,createdAt}) {
     
     const [isLiked, setLiked] = useState(false);
     const [newCommentInfo, setnewCommentInfo] = useState("");

@@ -78,6 +78,13 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
         setExpanded(!expanded);
     };
 
+    const handleSelect = (isLiked ,newLikeInfo, isSaved, newSaveInfo) => {
+        setSaved(isSaved);
+        setLiked(isLiked);
+        setnewLikeInfo(newLikeInfo);
+        setnewSaveInfo(newSaveInfo);
+    }
+
     const handleLikes = async () => {
 
         if (!isLiked) {
@@ -326,7 +333,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        {session ? (<DropdownMenu/>):
+                                        {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                 <MoreHoriz />
@@ -422,7 +429,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                     />
                     </Box>
                         <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                    {session ? (<DropdownMenu/>):
+                    {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                     (<>
                         <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                             <MoreHoriz />
@@ -540,7 +547,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             />
                                             </Box>
                                                 <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                            {session ? (<DropdownMenu/>):
+                                            {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                                             (<>
                                                 <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                     <MoreHoriz />
@@ -652,7 +659,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                {session ? (<DropdownMenu/>):
+                {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                 (<>
                     <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                         <MoreHoriz />
@@ -784,7 +791,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        {session ? (<DropdownMenu/>):
+                                        {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                 <MoreHoriz />
@@ -896,7 +903,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                {session ? (<DropdownMenu/>):
+                {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
                         (<>
                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                 <MoreHoriz />
