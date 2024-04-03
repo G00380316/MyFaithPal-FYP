@@ -18,6 +18,8 @@ import Highlights from './higlights/highlights';
 import { baseUrl, postRequest } from '@/util/service';
 import Notes from './notes/notes';
 import Support from './support/support';
+import { Person } from '@mui/icons-material';
+import People from './people/people';
 
 const Styles = {
     root: {
@@ -64,7 +66,7 @@ export default function MyProfile() {
         <Box sx={{ flex: 1, width: '100%', height:`90vh`, overflow: "hidden" }}>
             <Box sx={{ px: { xs: 2, md: 6 }, display: "flex", justifyContent: "space-between" }}>
                 <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-                    My Profile
+                    Profile
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                 <Avatar
@@ -126,6 +128,9 @@ export default function MyProfile() {
                     <NotesIcon/>Saved Notes
                 </Tab>
                 <Tab sx={{ borderRadius: '6px 6px 0 0',alignItems: "center",display: 'flex',justifyContent: 'center' }} indicatorInset value={5}>
+                <Person/>People
+                </Tab>
+                <Tab sx={{ borderRadius: '6px 6px 0 0',alignItems: "center",display: 'flex',justifyContent: 'center' }} indicatorInset value={6}>
                 <HelpIcon/>Support
                 </Tab>
             </TabList>
@@ -136,7 +141,8 @@ export default function MyProfile() {
                 {selectedTab === 2 && <SavedPosts/>}
                 {selectedTab === 3 && <Highlights highlights={highlights} />}
                 {selectedTab === 4 && <Notes notes={notes} />}
-                {selectedTab === 5 && <Support/>}
+                {selectedTab === 5 && <People/>}
+                {selectedTab === 6 && <Support/>}
             </Stack>
         </Box>
     );
