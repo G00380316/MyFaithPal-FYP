@@ -1,15 +1,13 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
-import Dropdown from "@/components/bible/dropdown";
 import styles from "@/app/(pages)/(userPages)/bible/bible.module.css";
+import Dropdown from "@/components/bible/dropdown";
 import DisplayPassage from "@/components/bible/getPassage";
+import { NotifyCustom } from "@/util/notify";
 import { Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useSession } from 'next-auth/react';
-import { NotifyCustom } from "@/util/notify";
+import { useEffect, useState } from "react";
 
 const Styles = {
     root: {
@@ -83,7 +81,6 @@ export default function Bible() {
                     </div>
                         <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} selectedTranslation={selectedTranslation} saveClicked={saveClicked} clearClicked={clearClicked} />
                 </Stack>
-            <ToastContainer/>
             </Grid>
     );
 }

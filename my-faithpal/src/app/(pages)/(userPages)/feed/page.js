@@ -1,14 +1,11 @@
 "use client"
 
-import React from 'react'
 import styles from "@/app/(pages)/(userPages)/feed/feed.module.css";
-import { Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import CreatePosts from '@/components/feed/createPosts.js';
 import Posts from '@/components/feed/posts';
+import { Stack } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { useSession } from "next-auth/react";
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const Styles = {
     root: {
@@ -42,7 +39,6 @@ export default function feed() {
                         <Grid>
                         </Grid>
                 </Grid>
-                <ToastContainer/>
             </main>
         )
     }
@@ -61,7 +57,6 @@ export default function feed() {
                     <Grid>
                     </Grid>
             </Grid>
-            <ToastContainer/>
         </main>
     )
 }

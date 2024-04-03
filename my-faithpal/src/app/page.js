@@ -1,15 +1,13 @@
 "use client"
 
-import Link from "next/link";
-import styles from "./page.module.css";
 import Navbar from "@/components/navbar/navbar.js";
-import { baseUrl, getRequest } from '@/util/service';
-import { useEffect, useState } from 'react';
-import { Box } from "@mui/joy";
 import { NotifyCustom } from "@/util/notify";
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { baseUrl, getRequest } from '@/util/service';
+import { Box } from "@mui/joy";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { useEffect, useState } from 'react';
+import styles from "./page.module.css";
 
 export default function Home() {
 
@@ -105,7 +103,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <ToastContainer/>
     </Box>
   );
 }

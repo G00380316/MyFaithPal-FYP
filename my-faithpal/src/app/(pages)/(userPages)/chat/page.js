@@ -1,18 +1,15 @@
 "use client"
 
-import Chatrooms from "@/components/chat/chat";
-import { useContext } from "react";
-import { ChatContext } from "@/context/chatContext";
 import styles from "@/app/(pages)/(userPages)/chat/page.module.css";
-import PotentialChats from "@/components/chat/potentialChats";
+import Chatrooms from "@/components/chat/chat";
 import ChatBox from "@/components/chat/chatBox";
+import PotentialChats from "@/components/chat/potentialChats";
+import { ChatContext } from "@/context/chatContext";
+import { NotifyCustom } from "@/util/notify";
+import { Grid, Stack, Typography } from "@mui/joy";
 import { LoadingButton } from "@mui/lab";
 import { useSession } from "next-auth/react";
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Grid,Stack, Typography } from "@mui/joy";
-import { NotifyCustom } from "@/util/notify";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 export default function Chat() {
 
@@ -38,7 +35,6 @@ export default function Chat() {
                         </Stack>
                     </Grid>
                 <Grid>
-                <ToastContainer/>
                 </Grid>
       </Grid>
     )
@@ -60,7 +56,7 @@ export default function Chat() {
               <ChatBox/>
             </div>
       </div>
-      <ToastContainer/>
+      
       </div>
   );
 }

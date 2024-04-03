@@ -7,7 +7,6 @@ import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
 import styles from "./qa.module.css";
-import 'react-toastify/dist/ReactToastify.css';
 import { Grid, Stack, Typography } from '@mui/joy';
 import { LoadingButton } from '@mui/lab';
 import { NotifyCustom } from '@/util/notify';
