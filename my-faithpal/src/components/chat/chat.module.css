@@ -30,7 +30,8 @@
     }
 
     .single_user {
-        background: rgb(72, 112, 223, 1);
+        display: flex;
+        background: rgb(127, 125, 117);
         color: white;
         cursor: pointer;
         padding: 5px 7px;
