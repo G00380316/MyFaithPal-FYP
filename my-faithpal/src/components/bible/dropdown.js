@@ -3,6 +3,7 @@ import { bookInfo } from '@/util/bible/Filter/bookInfo';
 import { translationOptions } from '@/util/bible/translationOptions';
 import { oebbookInfo } from '@/util/bible/Filter/oebBooks';
 import styles from '@/components/bible/dropdown.module.css';
+import { useSession } from 'next-auth/react';
 
 const Dropdown = ({ onSelectionChange, onSaveClick, onClearClick }) => {
 
@@ -12,6 +13,8 @@ const Dropdown = ({ onSelectionChange, onSaveClick, onClearClick }) => {
     const [selectedVerse, setSelectedVerse] = useState("");
     const [chapters, setChapters] = useState([]);
     const [verses, setVerses] = useState([]);
+
+    const { data: session } = useSession();
 
     useEffect(() => {
         // Populate chapters dropdown based on selected book
@@ -75,9 +78,13 @@ const Dropdown = ({ onSelectionChange, onSaveClick, onClearClick }) => {
     <div className={styles.dropdown}>
         
         <div className={styles.customButtonC}>
-            <button onClick={handleClearButtonClick}>
-                Clear
-            </button>
+                {session ? (
+                    <button onClick={handleClearButtonClick}>
+                        Clear
+                    </button>
+            ) : (
+                null
+            )}
         </div>
         
         <label htmlFor="books" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}></label>
@@ -125,9 +132,13 @@ const Dropdown = ({ onSelectionChange, onSaveClick, onClearClick }) => {
         </div>
 
         <div className={styles.customButton}>
-            <button onClick={handleSaveButtonClick}>
-                Save
-            </button>
+                {session ? (
+                    <button onClick={handleSaveButtonClick}>
+                        Save
+                    </button>
+            ) : (
+                null
+            )}
         </div>
     </div>
     );

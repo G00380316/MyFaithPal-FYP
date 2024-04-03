@@ -1,3 +1,4 @@
+import { NotifyCustom } from '@/util/notify';
 import { baseUrl, postRequest } from '@/util/service';
 import { Bookmark, Favorite, FavoriteBorder, ModeCommentOutlined, MoreHoriz } from '@mui/icons-material';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
@@ -8,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import * as React from 'react';
 import { useState } from 'react';
 import { CommentList } from './commentList';
+import DropdownMenu from '@/util/buttons/postOptions';
 
 const style = {
     position: 'absolute',
@@ -68,6 +70,10 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     const handleOpen = () => {
         setTimeout(() => {
             setOpen(true);
+            if (!session) {
+            NotifyCustom({text:"Login to Comment", bar: false})
+            return
+        };
         }, 100);
     };
 
@@ -78,6 +84,11 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     };
 
     const handleLikes = async () => {
+
+        if (!session) {
+            NotifyCustom({text:"Login to Like Posts", bar: false})
+            return
+        };
 
         if (!isLiked) {
 
@@ -128,6 +139,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     }
 
     const handleSaves = async () => {
+
+        if (!session) {
+            NotifyCustom({text:"Login to Save Posts", bar: false})
+            return
+        };
+
         if (!isSaved) {
 
             const newSavesArray = saves?.includes(session?.user?._id) ? saves : [...saves, session?.user?._id];
@@ -294,7 +311,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 <Fade in={open}>
                         <Box sx={style}>
                                     <CardOverflow>
-                                        <AspectRatio ratio="4/3" objectFit="initial" sx={{ minWidth: "100vh"}}>
+                                        <AspectRatio ratio="4/3" objectFit="initial" sx={{ minWidth: "90vh"}}>
                                                 <img src={media} alt="" loading="lazy" />
                                         </AspectRatio>
                                     </CardOverflow>
@@ -324,10 +341,13 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             sx={{ borderColor: 'background.body' }}
                                         />
                                         </Box>
-                                            <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                                        <MoreHoriz />
-                                    </IconButton>
+                                        <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
+                                        {session ? (<DropdownMenu/>):
+                                        (<>
+                                            <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                                                <MoreHoriz />
+                                            </IconButton>
+                                        </>)}
                                         </CardContent>
                                     </Box>
                                     <Divider sx={{ border: "0.1px solid" }} />
@@ -363,7 +383,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                 </CardContent>
                                         </Box>
                                     <Divider sx={{ border: "0.1px solid" }} />
-                                    <Box sx={{display: "flex"}}>
+                                    {session ? (
+                                    <Box sx={{ display: "flex" }}>
                                     <Textarea
                                         placeholder="Add a comment"
                                         value={text}
@@ -373,16 +394,18 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         onBlur={() => setIsFocused(false)}
                                         sx={{ width: 350, borderColor: isFocused ? 'primary.main' : undefined}}
                                     />
-                                    <Button
-                                        onClick={handleSubmitComment}
-                                        variant="contained"
-                                        color="primary"
-                                        sx={{ backgroundColor: isFocused ? 'primary.main' : 'primary.light', '&:hover': { backgroundColor: 'primary.main' } }}
-                                        disabled={!isFocused && !text.trim()}
-                                    >
-                                        Post
-                                    </Button>
-                                </Box>
+                                        <Button
+                                            onClick={handleSubmitComment}
+                                            variant="contained"
+                                            color="primary"
+                                            sx={{ backgroundColor: isFocused ? 'primary.main' : 'primary.light', '&:hover': { backgroundColor: 'primary.main' } }}
+                                            disabled={!isFocused && !text.trim()}
+                                        >
+                                            Post
+                                        </Button>
+                                    </Box> ) :
+                                        null
+                                    }
                         </Card>
                     </Box>
                 </Fade>
@@ -418,9 +441,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                     />
                     </Box>
                         <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                    <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                    <MoreHoriz />
-                    </IconButton>
+                    {session ? (<DropdownMenu/>):
+                    (<>
+                        <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                            <MoreHoriz />
+                        </IconButton>
+                    </>)}
                 </CardContent>
                 <CardOverflow>
                     <AspectRatio ratio="1" objectFit="contain">
@@ -533,9 +559,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             />
                                             </Box>
                                                 <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                            <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                                            <MoreHoriz />
-                                        </IconButton>
+                                            {session ? (<DropdownMenu/>):
+                                            (<>
+                                            <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                                                <MoreHoriz />
+                                            </IconButton>
+                                                    </>)}
                                     </CardContent>
                                     </Box>
                                 <Divider sx={{ border: "0.1px solid" }} />
@@ -585,8 +614,9 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                             {moment(createdAt).calendar()}
                                                         </Link>
                                                 </CardContent>
-                                        </Box>
+                                </Box>
                                     <Divider sx={{ border: "0.1px solid" }} />
+                                {session ? (
                                     <Box sx={{display: "flex"}}>
                                     <Textarea
                                         placeholder="Add a comment"
@@ -606,7 +636,9 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                     >
                                         Post
                                     </Button>
-                                </Box>
+                                </Box>) :
+                                    null
+                                }
                         </Card>
                     </Box>
                 </Fade>
@@ -642,9 +674,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                <MoreHoriz />
-                </IconButton>
+                {session ? (<DropdownMenu/>):
+                (<>
+                    <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                        <MoreHoriz />
+                    </IconButton>
+                </>)}
             </CardContent>
                 <CardContent >
                         <CardContent orientation='horizontal' sx={{ justifyContent: "space-between" }}>
@@ -771,9 +806,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                                        <MoreHoriz />
-                                    </IconButton>
+                                        {session ? (<DropdownMenu/>):
+                                        (<>
+                                            <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                                                <MoreHoriz />
+                                            </IconButton>
+                                        </>)}
                                         </CardContent>
                                     </Box>
                                     <Divider sx={{ border: "0.1px solid" }} />
@@ -825,7 +863,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                     </CardContent>
                                             </Box>
                                         <Divider sx={{ border: "0.1px solid" }} />
-                                        <Box sx={{display: "flex"}}>
+                                        {session ? (
+                                        <Box sx={{ display: "flex" }}>
                                         <Textarea
                                             placeholder="Add a comment"
                                             value={text}
@@ -844,7 +883,9 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         >
                                             Post
                                         </Button>
-                                    </Box>
+                                    </Box>) :
+                                        null
+                                    }
                                 </Card>
                             </Box>
                         </Fade>
@@ -880,9 +921,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                <MoreHoriz />
+                {session ? (<DropdownMenu/>):
+                (<>
+                    <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                        <MoreHoriz />
                     </IconButton>
+                </>)}
                     </CardContent>
                     <CardOverflow>
                     <AspectRatio ratio="1" objectFit="contain">

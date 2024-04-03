@@ -77,7 +77,7 @@ export default function LoginForm() {
                         </button>
             <Divider sx={{ margin: 1 }} />
             <div style={{ marginBottom: 5 }}>
-                <Link href='/register'><button className ={styles.button}>Sign up</button></Link>
+                <Link href='/register'><button className={styles.button}>Sign up</button></Link>
             </div>
         </div>
     )

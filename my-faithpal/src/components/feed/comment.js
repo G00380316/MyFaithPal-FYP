@@ -4,6 +4,7 @@ import moment from 'moment';
 import { baseUrl, postRequest } from '@/util/service';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { NotifyCustom } from '@/util/notify';
 import React from 'react';
 
 export default function Comment({_id,content,likes,user,createdAt,postId,}) {
@@ -16,6 +17,11 @@ export default function Comment({_id,content,likes,user,createdAt,postId,}) {
     const { data: session } = useSession();
 
     const handleLikes = async () => {
+
+        if (!session) {
+            NotifyCustom({text:"Login to Like Comments", bar: false})
+            return
+        };
 
         if (!isLiked) {
 

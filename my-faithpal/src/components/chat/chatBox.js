@@ -5,7 +5,7 @@ import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
-import { Avatar,CircularProgress,Grid,Stack, Typography } from "@mui/joy";
+import { Avatar,Grid,Stack, Typography } from "@mui/joy";
 import LoadingButton from '@mui/lab/LoadingButton';
 
 export default function chatBox() {

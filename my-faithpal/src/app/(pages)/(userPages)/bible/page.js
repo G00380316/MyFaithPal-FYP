@@ -6,6 +6,10 @@ import styles from "@/app/(pages)/(userPages)/bible/bible.module.css";
 import DisplayPassage from "@/components/bible/getPassage";
 import { Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useSession } from 'next-auth/react';
+import { NotifyCustom } from "@/util/notify";
 
 const Styles = {
     root: {
@@ -28,6 +32,8 @@ export default function Bible() {
     const [selectedTranslation, setSelectedTranslation] = useState("");
     const [saveClicked, setSaveClicked] = useState(false);
     const [clearClicked, setClearClicked] = useState(false);
+
+    const { data: session } = useSession();
 
     const handleSelectionChange = (book, chapter, verse, translation) => {
         setSelectedBook(book);
@@ -62,14 +68,22 @@ export default function Bible() {
         }
     }, [clearClicked]);
 
+    useEffect(() => {
+        if (!session?.user) {
+            NotifyCustom({text:"Login in to use all features", bar: false});
+        }
+    }, [session]);
+
+
     return (
             <Grid  container direction="column">
                 <Stack spacing={1} sx={Styles.root}>
                     <div className={styles.nav}>
                         <Dropdown onSelectionChange={handleSelectionChange} onSaveClick={handleSaveButtonClick} onClearClick={handleClearButtonClick}/>
                     </div>
-                        <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} selectedTranslation={selectedTranslation} saveClicked={saveClicked} clearClicked={clearClicked}/>
+                        <DisplayPassage selectedBook={selectedBook} selectedChapter={selectedChapter} selectedVerse={selectedVerse} selectedTranslation={selectedTranslation} saveClicked={saveClicked} clearClicked={clearClicked} />
                 </Stack>
+            <ToastContainer/>
             </Grid>
     );
 }

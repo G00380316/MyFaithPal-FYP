@@ -1,3 +1,4 @@
+import { CommentList } from '@/components/feed/commentList';
 import { baseUrl, postRequest } from '@/util/service';
 import { Bookmark, Favorite, FavoriteBorder, ModeCommentOutlined, MoreHoriz } from '@mui/icons-material';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
@@ -7,7 +8,7 @@ import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import * as React from 'react';
 import { useState } from 'react';
-import { CommentList } from '@/components/feed/commentList';
+import DropdownMenu from '@/util/buttons/postOptions';
 
 const style = {
     position: 'absolute',
@@ -294,7 +295,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 <Fade in={open}>
                         <Box sx={style}>
                                     <CardOverflow>
-                                        <AspectRatio ratio="4/3" objectFit="initial" sx={{ minWidth: "100vh"}}>
+                                        <AspectRatio ratio="4/3" objectFit="initial" sx={{ minWidth: "90vh"}}>
                                                 <img src={media} alt="" loading="lazy" />
                                         </AspectRatio>
                                     </CardOverflow>
@@ -325,9 +326,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                                        <MoreHoriz />
-                                    </IconButton>
+                                        {session ? (<DropdownMenu/>):
+                                        (<>
+                                            <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                                                <MoreHoriz />
+                                            </IconButton>
+                                        </>)}
                                         </CardContent>
                                     </Box>
                                     <Divider sx={{ border: "0.1px solid" }} />
@@ -418,9 +422,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                     />
                     </Box>
                         <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                    <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                    <MoreHoriz />
-                    </IconButton>
+                    {session ? (<DropdownMenu/>):
+                    (<>
+                        <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                            <MoreHoriz />
+                        </IconButton>
+                    </>)}
                 </CardContent>
                 <CardOverflow>
                     <AspectRatio ratio="1" objectFit="contain">
@@ -533,9 +540,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             />
                                             </Box>
                                                 <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                            <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                                            <MoreHoriz />
-                                        </IconButton>
+                                            {session ? (<DropdownMenu/>):
+                                            (<>
+                                                <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                                                    <MoreHoriz />
+                                                </IconButton>
+                                            </>)}
                                     </CardContent>
                                     </Box>
                                 <Divider sx={{ border: "0.1px solid" }} />
@@ -642,9 +652,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                <MoreHoriz />
-                </IconButton>
+                {session ? (<DropdownMenu/>):
+                (<>
+                    <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                        <MoreHoriz />
+                    </IconButton>
+                </>)}
             </CardContent>
                 <CardContent >
                         <CardContent orientation='horizontal' sx={{ justifyContent: "space-between" }}>
@@ -771,9 +784,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                                        <MoreHoriz />
-                                    </IconButton>
+                                        {session ? (<DropdownMenu/>):
+                                        (<>
+                                            <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                                                <MoreHoriz />
+                                            </IconButton>
+                                        </>)}
                                         </CardContent>
                                     </Box>
                                     <Divider sx={{ border: "0.1px solid" }} />
@@ -880,9 +896,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: 'auto' }}>
-                <MoreHoriz />
+                {session ? (<DropdownMenu/>):
+                (<>
+                    <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                        <MoreHoriz />
                     </IconButton>
+                </>)}
                     </CardContent>
                     <CardOverflow>
                     <AspectRatio ratio="1" objectFit="contain">

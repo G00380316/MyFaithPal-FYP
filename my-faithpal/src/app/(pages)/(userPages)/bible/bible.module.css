@@ -1,7 +1,6 @@
 .nav {
   padding: 10px;
   display: flex;
-  align-items: center;
   justify-content: center;
   position: sticky;
   z-index: 100;
@@ -13,5 +12,4 @@
   backdrop-filter: blur(2px);
   border-radius: 10px;
   transition: 1s all cubic-bezier(0.86, 0, 0.07, 1) 0.2s;
-  justify-self: center;
 }

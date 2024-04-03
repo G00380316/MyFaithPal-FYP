@@ -109,7 +109,7 @@ export default function regForm() {
             </form>
             <div>
                     <Link href='/login'><button className ={styles.button}>Sign in</button></Link>
-                    <Link href='/'><button className ={styles.button}>Go Home</button></Link>
+                    <Link href='/'><button className ={styles.button}>Home</button></Link>
             </div>
         </div>
     )
