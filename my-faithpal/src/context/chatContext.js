@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, useEffect, useCallback, use } from "react";
 import { baseUrl, getRequest, postRequest } from "@/util/service";
 import { useSession } from "next-auth/react";
 import { io } from "socket.io-client";
@@ -156,7 +156,7 @@ export const ChatContextProvider = ({ children }) => {
         };
 
         getUserChats();
-    }, [session]);
+    }, [session, notifications]);
 
     useEffect(() => {
         const getMessages = async () => {
@@ -254,7 +254,26 @@ export const ChatContextProvider = ({ children }) => {
         updateCurrentChat(desiredChat);
         setNotifications(mNotifications);
 
-    }, [session])
+    }, [session]);
+
+    const markThisUserNotificationsAsRead = useCallback((thisUserNotifications, notifications) => {
+
+        const mNotifications = notifications.map((mark) => {
+            let notification;
+
+            thisUserNotifications.forEach((i) => {
+                if (i.senderId === mark.senderId) {
+                    notification = {...i, isRead:true}
+                } else {
+                    notification = mark;
+                }
+            })
+        
+            return notification;
+        })
+
+        setNotifications(mNotifications)
+    },[])
 
     return (
         <ChatContext.Provider value={{
@@ -273,7 +292,8 @@ export const ChatContextProvider = ({ children }) => {
             notifications,
             allUsers,
             markAllNotificationsAsRead,
-            markNotificationsAsRead
+            markNotificationsAsRead,
+            markThisUserNotificationsAsRead
         }}>
             {children}
         </ChatContext.Provider>
