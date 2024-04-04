@@ -12,7 +12,7 @@ import sourceKnowledge from '../models/aiSourceKnowledge.js';
 
 //AI LangChain
 import { AIMessage, HumanMessage } from '@langchain/core/messages';
-import { createVectoreStore } from '../lib/AI/CreateVectorMongoDB.js';
+import { createVectoreStore } from '../lib/AI/createVectorMongoDB.js';
 import { model } from '../util/model.js';
 import { searchVectorStore } from '../lib/AI/searchVectorMongoDB.js';
 import { ChatPromptTemplate } from "@langchain/core/prompts";
