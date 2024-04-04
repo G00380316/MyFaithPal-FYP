@@ -1,4 +1,4 @@
-import { NotifyCustom } from '@/util/notify';
+import { CommentList } from '@/components/feed/commentList';
 import { baseUrl, postRequest } from '@/util/service';
 import { Bookmark, Favorite, FavoriteBorder, ModeCommentOutlined, MoreHoriz } from '@mui/icons-material';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
@@ -8,7 +8,6 @@ import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import * as React from 'react';
 import { useState } from 'react';
-import { CommentList } from './commentList';
 import DropdownMenu from '@/util/buttons/postOptions';
 
 const style = {
@@ -70,10 +69,6 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     const handleOpen = () => {
         setTimeout(() => {
             setOpen(true);
-            if (!session) {
-            NotifyCustom({text:"Login to Comment", bar: false})
-            return
-        };
         }, 100);
     };
 
@@ -83,12 +78,25 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
         setExpanded(!expanded);
     };
 
-    const handleLikes = async () => {
+    const handleSelect = (isLiked, newLikeInfo, isSaved, newSaveInfo) => {
+        if (isClicked) {
 
-        if (!session) {
-            NotifyCustom({text:"Login to Like Posts", bar: false})
-            return
-        };
+            if (newLikeInfo && newLikeInfo.length != 0) {
+                setnewLikeInfo(newLikeInfo);
+                setLiked(isLiked);
+            }
+
+            if (newSaveInfo  && newSaveInfo.length != 0) {
+                setnewSaveInfo(newSaveInfo);
+                setSaved(isSaved);
+            }
+
+            setClicked(false);
+
+        }
+    }
+
+    const handleLikes = async () => {
 
         if (!isLiked) {
 
@@ -137,12 +145,6 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     }
 
     const handleSaves = async () => {
-
-        if (!session) {
-            NotifyCustom({text:"Login to Save Posts", bar: false})
-            return
-        };
-
         if (!isSaved) {
 
             const newSavesArray = saves?.includes(session?.user?._id) ? saves : [...saves, session?.user?._id];
@@ -184,26 +186,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
             }
 
             setnewSaveInfo(updatedPost?.saves?.length.toString())
-            
+
             console.log("Removed save from: ", updatedPost);
-        }
-    }
-
-    const handleSelect = (isLiked, newLikeInfo, isSaved, newSaveInfo) => {
-        if (isClicked) {
-
-            if (newLikeInfo && newLikeInfo.length != 0) {
-                setnewLikeInfo(newLikeInfo);
-                setLiked(isLiked);
-            }
-
-            if (newSaveInfo  && newSaveInfo.length != 0) {
-                setnewSaveInfo(newSaveInfo);
-                setSaved(isSaved);
-            }
-
-            setClicked(false);
-
         }
     }
 
@@ -255,14 +239,14 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
 
                 setLiked(false);
                 setnewLikeInfo(postData?.likes?.length.toString())
-                
+
             }
 
             if (postData?.saves?.includes(session?.user?._id)) {
 
                 setSaved(true);
                 setnewSaveInfo(postData?.saves?.length.toString())
-                
+
             } else {
 
                 setSaved(false);
@@ -356,7 +340,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             sx={{ borderColor: 'background.body' }}
                                         />
                                         </Box>
-                                        <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
+                                            <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
                                         {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
@@ -398,8 +382,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                 </CardContent>
                                         </Box>
                                     <Divider sx={{ border: "0.1px solid" }} />
-                                    {session ? (
-                                    <Box sx={{ display: "flex" }}>
+                                    <Box sx={{display: "flex"}}>
                                     <Textarea
                                         placeholder="Add a comment"
                                         value={text}
@@ -409,18 +392,16 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         onBlur={() => setIsFocused(false)}
                                         sx={{ width: 350, borderColor: isFocused ? 'primary.main' : undefined}}
                                     />
-                                        <Button
-                                            onClick={handleSubmitComment}
-                                            variant="contained"
-                                            color="primary"
-                                            sx={{ backgroundColor: isFocused ? 'primary.main' : 'primary.light', '&:hover': { backgroundColor: 'primary.main' } }}
-                                            disabled={!isFocused && !text.trim()}
-                                        >
-                                            Post
-                                        </Button>
-                                    </Box> ) :
-                                        null
-                                    }
+                                    <Button
+                                        onClick={handleSubmitComment}
+                                        variant="contained"
+                                        color="primary"
+                                        sx={{ backgroundColor: isFocused ? 'primary.main' : 'primary.light', '&:hover': { backgroundColor: 'primary.main' } }}
+                                        disabled={!isFocused && !text.trim()}
+                                    >
+                                        Post
+                                    </Button>
+                                </Box>
                         </Card>
                     </Box>
                 </Fade>
@@ -456,7 +437,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                     />
                     </Box>
                         <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                    {session ? (<IconButton  variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/></IconButton>):
+                    {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                     (<>
                         <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                             <MoreHoriz />
@@ -531,7 +512,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     //no image
     if (!media) {
         return (
-        <main>
+        <main style={{height: "100%"}}>
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -546,7 +527,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 }}
             >
                 <Fade in={open}>
-                        <Box height="100%"sx={style}>
+                        <Box sx={style}>
                                 <Card  size='lg' variant='plain' sx={{ml: 2}}>
                                 <Box sx={{maxHeight: "30%"}}>
                                 <CardContent orientation="horizontal" sx={{alignItems: 'center', gap: 1 }}>
@@ -574,12 +555,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             />
                                             </Box>
                                                 <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                            {session ? (<IconButton  variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={ () => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/></IconButton>):
+                                            {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                                             (<>
-                                            <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
-                                                <MoreHoriz />
-                                            </IconButton>
-                                                    </>)}
+                                                <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                                                    <MoreHoriz />
+                                                </IconButton>
+                                            </>)}
                                     </CardContent>
                                     </Box>
                                 <Divider sx={{ border: "0.1px solid" }} />
@@ -629,9 +610,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                             {moment(createdAt).calendar()}
                                                         </Link>
                                                 </CardContent>
-                                </Box>
+                                        </Box>
                                     <Divider sx={{ border: "0.1px solid" }} />
-                                {session ? (
                                     <Box sx={{display: "flex"}}>
                                     <Textarea
                                         placeholder="Add a comment"
@@ -651,9 +631,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                     >
                                         Post
                                     </Button>
-                                </Box>) :
-                                    null
-                                }
+                                </Box>
                         </Card>
                     </Box>
                 </Fade>
@@ -661,7 +639,9 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
             <Card
             variant="outlined"
             sx={{
-                maxWidth: "100%"
+                maxWidth: "100%",
+                width: "100%",
+                height: "100%",
             }}
             >
             <CardContent orientation="horizontal" sx={{ alignItems: 'center', gap: 1 }}>
@@ -689,7 +669,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                {session ? (<IconButton  variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={ () => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/></IconButton>):
+                {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                 (<>
                     <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                         <MoreHoriz />
@@ -821,7 +801,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        {session ? (<IconButton  variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={ () => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/></IconButton>):
+                                        {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                 <MoreHoriz />
@@ -878,8 +858,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                     </CardContent>
                                             </Box>
                                         <Divider sx={{ border: "0.1px solid" }} />
-                                        {session ? (
-                                        <Box sx={{ display: "flex" }}>
+                                        <Box sx={{display: "flex"}}>
                                         <Textarea
                                             placeholder="Add a comment"
                                             value={text}
@@ -898,9 +877,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         >
                                             Post
                                         </Button>
-                                    </Box>) :
-                                        null
-                                    }
+                                    </Box>
                                 </Card>
                             </Box>
                         </Fade>
@@ -936,12 +913,12 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                {session ? (<IconButton  variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={ () => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/></IconButton>):
-                (<>
-                    <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
-                        <MoreHoriz />
-                    </IconButton>
-                </>)}
+                {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
+                        (<>
+                            <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
+                                <MoreHoriz />
+                            </IconButton>
+                        </>)}
                     </CardContent>
                     <CardOverflow>
                     <AspectRatio ratio="1" objectFit="contain">

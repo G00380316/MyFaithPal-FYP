@@ -34,7 +34,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     const [UserData, setUserData] = useState("");
     const [isLiked, setLiked] = useState(false);
     const [isSaved, setSaved] = useState(false);
-    const [newPostInfo, setnewPostInfo] = useState([]);
+    const [isClicked, setClicked] = useState(false);
     const [newSaveInfo, setnewSaveInfo] = useState([]);
     const [newLikeInfo, setnewLikeInfo] = useState([]);
     const { data: session } = useSession();
@@ -78,11 +78,22 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
         setExpanded(!expanded);
     };
 
-    const handleSelect = (isLiked ,newLikeInfo, isSaved, newSaveInfo) => {
-        setSaved(isSaved);
-        setLiked(isLiked);
-        setnewLikeInfo(newLikeInfo);
-        setnewSaveInfo(newSaveInfo);
+    const handleSelect = (isLiked, newLikeInfo, isSaved, newSaveInfo) => {
+        if (isClicked) {
+
+            if (newLikeInfo && newLikeInfo.length != 0) {
+                setnewLikeInfo(newLikeInfo);
+                setLiked(isLiked);
+            }
+
+            if (newSaveInfo  && newSaveInfo.length != 0) {
+                setnewSaveInfo(newSaveInfo);
+                setSaved(isSaved);
+            }
+
+            setClicked(false);
+
+        }
     }
 
     const handleLikes = async () => {
@@ -105,7 +116,6 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setLiked(false);
             }
 
-            //setnewPostInfo(updatedPost);
             setnewLikeInfo(updatedPost?.likes?.length.toString())
 
             console.log("Added like to: ", updatedPost);
@@ -128,9 +138,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setLiked(false);
             }
 
-            //setnewPostInfo(updatedPost);
             setnewLikeInfo(updatedPost?.likes?.length.toString())
-            
+
             console.log("Removed like from: ", updatedPost);
         }
     }
@@ -154,7 +163,6 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setSaved(false);
             }
 
-            //setnewPostInfo(updatedPost);
             setnewSaveInfo(updatedPost?.saves?.length.toString())
 
             console.log("Added save to: ", updatedPost);
@@ -177,11 +185,10 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setSaved(false);
             }
 
-        
-            //setnewPostInfo(updatedPost);
             setnewSaveInfo(updatedPost?.saves?.length.toString())
-            
+
             console.log("Removed save from: ", updatedPost);
+
         }
     }
 
@@ -225,23 +232,27 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
             const postData = await response.json();
 
             if (postData?.likes?.includes(session?.user?._id)) {
+
                 setLiked(true);
-                setnewPostInfo(postData.likes)
                 setnewLikeInfo(postData?.likes?.length.toString())
+
             } else {
+
                 setLiked(false);
-                setnewPostInfo(postData.likes)
                 setnewLikeInfo(postData?.likes?.length.toString())
+
             }
 
             if (postData?.saves?.includes(session?.user?._id)) {
+
                 setSaved(true);
-                setnewPostInfo(postData.saves)
                 setnewSaveInfo(postData?.saves?.length.toString())
+
             } else {
+
                 setSaved(false);
-                setnewPostInfo(postData.saves)
                 setnewSaveInfo(postData?.saves?.length.toString())
+
             }
         }
 
@@ -277,8 +288,6 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
         fetchData();
     }, [user]);
 
-    //console.log("this is new like count", newPostInfo?.likes?.length)
-    //console.log("this is new save count", newPostInfo?.saves?.length)
     console.log("this is new like count", newLikeInfo)
     console.log("this is new save count", newSaveInfo)
 
@@ -333,7 +342,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
+                                        {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                 <MoreHoriz />
@@ -429,7 +438,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                     />
                     </Box>
                         <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                    {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
+                    {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                     (<>
                         <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                             <MoreHoriz />
@@ -547,7 +556,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             />
                                             </Box>
                                                 <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                            {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
+                                            {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                                             (<>
                                                 <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                     <MoreHoriz />
@@ -659,7 +668,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
+                {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                 (<>
                     <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                         <MoreHoriz />
@@ -791,7 +800,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                         />
                                         </Box>
                                             <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                                        {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
+                                        {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                                                 <MoreHoriz />
@@ -903,7 +912,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 />
                 </Box>
                     <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
-                {session ? (<DropdownMenu  postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/>):
+                {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                 (<>
                     <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
                         <MoreHoriz />

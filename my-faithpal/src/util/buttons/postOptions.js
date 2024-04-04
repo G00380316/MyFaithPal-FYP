@@ -198,7 +198,9 @@ const DropdownMenu = ({postId, postUser, saves, likes, onSelect}) => {
 
     
     useEffect(() => {
-        onSelect(isLiked ,newLikeInfo, isSaved, newSaveInfo);
+
+        onSelect(isLiked, newLikeInfo, isSaved, newSaveInfo);
+
     }, [isLiked, newLikeInfo, isSaved, newSaveInfo]);
 
     let value0

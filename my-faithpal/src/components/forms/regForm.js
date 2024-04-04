@@ -4,11 +4,12 @@ import Link from "next/link"
 import styles from "@/components/forms/form.module.css"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Divider,IconButton} from "@mui/joy";
+import { Divider} from "@mui/joy";
 
 
 export default function regForm() {
 
+    const [username, setUsername] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -48,12 +49,6 @@ export default function regForm() {
                 console.log(error);
                 return;
             }
-            
-            /*if (resUserExists.ok) {
-                setError("User already exists");
-                console.log(error);
-                return;
-            }*/
 
             const res = await fetch('api/register', {
                 method: "POST",
@@ -61,7 +56,7 @@ export default function regForm() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    name, email, password
+                    username, name, email, password
                 }),
             });
 
@@ -84,6 +79,10 @@ export default function regForm() {
             <p className={styles.description}>Enter your Full Name, Email Address and Password below</p>
             </div>
             <form onSubmit={handleSubmit} className={styles.form}>
+                <div className={styles.field}>
+                    <label htmlFor="username">Username</label>
+                    <input onChange={(e) => setUsername(e.target.value)} type="username" id="username"></input>
+                </div>
                 <div className={styles.field}>
                     <label htmlFor="name">Full Name</label>
                     <input onChange={(e) => setName(e.target.value)} type="name" id="name"></input>

@@ -30,10 +30,10 @@ export const authOptions = {
                     }
 
                     if (user.image) {
-                        return { _id: user.id, name: user.name, email: user.email, image: user.image };
+                        return { _id: user.id, name: user.name, email: user.email, image: user.image, username: user.username };
                     }
 
-                    return { _id: user.id, name: user.name, email: user.email };
+                    return { _id: user.id, name: user.name, email: user.email, username: user.username };
                 } catch (error) {
                     console.log("Error: ", error);
                 }
@@ -109,10 +109,10 @@ export const authOptions = {
                     }
 
                     if (user.image) {
-                        return { _id: user.id, name: user.name, email: user.email, image: user.image };
+                        return { _id: user.id, name: user.name, email: user.email, image: user.image, username: user.username };
                     }
 
-                    return { _id: user.id, name: user.name, email: user.email };
+                    return { _id: user.id, name: user.name, email: user.email, username: user.username };
                 } catch (error) {
                     console.log("Error: ", error);
                 }
@@ -126,17 +126,21 @@ export const authOptions = {
 
                     if (!userExist) {
                         if (profile?.iss === 'https://accounts.google.com') {
+
+                                const username = profile.name.replace(/\s+/g, '-');
                                 
                                 const user = await User.create({
-                                    email: profile.email, name: profile.name, image: profile.picture,
+                                    email: profile.email, name: profile.name, image: profile.picture, username
                                 })
 
                             console.log("Created Google user",user)
 
                         } else {
-                                
+
+                                const username = profile.name.replace(/\s+/g, '-');
+
                                 const user = await User.create({
-                                email: profile.email, name: profile.name, image: profile.picture?.data?.url,
+                                email: profile.email, name: profile.name, image: profile.picture?.data?.url, username
                                 })
                             
                             console.log("Created Facebook user",user)

@@ -34,7 +34,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     const [UserData, setUserData] = useState("");
     const [isLiked, setLiked] = useState(false);
     const [isSaved, setSaved] = useState(false);
-    const [newPostInfo, setnewPostInfo] = useState([]);
+    const [isClicked, setClicked] = useState(false);
     const [newSaveInfo, setnewSaveInfo] = useState([]);
     const [newLikeInfo, setnewLikeInfo] = useState([]);
     const { data: session } = useSession();
@@ -105,7 +105,6 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setLiked(false);
             }
 
-            //setnewPostInfo(updatedPost);
             setnewLikeInfo(updatedPost?.likes?.length.toString())
 
             console.log("Added like to: ", updatedPost);
@@ -128,9 +127,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setLiked(false);
             }
 
-            //setnewPostInfo(updatedPost);
             setnewLikeInfo(updatedPost?.likes?.length.toString())
-            
+
             console.log("Removed like from: ", updatedPost);
         }
     }
@@ -154,7 +152,6 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setSaved(false);
             }
 
-            //setnewPostInfo(updatedPost);
             setnewSaveInfo(updatedPost?.saves?.length.toString())
 
             console.log("Added save to: ", updatedPost);
@@ -177,10 +174,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 setSaved(false);
             }
 
-        
-            //setnewPostInfo(updatedPost);
             setnewSaveInfo(updatedPost?.saves?.length.toString())
-            
+
             console.log("Removed save from: ", updatedPost);
         }
     }
@@ -225,23 +220,27 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
             const postData = await response.json();
 
             if (postData?.likes?.includes(session?.user?._id)) {
+
                 setLiked(true);
-                setnewPostInfo(postData.likes)
                 setnewLikeInfo(postData?.likes?.length.toString())
+
             } else {
+
                 setLiked(false);
-                setnewPostInfo(postData.likes)
                 setnewLikeInfo(postData?.likes?.length.toString())
+
             }
 
             if (postData?.saves?.includes(session?.user?._id)) {
+
                 setSaved(true);
-                setnewPostInfo(postData.saves)
                 setnewSaveInfo(postData?.saves?.length.toString())
+
             } else {
+
                 setSaved(false);
-                setnewPostInfo(postData.saves)
                 setnewSaveInfo(postData?.saves?.length.toString())
+
             }
         }
 
