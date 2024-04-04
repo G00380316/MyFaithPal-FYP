@@ -4,7 +4,8 @@ import { createContext, useState, useEffect, useCallback } from "react";
 import { baseUrl, getRequest, postRequest } from "@/util/service";
 import { useSession } from "next-auth/react";
 import { io } from "socket.io-client";
-import  dotenv  from "dotenv";
+import dotenv from "dotenv";
+import { useRouter } from "next/navigation";
 
 export const ChatContext = createContext();
 dotenv.config();
@@ -26,6 +27,8 @@ export const ChatContextProvider = ({ children }) => {
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [notifications, setNotifications] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
+
+    const router = useRouter();
 
     console.log("Online Users:", onlineUsers);
     console.log("Notifications:", notifications);
@@ -81,8 +84,9 @@ export const ChatContextProvider = ({ children }) => {
         socket.on("getNotification", (res) => {
             
             const isChatOpen = currentChat?.participants.some(id => id === res.senderId)
-            
-            if (isChatOpen) {
+            console.log(window.location.pathname)
+            //idea here is to make sure the pathname is question before setting true as we were unable to receive notifications as chat stays open when we leave the path /chat
+            if (isChatOpen && (window?.location?.pathname === "/chat")) {
                 setNotifications((prev) => [{ ...res, isRead:true }, ...prev]);
             } else {
                 setNotifications((prev) => [...prev, res])
@@ -224,10 +228,53 @@ export const ChatContextProvider = ({ children }) => {
         setNotifications(mNotifications)
     }, []);
 
-    //const markAllNotificationsAsRead = useCallback(())
+    const markNotificationsAsRead = useCallback((mn, userChats, notifications) => {
+
+        router.push("/chat");
+
+        //opens a chat
+        const desiredChat = userChats.find((chat) => {
+            const chatMembers = [session?.user?._id, mn.senderId]
+            const isDesiredChat = chat?.participants.every((participant) => {
+                return chatMembers.includes(participant);
+            });
+
+            return isDesiredChat;
+        });
+
+        //mark notifications as read
+        const mNotifications = notifications.map((markNoti) => {
+            if (mn.senderId === markNoti.senderId) {
+                return { ...mn, isRead: true }
+            } else {
+                return markNoti;
+            }
+        });
+
+        updateCurrentChat(desiredChat);
+        setNotifications(mNotifications);
+
+    }, [session])
 
     return (
-        <ChatContext.Provider value={{ onlineUsers,sendTextMessage,userChats,potentialChats, currentChat,createChat , messages, isMessagesLoading , messagesError ,updateCurrentChat,isUserChatsLoading, userChatsError, notifications,allUsers,markAllNotificationsAsRead }}>
+        <ChatContext.Provider value={{
+            onlineUsers,
+            sendTextMessage,
+            userChats,
+            potentialChats,
+            currentChat,
+            createChat,
+            messages,
+            isMessagesLoading,
+            messagesError,
+            updateCurrentChat,
+            isUserChatsLoading,
+            userChatsError,
+            notifications,
+            allUsers,
+            markAllNotificationsAsRead,
+            markNotificationsAsRead
+        }}>
             {children}
         </ChatContext.Provider>
     );

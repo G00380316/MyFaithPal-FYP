@@ -20,7 +20,7 @@ export default function Chat() {
         if (!session?.user) {
             NotifyCustom({text:`Log in to Unlock feature`});
         }
-    }, [session]);
+  }, [session]);
   
   if (!session) {
     return(

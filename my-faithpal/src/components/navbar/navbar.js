@@ -24,7 +24,7 @@ const image = ({ image }) => {
 export default function navbar() {
     
     const { data: session } = useSession();
-    const { notifications, markAllNotificationsAsRead , allUsers } = useContext(ChatContext);
+    const { notifications, markAllNotificationsAsRead , allUsers , markNotificationsAsRead , userChats} = useContext(ChatContext);
 
     const unreadNotifications = notifications.filter((noti) => noti.isRead == false)
     const modifiedNotifications = notifications.map((noti) => {
@@ -37,11 +37,12 @@ export default function navbar() {
             senderImage: sender?.image,
         };
     });
-    console.log("noti",modifiedNotifications)
+    console.log("noti", modifiedNotifications)
 
     useEffect(() => {
         
         const allUnreadNotifications = () => {
+
             if (unreadNotifications?.length !== 0) {
                 NotifyCustom({ text: `You have ${unreadNotifications?.length} unread messages`, onClick: () => markAllNotificationsAsRead(notifications) })
                 NotifyCustom({ text: `Click to mark all as read`, onClick:() => markAllNotificationsAsRead(notifications) })
@@ -49,14 +50,14 @@ export default function navbar() {
             const notifiedSenders = new Set();
             modifiedNotifications.forEach((mn, index) => {
                 if (!notifiedSenders.has(mn.senderName) && !mn.isRead) {
-                    NotifyCustom({ text: `You have a new message from ${mn?.senderUsername || mn?.senderName}\n\n${moment(mn.date).calendar()}`, icon: image({ image: mn?.senderImage })});
+                    console.log("noti 2", modifiedNotifications)
+                    NotifyCustom({ text: `You have a new message from ${mn?.senderUsername || mn?.senderName}\n\n${moment(mn.date).calendar()}`, icon: image({ image: mn.senderImage || "avatar.png" }), onClick: () => markNotificationsAsRead(mn, userChats, notifications)});
                     notifiedSenders.add(mn.senderName);
                 }
             });
 
         }
 
-        
         allUnreadNotifications();
 
     }, [notifications]);
