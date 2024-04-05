@@ -58,7 +58,7 @@ export default function PeopleCards({ user }) {
                                     src={image || ""}
                                     alt=""
                                     loading="lazy"
-                                    style={{ width: 250, height: 250, borderRadius: '50%'}}
+                                    style={{ width: 225, height: 225, borderRadius: '50%'}}
                                 />
                             </Box>
                             <Box

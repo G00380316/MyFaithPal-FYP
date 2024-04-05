@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
 
     try {
-        var { name, email, username, sname, semail, susername, _id, image, simage } = await req.json();
+        var { name, email, username, sname, semail, susername, _id, image, simage, bio, cimage } = await req.json();
 
         console.log("Name: ", name);
         console.log("Email: ", email);
@@ -30,7 +30,16 @@ export async function POST(req) {
             image = simage;
         }
 
-        const updatedPost = await User.findByIdAndUpdate(_id, { name, email, username , image}, { new: true });
+        if (!bio) {
+            bio = "";
+        }
+
+        if (!cimage) {
+            cimage = "";
+        }
+
+
+        const updatedPost = await User.findByIdAndUpdate(_id, { name, email, username , image , bio, coverimage: cimage}, { new: true });
         
         return NextResponse.json({updatedPost,
             message: "User has been Updated"

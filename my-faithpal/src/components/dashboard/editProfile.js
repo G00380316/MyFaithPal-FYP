@@ -2,12 +2,15 @@ import {
     AspectRatio, Box, Card, Divider, IconButton,
     Input, Stack, Typography, FormLabel, FormControl,
     CardOverflow, CardActions, Button, Textarea, FormHelperText
-,styled} from '@mui/joy';
+    ,styled} from '@mui/joy';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import React from 'react'
 import { useSession } from 'next-auth/react';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import { useState } from 'react';
+import { NotifyCustom } from '@/util/notify';
+import { Icons } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const VisuallyHiddenInput = styled('input')`
     clip: rect(0 0 0 0);
@@ -26,11 +29,15 @@ export default function EditProfile() {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
-    const [bio, setBio] = useState("I love Jesus.");
+    const [bio, setBio] = useState("");
     const [file, setFile] = React.useState(null);
+    const [file1, setFile1] = React.useState(null);
     const [imageSrc, setImageSrc] = React.useState(null);
+    const [coverImageSrc, setCoverImageSrc] = React.useState(null);
+    const [UserData, setUserData] = useState("");
     const [error, setError] = useState("");
-
+    
+    const router = useRouter();
     const { data: session } = useSession();
 
     const handleFileChange = (e) => {
@@ -39,14 +46,22 @@ export default function EditProfile() {
 
     }
 
-    console.log(file)
+    const handleFileCoverChange = (e) => {
 
+        setFile1(e.target.files[0]);
+
+    }
+
+    console.log("file for Profile",file)
+    console.log("file for Cover", file1)
+    
     const handleSave = async (e) => {
         
         e.preventDefault();
 
         try {
 
+            var newCoverUrl;
             var newProfileUrl;
 
             if (username != session?.user?.username) {
@@ -107,6 +122,21 @@ export default function EditProfile() {
                 newProfileUrl = data.fileDetails.fileUrl;
             }
 
+            if (file1) {
+                let file = file1;
+                const formData = new FormData();
+                formData.append("file", file);
+                
+                const response = await fetch('/api/s3-upload', {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const data = await response.json();
+                console.log(data.fileDetails.fileUrl);
+                newCoverUrl = data.fileDetails.fileUrl;
+            }
+
             const resUpdatedUser = await fetch('api/updateUser', {
                     method: 'POST',
                     headers: {
@@ -115,14 +145,17 @@ export default function EditProfile() {
                 body: JSON.stringify({
                     email, username, name, image: newProfileUrl, sname: session?.user?.name,
                     semail: session?.user?.email, susername: session?.user?.username,
-                    _id: session?.user?._id, simage: session?.user?.image}),
+                    _id: session?.user?._id, simage: session?.user?.image, bio, cimage: newCoverUrl }),
             })
             
             const updatedDetails = await resUpdatedUser.json();
 
             if (updatedDetails) {
-                console.log("Updated Details info: ",updatedDetails);
-                //window.location.reload();
+
+                console.log("Updated Details info: ", updatedDetails);
+                router.refresh();
+                NotifyCustom({ text: "Success Profile Updated", icon: Icons.success , theme: "light"})
+                
             } else {
                 console.log("Error updating failed", error);
             }
@@ -146,6 +179,62 @@ export default function EditProfile() {
     }, [file]);
 
     
+    React.useEffect(() => {
+        if (file1) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setCoverImageSrc(reader.result);
+            };
+            reader.readAsDataURL(file1);
+        } else {
+
+            setCoverImageSrc(null);
+
+        }
+    }, [file1]);
+
+    React.useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+
+                const response = await fetch(`/api/userByID`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ user: session?.user?._id }),
+                });
+
+                const userData = await response.json();
+
+                setUserData(userData || "");
+                setBio(userData?.user?.bio || "I love Jesus")
+                setCoverImageSrc(userData?.user?.coverimage)
+                
+            } catch (error) {
+                
+                console.error('Error getting User Data:', error);
+                setError(error.message || 'An error occurred while getting data');
+
+            }
+        }
+
+        fetchData();
+    }, [session]);
+
+    const maxCharacters = 275;
+
+    
+    const handleChange = (event) => {
+        const inputText = event.target.value;
+        if (inputText.length <= maxCharacters) {
+            setBio(inputText);
+        }
+    };
+
+    const charactersLeft = maxCharacters - bio?.length;
+
     return (
         <Box>
                 <Stack
@@ -245,16 +334,6 @@ export default function EditProfile() {
                     </Stack>
                 </Stack>
                 </Stack>
-                <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-                    <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                    <Button size="sm" variant="outlined" color="neutral">
-                                Cancel
-                    </Button>
-                    <Button size="sm" variant="solid" onClick={handleSave}>
-                        Save
-                    </Button>
-                    </CardActions>
-                </CardOverflow>
                 </Card>
                 
                 <Card>
@@ -270,24 +349,70 @@ export default function EditProfile() {
                         size="sm"
                         minRows={4}
                         sx={{ mt: 1.5 }}
-                        defaultValue="I Love Jesus."
+                        defaultValue={UserData?.user?.bio || "I love Jesus"}
                         value={bio}
-                        onChange={(event) => setBio(event.target.value)}
-                        />
-                        <FormHelperText sx={{ mt: 0.75, fontSize: 'xs' }}>
-                        275 characters left
+                        onChange={handleChange}
+                    />
+                    <FormHelperText sx={{ mt: 0.75, fontSize: 'xs' }}>
+                        {charactersLeft} characters left
                         </FormHelperText>
-                    </Stack>
+                        <Divider />
+                        <Box sx={{ mb: 1 }}>
+                            <Typography level="title-md">Cover Image</Typography>
+                            <Typography level="body-sm">
+                                Feel free to upload an image that best represents you and your personality for others viewing your profile to get a glimpse of who you are.
+                            </Typography>
+                        </Box>
+                                <Stack
+                                    direction="row"
+                                    spacing={3}
+                                    sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
+                                >
+                                    <Stack direction="column" spacing={1}>
+                                        <AspectRatio
+                                            ratio="1"
+                                            maxHeight={500}
+                                            sx={{ flex: 1, width: "670px", position: 'relative' }}
+                                        >
+                                            <img
+                                                src={coverImageSrc || UserData?.user?.coverimage}
+                                                srcSet={coverImageSrc || UserData?.user?.coverimage}
+                                                loading="lazy"
+                                                alt=""
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                            <IconButton
+                                                aria-label="upload new picture"
+                                                size="sm"
+                                                variant="outlined"
+                                                color="neutral"
+                                                component="label"
+                                                role={undefined}
+                                                sx={{
+                                                    bgcolor: 'background.body',
+                                                    position: 'absolute',
+                                                    zIndex: 2,
+                                                    borderRadius: '50%',
+                                                    right: '0%',
+                                                    bottom: '5%',
+                                                    transform: 'translate(-50%, 50%)',
+                                                    boxShadow: 'sm',
+                                                }}
+                                            >
+                                                <EditRoundedIcon />
+                                                <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFileCoverChange} />
+                                            </IconButton>
+                                        </AspectRatio>
+                                    </Stack>
+                                </Stack>
                     <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
                         <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                        <Button size="sm" variant="outlined" color="neutral">
-                            Cancel
-                        </Button>
-                        <Button size="sm" variant="solid" onClick={handleSave}>
-                            Save
-                        </Button>
+                            <Button size="sm" variant="solid" onClick={handleSave}>
+                                Save
+                            </Button>
                         </CardActions>
                     </CardOverflow>
+                </Stack>
                 </Card>
             </Stack>
         </Box>

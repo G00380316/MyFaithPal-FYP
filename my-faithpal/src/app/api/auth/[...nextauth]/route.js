@@ -127,8 +127,8 @@ export const authOptions = {
                     if (!userExist) {
                         if (profile?.iss === 'https://accounts.google.com') {
 
-                                const username = profile.name.replace(/\s+/g, '-');
-                                
+                                const username = profile.name.replace(/\s+/g, '-')
+
                                 const user = await User.create({
                                     email: profile.email, name: profile.name, image: profile.picture, username
                                 })
