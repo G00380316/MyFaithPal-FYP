@@ -7,13 +7,23 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    username: {
+        type: String,
+        required: false,
+        unique: false,
+    },
     email: {
         type: String,
+        unique: true,
         required: true,
     },
     hashedPassword: {
         type: String,
-        required: true,
+        required: false,
+    },
+    image: {
+        type: String,
+        required: false,
     },
 },
     { timestamps: true }

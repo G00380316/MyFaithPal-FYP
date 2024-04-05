@@ -7,8 +7,9 @@ import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
 import styles from "./qa.module.css";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { Grid, Stack, Typography } from '@mui/joy';
+import { LoadingButton } from '@mui/lab';
+import { NotifyCustom } from '@/util/notify';
 
 export default function QuestionModal() {
     
@@ -18,26 +19,6 @@ export default function QuestionModal() {
     const [textMessage, setTextMessage] = useState("");
     const [isToggled, setIsToggled] = useState(false);
     const scroll = useRef();
-    const notify = () => toast("Switched to FaithPalAI", {
-    position: "bottom-left",
-    style: {
-        backgroundColor: "rgb(215, 203, 155)",
-        color: "#996515",
-        maxWidth: "fit-content",
-        padding: 10
-    },
-    hideProgressBar: false
-    });
-    const secondNotify = () => toast("Switched to OpenAI", {
-    position: "bottom-left",
-    style: {
-        backgroundColor: "rgb(215, 203, 155)",
-        color: "#996515",
-        maxWidth: "fit-content",
-        padding: 10
-    },
-    hideProgressBar: false
-    });
 
     const handleKeyPress = () => {
         // Call the function to send the message when Enter is pressed
@@ -47,10 +28,10 @@ export default function QuestionModal() {
     const handleToggle = () => {
         setIsToggled(!isToggled);
         if (!isToggled) {
-            notify();
+            NotifyCustom({text:`Switched to Solomon`});
         }
         else {
-            secondNotify();
+            NotifyCustom({ text: `Switched to OpenAI` });
         }
     };
 
@@ -58,25 +39,68 @@ export default function QuestionModal() {
         scroll.current?.scrollIntoView({ behaviour: "smooth" })
     }, [messages,recipientUser]);
 
+    useEffect(() => {
+        if (!session?.user) {
+            NotifyCustom({text:`Log in to Unlock feature`});
+            console.log("Sign in");
+        }
+    }, [session]);
     
     console.log( "This is chatBox AI current Chat: ",currentAIChat)
     console.log("This is chatBox recipient User: ", recipientUser)
     console.log("These are messages:", messages)
     //console.log("Message input: ", textMessage)
     
+    if (!session) {
+        return (
+            <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+                <Grid>
+                </Grid>
+                    <Grid>
+                        <Stack marginTop="35vh" alignItems="center">
+                        <LoadingButton loading variant="none" size='large'>
+                    </LoadingButton>
+                        <Typography>Oh Oh AI Conversation Loading...But Sign In Required!</Typography>
+                        </Stack>
+                    </Grid>
+                    <Grid>
+                </Grid>
+            </Grid>
+        );
+    }
     
     if (!recipientUser)
         return (
-        <p style={{ textAlign: "center", marginTop: 10,width: "100%",fontWeight: 900 }}>
-            No conversation selected yet...Refresh the page
-        </p>
+            <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+                <Grid>
+                </Grid>
+                    <Grid>
+                        <Stack marginTop="35vh" alignItems="center">
+                        <LoadingButton loading variant="none" size='large'>
+                    </LoadingButton>
+                    <Typography>AI Conversation Loading</Typography>
+                        </Stack>
+                    </Grid>
+                    <Grid>
+                </Grid>
+        </Grid>
         );
     
         if (isMessagesLoading)
         return (
-        <p style={{ textAlign: "center", marginTop: 10,width: "100%" }}>
-            Loading chat...
-        </p>
+            <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+                <Grid>
+                </Grid>
+                    <Grid>
+                        <Stack marginTop="35vh" alignItems="center">
+                        <LoadingButton loading variant="none" size='large'>
+                    </LoadingButton>
+                    <Typography>Messages are Loading</Typography>
+                        </Stack>
+                    </Grid>
+                    <Grid>
+                </Grid>
+        </Grid>
         );
 
     return (
@@ -107,8 +131,6 @@ export default function QuestionModal() {
                     placeholder="Ask your Rabbi AI a Question? Dont be shy..." />
             <input type="checkbox" id="switch" checked={isToggled} onChange={handleToggle} /><label for="switch">{isToggled ? 'ON' : 'OFF'}</label>
             </div>
-            <ToastContainer/>
         </div >
-        
     );
 }

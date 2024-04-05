@@ -1,28 +1,32 @@
     @import url('//fonts.googleapis.com/css?family=Raleway:800i');
     
-
     .date {
         font-size: 14px;
         color: rgb(180, 180, 180);
     }
 
     .chat_box {
-        display: flex;
-        flex-direction: column;
         background: rgb(114, 109, 93);
         border-radius: 5px;
-        width: 100%;
     }
 
     .messages {
-        max-height: calc(100vh - 10rem);
+        height: calc(100vh - 13.8rem);
         display: flex;
         flex-direction: column;
         flex: 1;
-        overflow-y: auto;
         padding: 0 2rem;
         overflow-y: scroll;
         overflow-x: hidden;
+    }
+
+    .messages::-webkit-scrollbar {
+    width: 0rem;
+    }
+    
+    .messages::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 0.25em;
     }
 
     .chat_header {
@@ -38,9 +42,7 @@
     }
 
     .messages_box {
-        height: 90vh;
         padding-right: 3px;
-        flex-grow: 0;
         align-items: top;
         gap: 13px;
     }
@@ -71,12 +73,11 @@
 
     .letter {
         display: inline-block;
-        animation: bounce 0.9s infinite alternate;
+        animation: bounce 0.5s infinite alternate;
     }
 
     .message {
         display: flex;
-        flex: 1;
         flex-direction: column;
         color: white;
         background: #166355;
@@ -103,8 +104,7 @@
     
     .chat_messages {
         border: 2px solid rgb(127, 125, 117);
-        padding: 1px;
-        height: 85vh;
+        padding: 5px;
     }
 
     .chat_input {

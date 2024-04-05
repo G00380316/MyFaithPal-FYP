@@ -1,6 +1,8 @@
 import { Inter } from "next/font/google";
 import { Providers } from "./Providers";
 import "./globals.css";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,7 +16,8 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning={true}>
       <body className={inter.className}>
           <Providers>
-                  {children}
+          {children}
+          <ToastContainer newestOnTop limit={3} style={{width:500}}/>
           </Providers>
       </body>
     </html>

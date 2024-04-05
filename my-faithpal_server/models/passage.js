@@ -14,7 +14,7 @@ const passageSchema = new Schema({
         type: String,
     },
     
-    ref: {
+    reference: {
         type: String,
         required: true,
     },
@@ -27,7 +27,7 @@ const passageSchema = new Schema({
     {timestamps: true}
 );
 
-passageSchema.index({ ref: 1, user: 1 }, { unique: true });
+passageSchema.index({ reference: 1, user: 1 }, { unique: true });
 
 const Passage = models.Passage || mongoose.model('Passage', passageSchema);
 export default Passage;

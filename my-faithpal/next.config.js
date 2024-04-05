@@ -6,6 +6,6 @@ const nextConfig = {async rewrites() {
         destination: 'http://localhost:8080/api',
       },
     ]
-  },}
+},reactStrictMode: false}
 
 module.exports = nextConfig

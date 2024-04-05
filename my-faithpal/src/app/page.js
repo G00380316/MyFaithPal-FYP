@@ -1,49 +1,96 @@
 "use client"
 
-import Link from "next/link";
-import styles from "./page.module.css";
 import Navbar from "@/components/navbar/navbar.js";
-import Footer from "@/components/footer/footer";
+import { NotifyCustom } from "@/util/notify";
 import { baseUrl, getRequest } from '@/util/service';
+import { Box } from "@mui/joy";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from 'react';
+import styles from "./page.module.css";
 
 export default function Home() {
 
   const [passage, setPassage] = useState(null);
+  const [previousReference, setPreviousReference] = useState(null);
+  const [previousText, setPreviousText] = useState(null);
+  const [previousValue, isPreviousValue] = useState(null);
+  const { data: session } = useSession();
 
   useEffect(() => {
-        const fetchPassageData = async () => {
 
-          const getPassage = await getRequest(`${baseUrl}bible/random`);
-          setPassage(getPassage);
+    const fetchPassageData = async () => {
 
-        }
-        fetchPassageData()
-  }, [])
+      const getPassage = await getRequest(`${baseUrl}bible/random`);
+      setPassage(getPassage);
+      
+    }
+
+    fetchPassageData();
+
+  }, []);
+
+  useEffect(() => {
+
+    if (!session) {
+        
+      NotifyCustom({ text: `What to get to know God...Start reading.` });
+      
+    }
+
+  },[session])
 
   const getReference = () => {
-    if (passage && passage.reference) {
-      return passage.reference;
+
+    if (session) {
+      if (passage && passage.reference) {
+        if (!previousReference) {
+
+          setPreviousReference(passage.reference);
+          NotifyCustom({ text: `What does this verse say to you\n${passage.reference}` });
+        }
+
+        return previousReference;
+
+      }
+      
+      return null;
+
     } else {
+
       return "Genesis 1:1";
-    }
+
+    };
   }
+
 
   const getPassageText = () => {
-    if (passage && passage.text) {
-      return passage.text;
-    } else {
-      return '"In the beginning God created the heaven and the earth."';
-    }
-  }
+    
+    if (session) {
+      if (passage && passage.text) {
+        if (!previousText) {
 
-  //Text to be added
-  //verse of the day
-  //Find out more of what the word of God is trying to say to you today
+          setPreviousText(passage.text);
+        }
+
+        return previousText;
+      }
+
+      return null;
+
+    } else {
+
+      return "In the beginning, God created the heavens and the earth.";
+
+    }
+    
+  };
+
+
   return (
-    <>
-    <Navbar/>
-      <main className={styles.main}>
+    <Box display="flex" flexDirection="column" width="100%" height="100vh">
+        <Navbar/>
+        <main className={styles.main}>
         <div className={styles.center}>
           <div style={{ borderWidth: 20, borderColor: 'black', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
               <li style={{color: "transparent", maxWidth:1000, overflow:"auto"}}>
@@ -56,7 +103,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-    <Footer/>
-    </>
+    </Box>
   );
 }

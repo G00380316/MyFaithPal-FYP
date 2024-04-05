@@ -4,9 +4,12 @@ import Link from "next/link"
 import styles from "@/components/forms/form.module.css"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Divider} from "@mui/joy";
+
 
 export default function regForm() {
 
+    const [username, setUsername] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -19,14 +22,17 @@ export default function regForm() {
     console.log(password);
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
-        if (!name || !email || !password) {
-            setError("All fields are necessary");
-            return;
-        }
-
         try {
+            if (!email || !password) return;
+
+            if (!name || !email || !password) {
+                setError("All fields are necessary");
+                return;
+            }
+
             const resUserExists = await fetch('api/userCheck', {
                 method: 'POST',
                 headers: {
@@ -43,12 +49,6 @@ export default function regForm() {
                 console.log(error);
                 return;
             }
-            
-            /*if (resUserExists.ok) {
-                setError("User already exists");
-                console.log(error);
-                return;
-            }*/
 
             const res = await fetch('api/register', {
                 method: "POST",
@@ -56,7 +56,7 @@ export default function regForm() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    name, email, password
+                    username, name, email, password
                 }),
             });
 
@@ -80,6 +80,10 @@ export default function regForm() {
             </div>
             <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.field}>
+                    <label htmlFor="username">Username</label>
+                    <input onChange={(e) => setUsername(e.target.value)} type="username" id="username"></input>
+                </div>
+                <div className={styles.field}>
                     <label htmlFor="name">Full Name</label>
                     <input onChange={(e) => setName(e.target.value)} type="name" id="name"></input>
                 </div>
@@ -98,10 +102,13 @@ export default function regForm() {
                         {error}
                     </div>)}
                 </div>
+                <Divider sx={{ margin: 1 }} />
+                    <p className={styles.description}>Click Sign In to Login in with Google, Facbook or LinkedIn</p>
+                <Divider sx={{mt: 1}}/>
             </form>
-            <div className ={styles.link}>
-                <Link href='/login'><p className={styles.p}>Login</p></Link>
-                <Link href='/'><p className={styles.p}>Go Home</p></Link>
+            <div>
+                    <Link href='/login'><button className ={styles.button}>Sign in</button></Link>
+                    <Link href='/'><button className ={styles.button}>Home</button></Link>
             </div>
         </div>
     )

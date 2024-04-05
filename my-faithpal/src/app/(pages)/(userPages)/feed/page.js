@@ -1,10 +1,62 @@
-import React from 'react'
+"use client"
+
 import styles from "@/app/(pages)/(userPages)/feed/feed.module.css";
+import CreatePosts from '@/components/feed/createPosts.js';
+import Posts from '@/components/feed/posts';
+import { Stack } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { useSession } from "next-auth/react";
+
+const Styles = {
+    root: {
+        maxHeight: '90vh',
+        overflowY: 'scroll',
+        '&::-webkit-scrollbar': {
+        display: 'none'
+        },
+        '&::-webkit-scrollbar-thumb': {
+        backgroundColor: 'rgba(0,0,0,0.1)',
+        borderRadius: '0.25em'
+        }
+    }
+};
 
 export default function feed() {
+
+    const { data: session } = useSession();
+
+    if (!session) {
+        return (
+            <main className={styles.main}>
+                <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+                    <Grid>
+                    </Grid>
+                        <Grid>
+                            <Stack spacing={1} marginTop={1} minWidth={500} sx={Styles.root}>
+                                <Posts/>
+                            </Stack>
+                        </Grid>
+                        <Grid>
+                        </Grid>
+                </Grid>
+            </main>
+        )
+    }
+
     return (
-    <main className={styles.main}>
-        <h1>Feed page</h1>
-    </main>
-)
+        <main className={styles.main}>
+            <Grid  container direction="row" justifyContent="space-around" alignItems="stretch">
+                <Grid>
+                </Grid>
+                    <Grid>
+                        <Stack spacing={1} marginTop={1} maxWidth={500} sx={Styles.root}>
+                            <CreatePosts />
+                            <Posts/>
+                        </Stack>
+                    </Grid>
+                    <Grid>
+                    </Grid>
+            </Grid>
+        </main>
+    )
 }

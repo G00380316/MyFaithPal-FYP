@@ -1,15 +1,6 @@
-.main {
-  flex: 1;
-}
-
-.passage {
-  overflow-y: auto;
-  height: 100vh;
-}
 .nav {
   padding: 10px;
   display: flex;
-  align-items: center;
   justify-content: center;
   position: sticky;
   z-index: 100;

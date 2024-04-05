@@ -3,8 +3,9 @@ import { bookInfo } from '@/util/bible/Filter/bookInfo';
 import { translationOptions } from '@/util/bible/translationOptions';
 import { oebbookInfo } from '@/util/bible/Filter/oebBooks';
 import styles from '@/components/bible/dropdown.module.css';
+import { useSession } from 'next-auth/react';
 
-const Dropdown = ({ onSelectionChange, onSaveClick }) => {
+const Dropdown = ({ onSelectionChange, onSaveClick, onClearClick }) => {
 
     const [selectedTranslation, setSelectedTranslation] = useState("");
     const [selectedBook, setSelectedBook] = useState("Genesis");
@@ -12,6 +13,8 @@ const Dropdown = ({ onSelectionChange, onSaveClick }) => {
     const [selectedVerse, setSelectedVerse] = useState("");
     const [chapters, setChapters] = useState([]);
     const [verses, setVerses] = useState([]);
+
+    const { data: session } = useSession();
 
     useEffect(() => {
         // Populate chapters dropdown based on selected book
@@ -66,8 +69,24 @@ const Dropdown = ({ onSelectionChange, onSaveClick }) => {
         console.log("parent class")
     };
 
+    const handleClearButtonClick = () => {
+        onClearClick();
+        console.log("parent class")
+    };
+
     return (
     <div className={styles.dropdown}>
+        
+        <div className={styles.customButtonC}>
+                {session ? (
+                    <button onClick={handleClearButtonClick}>
+                        Clear
+                    </button>
+            ) : (
+                null
+            )}
+        </div>
+        
         <label htmlFor="books" style={{ marginRight: 5, marginLeft: 5, color: "#996515" }}></label>
         <div className={styles.customSelect}>
             <select id="books" value={selectedBook} onChange={handleBookChange}>
@@ -113,9 +132,13 @@ const Dropdown = ({ onSelectionChange, onSaveClick }) => {
         </div>
 
         <div className={styles.customButton}>
-            <button onClick={handleSaveButtonClick}>
-                Save
-            </button>
+                {session ? (
+                    <button onClick={handleSaveButtonClick}>
+                        Save
+                    </button>
+            ) : (
+                null
+            )}
         </div>
     </div>
     );

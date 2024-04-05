@@ -7,7 +7,7 @@ export async function POST(req) {
         await connectMongoDB();
         const data = await req.json();
         
-        const _id = data.recipientId;
+        const _id = data.recipientId || data.user;
 
         console.log("ID received by Hook", _id);
 

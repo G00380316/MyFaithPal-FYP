@@ -1,11 +1,10 @@
 .main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Set the height to 100% of the viewport height */
-    font-family: "Montserrat", sans-serif;
-    background: linear-gradient(#F2D2BD,#FBCEB1);
+    height: 100vh;
+    background-image: url("/auth.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
+
 
 .main section {
     -webkit-box-shadow: 10px 10px 5px 10px rgba(0,0,0,0.75);

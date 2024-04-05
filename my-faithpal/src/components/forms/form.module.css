@@ -19,12 +19,12 @@ padding: 15px;
 
 .description {
     font-size: 11px;
-    width: 290px;
+    min-width: 290px;
     padding: 0px 5px;
 }
 
 .form {
-    padding: 70px 30px 40px;
+    padding: 70px 30px 4px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -57,7 +57,7 @@ padding: 15px;
     color: #000000;
     font-size: 16px;
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
     font-weight: 300;
     padding: 4px 0px;
 }
@@ -84,19 +84,31 @@ padding: 15px;
     background-color: transparent;
 }
 
+.button {
+    cursor: pointer;
+    border: 0;
+    border-radius: 4px;
+    font-weight: 600;
+    margin: 10px;
+    width: 200px;
+    padding: 10px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+}
+
+.button:hover {
+    background-color: transparent;
+}
+
 .form .error {
     background: #c51244 ;
     border-radius: 4px ;
     font-weight: 600;
     padding: 10px 0;
     width: 200px;
-    margin: 10px 35px;
+    margin: 10px 90px;
     box-shadow: 1px 1px 1px #aaaaaa;
     transition: all 0.8s ease;
-}
-
-.p {
-    border-bottom: 2px solid black;
 }
 
 .link {
