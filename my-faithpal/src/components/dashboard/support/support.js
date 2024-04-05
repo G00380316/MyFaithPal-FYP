@@ -82,12 +82,17 @@ export default function Support() {
                         As stated previously, this list will grow if the search box is focused.
                         Below the search box, we have chatrooms that have been started. Simply click on the user to resume the conversation.
                         To the right, we have the chat box that allows emoji input and functionality to send messages to recipients by either pressing enter or clicking a button.
+                        There is a notification in place that allows you to open chat and mark messages as read just click the notifications to see their functions.
                     </Typography>
                     <Typography level="h4">
                     Profile
                     </Typography>
                     <Typography level="body-sm" m={2}>
-                        Write a short introduction to be displayed on your profile
+                        "On the profile page, various functionalities are available. A tab bar is situated on the page, facilitating easy switching between different sections. Additionally, at the top right-hand corner of the page, your name and email are displayed alongside an icon for logging out of your account.
+                        The initial tab is 'Edit Profile,' enabling comprehensive customization of profile details excluding the password. Simply input the desired changes and click 'Save' at the bottom of the page. It's important to note that any information left blank will remain unchanged.
+                        The subsequent tab is 'Your Posts,' providing a filtered feed displaying only the posts you've authored. Following that is 'Saved Posts,' where bookmarked posts are conveniently stored without cluttering the feed with unrelated content. Moving on, two tabs are linked to your Bible page.
+                        Firstly, 'Highlights' showcases all your saved highlights, with an option to copy text to the clipboard. Then, 'Saved Notes' displays all your notes and comments. Finally, there's the 'People' page, facilitating user search within the application.
+                        Simply start typing a name, and upon selecting a user, you can view their profile and engage with their posts."
                     </Typography>
                     <Typography level="h4">
                     Rules
@@ -124,7 +129,11 @@ export default function Support() {
                         <ListItem>
                             <ListItemText primary="Prayer and support." secondary="(James 5:16) 'Therefore, confess your sins to one another and pray for one another, that you may be healed. The prayer of a righteous person has great power as it is working.'" />
                         </ListItem>
-                    </List>
+                        </List>
+                        Updates will be implemented promptly upon detecting any bugs or for general enhancement of the app.
+                        If you wish to support me in this endeavor, my Rev tag is @enoch1urd, which can be used to locate my Revolut account.
+                        Your support is greatly appreciated as it will aid in maintaining the application's functionality.
+                        Thank you sincerely for visiting Faithpal Web Application. May God bless you abundantly for your time and support!
                 </Typography>
                 </Stack>
             </Card>
