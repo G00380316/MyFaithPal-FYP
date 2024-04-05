@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react"
 import { useContext, useEffect } from "react"
 import { ChatContext } from "@/context/chatContext"
 import { NotifyCustom } from "@/util/notify"
-//import { Icons } from "react-toastify"
+import { Icons } from "react-toastify"
 import moment from "moment/moment"
 
 const image = ({ image }) => {
@@ -16,7 +16,7 @@ const image = ({ image }) => {
             objectFit: "cover",
             objectPosition: "center",
         }}>
-        <img src={image} alt="Sender Image" height="30" width="30" style={{borderRadius: "50%", marginRight: 2, marginTop: 5}}/>
+        <img src={image} alt="Sender Image" height="30" width="30" style={{borderRadius: "50%", marginRight: 2, marginTop: 5, padding:2}}/>
         </div>
     )
 }
@@ -45,13 +45,13 @@ export default function navbar() {
 
             if (unreadNotifications?.length !== 0) {
                 NotifyCustom({ text: `You have ${unreadNotifications?.length} unread messages`, onClick: () => markAllNotificationsAsRead(notifications) })
-                NotifyCustom({ text: `Click to mark all as read`, onClick:() => markAllNotificationsAsRead(notifications) })
+                NotifyCustom({ text: `Click to mark all as read`, onClick:() => markAllNotificationsAsRead(notifications), icon: Icons.success })
             }
             const notifiedSenders = new Set();
             modifiedNotifications.forEach((mn, index) => {
                 if (!notifiedSenders.has(mn.senderName) && !mn.isRead) {
                     console.log("noti 2", modifiedNotifications)
-                    NotifyCustom({ text: `You have a new message from ${mn?.senderUsername || mn?.senderName}\n\n${moment(mn.date).calendar()}`, icon: image({ image: mn.senderImage || "avatar.png" }), onClick: () => markNotificationsAsRead(mn, userChats, notifications)});
+                    NotifyCustom({ text: `You have a new message from ${mn?.senderUsername || mn?.senderName}\n\r${moment(mn.date).calendar()}`, icon: image({ image: mn.senderImage || "avatar.png" }), onClick: () => markNotificationsAsRead(mn, userChats, notifications)});
                     notifiedSenders.add(mn.senderName);
                 }
             });

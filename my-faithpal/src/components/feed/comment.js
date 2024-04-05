@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { NotifyCustom } from '@/util/notify';
 import React from 'react';
+import { Icons } from 'react-toastify';
 
 export default function Comment({_id,content,likes,user,createdAt}) {
     
@@ -19,7 +20,11 @@ export default function Comment({_id,content,likes,user,createdAt}) {
     const handleLikes = async () => {
 
         if (!session) {
-            NotifyCustom({text:"Login to Like Comments", bar: false})
+            NotifyCustom({
+                icon: Icons.error,
+                text: "Login to Like Comments",
+                bar: true,
+            })
             return
         };
 

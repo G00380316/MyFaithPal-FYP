@@ -10,6 +10,7 @@ import styles from "./qa.module.css";
 import { Grid, Stack, Typography } from '@mui/joy';
 import { LoadingButton } from '@mui/lab';
 import { NotifyCustom } from '@/util/notify';
+import { Icons } from "react-toastify";
 
 export default function QuestionModal() {
     
@@ -41,8 +42,11 @@ export default function QuestionModal() {
 
     useEffect(() => {
         if (!session?.user) {
-            NotifyCustom({text:`Log in to Unlock feature`});
-            console.log("Sign in");
+            NotifyCustom({
+                icon: Icons.warning,
+                text: "Log in to Unlock feature",
+                bar: true,
+            })
         }
     }, [session]);
     

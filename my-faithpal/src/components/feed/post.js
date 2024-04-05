@@ -10,6 +10,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { CommentList } from './commentList';
 import DropdownMenu from '@/util/buttons/postOptions';
+import { Icons } from 'react-toastify';
 
 const style = {
     position: 'absolute',
@@ -71,7 +72,11 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
         setTimeout(() => {
             setOpen(true);
             if (!session) {
-            NotifyCustom({text:"Login to Comment", bar: false})
+            NotifyCustom({
+                icon: Icons.warning,
+                text: "Log in to Comment",
+                bar: true,
+            })
             return
         };
         }, 100);
@@ -86,7 +91,11 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     const handleLikes = async () => {
 
         if (!session) {
-            NotifyCustom({text:"Login to Like Posts", bar: false})
+            NotifyCustom({
+                icon: Icons.error,
+                text: "Log in to like Post",
+                bar: true,
+            })
             return
         };
 
@@ -139,7 +148,11 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     const handleSaves = async () => {
 
         if (!session) {
-            NotifyCustom({text:"Login to Save Posts", bar: false})
+            NotifyCustom({
+                icon: Icons.error,
+                text: "Log in to save Post",
+                bar: true,
+            })
             return
         };
 

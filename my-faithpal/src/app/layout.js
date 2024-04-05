@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
           <Providers>
           {children}
-          <ToastContainer newestOnTop limit={3} style={{width:500}}/>
+          <ToastContainer newestOnTop limit={3} style={{width:450}}/>
           </Providers>
       </body>
     </html>

@@ -8,6 +8,7 @@ import styles from "./passage.module.css";
 import { Grid,Stack } from "@mui/joy";
 import { LoadingButton } from "@mui/lab";
 import { NotifyCustom } from "@/util/notify";
+import { Icons } from "react-toastify";
 
 export default function DisplayPassage({ selectedBook, selectedChapter, selectedVerse , selectedTranslation, saveClicked, clearClicked }) {
     
@@ -53,7 +54,7 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
             reference: newRef, user: updatedDomValue._id,
         }));
 
-    NotifyCustom({text:`Oh Oh notes in ${PassageRef} have been cleared...Em sorry?!!`, bar: false })
+    NotifyCustom({text:`Oh Oh notes in ${PassageRef} have been cleared...Em sorry?!!`, bar: true, icon: Icons.success })
     }
 
     const handleSave = async() => {
@@ -77,7 +78,7 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
             console.log(passageExists.error);
         }
 
-    NotifyCustom({text:`"${PassageRef}", Saved`, bar: false })
+    NotifyCustom({text:`"${PassageRef}", Saved`, bar: false, icon: Icons.success })
     }
 
     useEffect(() => {

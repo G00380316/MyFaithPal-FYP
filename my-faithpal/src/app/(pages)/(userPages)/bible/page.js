@@ -8,6 +8,7 @@ import { Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from "react";
+import { Icons } from "react-toastify";
 
 const Styles = {
     root: {
@@ -68,7 +69,11 @@ export default function Bible() {
 
     useEffect(() => {
         if (!session?.user) {
-            NotifyCustom({text:"Login in to use all features", bar: false});
+            NotifyCustom({
+                icon: Icons.warning,
+                text: "Log in to use all features",
+                bar: true,
+            })
         }
     }, [session]);
 
