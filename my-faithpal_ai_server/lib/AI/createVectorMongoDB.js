@@ -7,7 +7,7 @@ import axios from "axios";
 //Loading our data and making vector store
 export const createVectoreStore = async (client) => {
 
-            const namespace = "test.vectorstore";
+            const namespace = "test.aisknowledges";
             const [dbName, collectionName] = namespace.split(".");
             const collection = client.db(dbName).collection(collectionName);
 

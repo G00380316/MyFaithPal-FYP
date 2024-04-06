@@ -18,13 +18,7 @@ async function UploadFiletoS3(file, fileName) {
     const fileExtension = fileName.split('.').pop(); // Get the file extension
     const contentType = mime.contentType(fileExtension) || 'application/octet-stream'; // Get the content type
 
-    /*
-    const time = Date.now();
-    const savedTime = time;
-    */
-
     const params = {
-
         Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
         Key: `imagePosts/${fileName}`,
         Body: fileBuffer,
