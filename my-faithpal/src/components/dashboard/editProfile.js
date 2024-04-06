@@ -58,7 +58,7 @@ export default function EditProfile() {
     const handleSave = async (e) => {
 
         e.preventDefault(e);
-        
+
         try {
 
             let newCoverUrl;
@@ -255,7 +255,6 @@ export default function EditProfile() {
 
     const maxCharacters = 275;
 
-    
     const handleChange = (event) => {
         const inputText = event.target.value;
         if (inputText.length <= maxCharacters) {
