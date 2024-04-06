@@ -7,7 +7,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import React from 'react'
 import { useSession } from 'next-auth/react';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NotifyCustom } from '@/util/notify';
 import { Icons } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -30,10 +30,10 @@ export default function EditProfile() {
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [bio, setBio] = useState("");
-    const [file, setFile] = React.useState(null);
-    const [file1, setFile1] = React.useState(null);
-    const [imageSrc, setImageSrc] = React.useState(null);
-    const [coverImageSrc, setCoverImageSrc] = React.useState(null);
+    const [file, setFile] = useState(null);
+    const [file1, setFile1] = useState(null);
+    const [imageSrc, setImageSrc] = useState(null);
+    const [coverImageSrc, setCoverImageSrc] = useState(null);
     const [UserData, setUserData] = useState("");
     const [error, setError] = useState("");
     
@@ -56,13 +56,13 @@ export default function EditProfile() {
     console.log("file for Cover", file1)
     
     const handleSave = async (e) => {
-        
-        e.preventDefault();
 
+        e.preventDefault(e);
+        
         try {
 
-            var newCoverUrl;
-            var newProfileUrl;
+            let newCoverUrl;
+            let newProfileUrl;
 
             if (username != session?.user?.username) {
 
@@ -118,7 +118,22 @@ export default function EditProfile() {
                 });
 
                 const data = await response.json();
-                console.log(data.fileDetails.fileUrl);
+
+                if (data.error) {
+
+                        const response = await fetch('/api/s3-upload', {
+                            method: "POST",
+                            body: formData,
+                        });
+
+                        const data = await response.json();
+
+                        newProfileUrl = data.fileDetails.fileUrl;
+
+                }
+
+                if (newProfileUrl) return;
+
                 newProfileUrl = data.fileDetails.fileUrl;
             }
 
@@ -133,7 +148,22 @@ export default function EditProfile() {
                 });
 
                 const data = await response.json();
-                console.log(data.fileDetails.fileUrl);
+
+                if (data.error) {
+
+                        const response = await fetch('/api/s3-upload', {
+                            method: "POST",
+                            body: formData,
+                        });
+
+                        const data = await response.json();
+
+                        newCoverUrl = data.fileDetails.fileUrl;
+
+                }
+
+                if (newCoverUrl) return;
+
                 newCoverUrl = data.fileDetails.fileUrl;
             }
 
@@ -164,7 +194,7 @@ export default function EditProfile() {
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
@@ -179,7 +209,7 @@ export default function EditProfile() {
     }, [file]);
 
     
-    React.useEffect(() => {
+    useEffect(() => {
         if (file1) {
             const reader = new FileReader();
             reader.onload = () => {
@@ -193,7 +223,7 @@ export default function EditProfile() {
         }
     }, [file1]);
 
-    React.useEffect(() => {
+    useEffect(() => {
 
         const fetchData = async () => {
             try {
