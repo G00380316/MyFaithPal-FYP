@@ -91,7 +91,7 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
                 document_prompt: "{input}"
             });
 
-            const tools = [retrieverTool, searchTool];
+            const tools = [retrieverTool, /*searchTool*/];
 
             //Create Agent
             const agent = await createOpenAIFunctionsAgent({
