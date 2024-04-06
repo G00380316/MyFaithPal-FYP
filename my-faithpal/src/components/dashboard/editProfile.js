@@ -155,7 +155,7 @@ export default function EditProfile() {
                             method: "POST",
                             body: formData,
                         });
-
+                        console.log("This one",response)
                         const data = await response.json();
 
                         newCoverUrl = data.fileDetails.fileUrl;
@@ -175,17 +175,16 @@ export default function EditProfile() {
                 body: JSON.stringify({
                     email, username, name, image: newProfileUrl, sname: session?.user?.name,
                     semail: session?.user?.email, susername: session?.user?.username,
-                    _id: session?.user?._id, simage: session?.user?.image, bio, cimage: newCoverUrl }),
+                    _id: session?.user?._id, simage: session?.user?.image, bio, cimage: newCoverUrl, prevcimage: coverImageSrc}),
             })
             
             const updatedDetails = await resUpdatedUser.json();
-
+            console.log("This one",updatedDetails)
             if (updatedDetails) {
 
                 console.log("Updated Details info: ", updatedDetails);
-                router.refresh();
                 NotifyCustom({ text: "Success Profile Updated", icon: Icons.success , theme: "light"})
-                
+
             } else {
                 console.log("Error updating failed", error);
             }
@@ -241,7 +240,7 @@ export default function EditProfile() {
                 setUserData(userData || "");
                 setBio(userData?.user?.bio || "I love Jesus")
                 setCoverImageSrc(userData?.user?.coverimage)
-                
+
             } catch (error) {
                 
                 console.error('Error getting User Data:', error);

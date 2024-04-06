@@ -13,7 +13,6 @@ const s3Client = new S3Client({
 async function UploadFiletoS3(file, fileName) {
     
     const fileBuffer = file;
-    console.log(fileName);
 
     const fileExtension = fileName.split('.').pop(); // Get the file extension
     const contentType = mime.contentType(fileExtension) || 'application/octet-stream'; // Get the content type
@@ -26,21 +25,19 @@ async function UploadFiletoS3(file, fileName) {
     }//for the key you can put `yourfolder/${fileName} - ${Date.now()}` to upload file to specific folder
 
     const command = new PutObjectCommand(params);
-    await s3Client.send(command);
+    const data = await s3Client.send(command);
 
     const fileUrl = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET_URL}${fileName}`;
 
     return {fileName, fileUrl};
 }
 
-export async function POST(request) {
+export async function POST(req) {
 
     try {
 
-        const formData = await request.formData();
+        const formData = await req.formData();
         const file = formData.get("file");
-
-        console.log(file)
 
         if (!file) {
             return NextResponse.json({ error: "File is required." }, { status: 400 });
