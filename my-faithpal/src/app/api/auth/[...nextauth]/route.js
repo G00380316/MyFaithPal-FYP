@@ -60,6 +60,8 @@ export const authOptions = {
 
                 if (user?._id) token._id = user._id;
 
+                if (user?.username) token.username = user.username;
+
                 if (user?.image) token.image = user.image;
                 //console.log("jwt callback", { token, user, session })
                 return token;
@@ -151,20 +153,20 @@ export const authOptions = {
                         if (profile?.iss === 'https://accounts.google.com') {
                             
                             if (userExist.image) {
+
                                 const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name }, { new: true });
                                 console.log("Updated Google user", updatedUser)
-                                
+
                                 return true
 
                             } else {
+
                                 const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name, image: profile.picture }, { new: true });
                                 console.log("Updated Google user",updatedUser)
-                                
+
                                 return true
 
                             }
-
-                            
 
                         } else {
                             
@@ -172,14 +174,14 @@ export const authOptions = {
 
                                 const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name }, { new: true });
                                 console.log("Updated Facebook user",updatedUser)
-                                
+
                                 return true
 
                             } else {
 
                                 const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name, image: profile.picture?.data?.url }, { new: true });
                                 console.log("Updated Facebook user",updatedUser)
-                                
+
                                 return true
                             }
                         }
