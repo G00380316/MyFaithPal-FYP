@@ -55,10 +55,15 @@ export default function InputFileUpload({ post, text }) {
                     user: session?.user?._id,
                     content: text,
                     media: "",
-                }))
+                }));
+
+                console.log(sendData);
 
                 setUploading(false);
+
                 window.location.reload();
+
+                return;
 
             } catch (error) {
                 
@@ -83,7 +88,7 @@ export default function InputFileUpload({ post, text }) {
             });
 
             const data = await response.json();
-            console.log(data.fileDetails.fileUrl);
+            console.log(data);
 
             const sendData = await postRequest(`${baseUrl}post/create`, JSON.stringify({
                 user: session?.user?._id,
@@ -95,7 +100,7 @@ export default function InputFileUpload({ post, text }) {
 
             setUploading(false);
             window.location.reload();
-            
+
         } catch (error) {
 
             console.log(error);

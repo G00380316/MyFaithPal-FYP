@@ -23,7 +23,7 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
     //creating our model
     const model = new ChatOpenAI({
         modelName: "gpt-3.5-turbo-1106",
-        temperature: 0.7, // how accurate AI or creative
+        temperature: 0.5, // how accurate AI or creative
         maxTokens: 100,
         //verbose: true, // for testing AI
     });
