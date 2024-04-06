@@ -1,10 +1,12 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@mui/joy/Button';
 import SvgIcon from '@mui/joy/SvgIcon';
 import {Card, CardOverflow, styled } from '@mui/joy';
 import ImageUpLoad from './imgPlaceholder';
 import { baseUrl, postRequest } from '../service';
 import { useSession } from 'next-auth/react';
+import { NotifyCustom } from '../notify';
+import { Icons } from 'react-toastify';
 
 const VisuallyHiddenInput = styled('input')`
     clip: rect(0 0 0 0);
@@ -20,8 +22,8 @@ const VisuallyHiddenInput = styled('input')`
 
 export default function InputFileUpload({ post, text }) {
 
-    const [file, setFile] = React.useState(null);
-    const [uploading, setUploading] = React.useState(null);
+    const [file, setFile] = useState(null);
+    const [uploading, setUploading] = useState(null);
     const { data: session } = useSession();
 
 
@@ -31,7 +33,7 @@ export default function InputFileUpload({ post, text }) {
 
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (post) {
 
             handleSubmit();
@@ -90,11 +92,18 @@ export default function InputFileUpload({ post, text }) {
             const data = await response.json();
             console.log(data);
 
+            if (data.error) {
+
+                NotifyCustom({ text: "Error! Try again, sorry", bar: true, icon: Icons.error })
+
+                return;
+            }
+
             const sendData = await postRequest(`${baseUrl}post/create`, JSON.stringify({
                 user: session?.user?._id,
-                content: text ,
+                content: text,
                 media: data?.fileDetails?.fileUrl,
-            }))
+            }));
 
             console.log("This was data sent to backend: ",sendData);
 
