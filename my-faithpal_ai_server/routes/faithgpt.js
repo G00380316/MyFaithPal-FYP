@@ -139,7 +139,7 @@ router.post('/input', async (req, res) => {
             query: "{input}"
         });
 
-        const tools = [retrieverTool, searchTool];
+        const tools = [retrieverTool, /*searchTool*/];
 
         const agent = await createOpenAIFunctionsAgent({
             llm: model,
