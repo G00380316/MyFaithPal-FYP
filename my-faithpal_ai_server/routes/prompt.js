@@ -24,7 +24,22 @@ dotenv.config();
             res.status(500).json({ error: 'Internal Server Error' });
         }
     })
-    
+
+    router.post('/delete', async (req, res) => {
+    const { aichatroom } = req.body;
+        
+    try {
+        await connectMongoDB();
+            
+        const response = await Prompt.deleteMany({ aichatroom });
+
+        res.status(200).json(response);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    })
+
     router.get('/get/:aichatroomId', async (req, res) => {
         const aichatroom = req.params.aichatroomId;
 

@@ -11,6 +11,7 @@ import { Grid, Stack, Typography } from '@mui/joy';
 import { LoadingButton } from '@mui/lab';
 import { NotifyCustom } from '@/util/notify';
 import { Icons } from "react-toastify";
+import { aiUrl, postRequest } from '@/util/service';
 
 export default function QuestionModal() {
     
@@ -19,6 +20,7 @@ export default function QuestionModal() {
     const { recipientUser } = useFetchRecipientUser(currentAIChat);
     const [textMessage, setTextMessage] = useState("");
     const [isToggled, setIsToggled] = useState(false);
+    const [isClicked, setClick] = useState(false);
     const scroll = useRef();
 
     const handleKeyPress = () => {
@@ -33,6 +35,25 @@ export default function QuestionModal() {
         }
         else {
             NotifyCustom({ text: `Switched to OpenAI` });
+        }
+    };
+
+    const handleClearButtonClick = async () => {
+        setClick(prevClick => !prevClick);
+
+        if (!isClicked) {
+
+            const response = await postRequest(`${aiUrl}prompt/delete`, JSON.stringify({
+                aichatroom: currentAIChat
+            }));
+
+            console.log(response)
+
+            if (response.acknowledged === true) {
+                NotifyCustom({ text: `Chat is cleared for next time`, bar: true, icon: Icons.success })
+            }
+        } else {
+            NotifyCustom({text:`Click again to confirm`, bar: true, icon: Icons.info })
         }
     };
 
@@ -110,7 +131,10 @@ export default function QuestionModal() {
     return (
         <div className={styles.chat_box}>
             <div className={styles.chat_header}>
-                <span>RabbiGpt</span>
+                <span className={styles.title} >RabbiGpt</span>
+                <button onClick={handleClearButtonClick} className={styles.button}>
+                        Clear
+                </button>
             </div>
         <div className={styles.chat_messages}>
             <div className={styles.messages_box}>
