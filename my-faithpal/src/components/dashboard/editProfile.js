@@ -120,21 +120,11 @@ export default function EditProfile() {
                 const data = await response.json();
 
                 if (data.error) {
-
-                        const response = await fetch('/api/s3-upload', {
-                            method: "POST",
-                            body: formData,
-                        });
-
-                        const data = await response.json();
-
-                        newProfileUrl = data.fileDetails.fileUrl;
-
+                    NotifyCustom({ text: `Click "Save" again to update`, icon: Icons.info , theme: "light"})
                 }
 
-                if (newProfileUrl) return;
-
                 newProfileUrl = data.fileDetails.fileUrl;
+
             }
 
             if (file1) {
@@ -150,21 +140,11 @@ export default function EditProfile() {
                 const data = await response.json();
 
                 if (data.error) {
-
-                        const response = await fetch('/api/s3-upload', {
-                            method: "POST",
-                            body: formData,
-                        });
-                        console.log("This one",response)
-                        const data = await response.json();
-
-                        newCoverUrl = data.fileDetails.fileUrl;
-
+                    NotifyCustom({ text: `Click "Save" again to update`, icon: Icons.info , theme: "light"})
                 }
 
-                if (newCoverUrl) return;
-
                 newCoverUrl = data.fileDetails.fileUrl;
+
             }
 
             const resUpdatedUser = await fetch('api/updateUser', {
