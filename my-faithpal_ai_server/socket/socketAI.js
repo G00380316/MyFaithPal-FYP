@@ -1,9 +1,9 @@
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 
+dotenv.config();
 const io = new Server({ cors: process.env.CLIENT_SERVER_URL });
 
-dotenv.config();
 let onlineUsers = [];
 
 io.on("connection", (socket) => {

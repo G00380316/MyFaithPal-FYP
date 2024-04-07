@@ -109,7 +109,7 @@ router.post('/get/user/changes', async (req, res) => {
 
 router.get('/random', async (req, res) => {
     try {
-        const apiUrl = 'http://127.0.0.1:4567/?random=verse';
+        const apiUrl = '${process.env.BIBLE_SERVER_URL}?random=verse';
 
         const response = await axios.get(apiUrl);
 
@@ -128,7 +128,7 @@ router.get('/:passage', async (req, res) => {
     const passage = req.params.passage;
 
     try {
-        const apiUrl = `http://127.0.0.1:4567/${passage}`;
+        const apiUrl = `${process.env.BIBLE_SERVER_URL}${passage}`;
 
         const response = await axios.get(apiUrl);
 
@@ -151,7 +151,7 @@ router.get('/:passage/:translation', async (req, res) => {
     console.log(translation)
 
     try {
-        const apiUrl = `http://127.0.0.1:4567/${passage}?translation=${translation}`;
+        const apiUrl = `${process.env.BIBLE_SERVER_URL}${passage}?translation=${translation}`;
 
         const response = await axios.get(apiUrl);
 
