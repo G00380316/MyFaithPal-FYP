@@ -104,6 +104,9 @@ router.post('/input', async (req, res) => {
             new MessagesPlaceholder("chat_history"),
             ("human", "{input}"),
             new MessagesPlaceholder("agent_scratchpad"),
+            ("{tool-output}","{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
+            ("human", "{input}"),
+            ("{tool-output}", "**I searched the web using the Search tool to find relevant information.** {{searchTool.output}}"),
         ]);
         
         const searchTool = new TavilySearchResults();
@@ -128,7 +131,7 @@ router.post('/input', async (req, res) => {
         const vectorStore = await searchVectorStore(client ,input);
 
         const retriever = await vectorStore.asRetriever({
-            k: 5,
+            k: 3,
             vectorStore,
             verbose: true
         });
@@ -139,7 +142,96 @@ router.post('/input', async (req, res) => {
             query: "{input}"
         });
 
-        const tools = [retrieverTool, /*searchTool*/];
+        const tools = [retrieverTool, searchTool];
+
+        const agent = await createOpenAIFunctionsAgent({
+            llm: model,
+            prompt,
+            tools,
+        });
+
+        // Create the executor
+        const agentExecutor = new AgentExecutor({
+            agent,
+            tools,
+        });
+
+        // Call Agent
+        const response = await agentExecutor.invoke({
+            input: input,
+            chat_history: storeChatHistory,
+        });
+
+        console.log("Agent: ", response.output);
+        storeChatHistory.push(new HumanMessage(input));
+        storeChatHistory.push(new AIMessage(response.output));
+        const updatedHistory = await ChatHistory.findOneAndUpdate({ aichatroom }, { $set: { messages: storeChatHistory } });
+        const displayChat = await Response.create({ aichatroom, user: id_AI, text: response.output, data: response, prompt: input});
+        
+        res.status(200).json({ response: displayChat, message: `Ai: ${response.output }` });
+
+    } catch (err) {
+
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        
+    }
+});
+
+router.post('/input/beta', async (req, res) => {
+
+    const { input, aichatroom } = req.body;
+
+    try {
+
+        const id_AI = process.env.AI_ID;
+        const client = new MongoClient(`${process.env.MONGODB_URI}`);
+        connectMongoDB();
+
+        // Prompt Template
+        const prompt = ChatPromptTemplate.fromMessages([
+            ("ai", "You are a helpful friend and assistant and your name is Solomon, Answer questions only related to the Bible or Christianity and Answer referring to Bible and Christianity"),
+            new MessagesPlaceholder("chat_history"),
+            ("human", "{input}"),
+            new MessagesPlaceholder("agent_scratchpad"),
+            ("{tool-output}","{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
+            ("{tool-output}", "**I searched the web using the Search tool to find relevant information.** {{searchTool.output}}"),
+        ]);
+        
+        const searchTool = new TavilySearchResults();
+
+        const chatHistory = await ChatHistory.findOne({ aichatroom });
+        const storeChatHistory = [];
+
+        if (chatHistory != null) {
+            chatHistory.messages.forEach((message, index) => {
+                if (index % 2 === 0) {
+                    storeChatHistory.push(new HumanMessage(message.content));
+                } else {
+                    storeChatHistory.push(new AIMessage(message.content));
+                }
+            });
+            //console.log(storeChatHistory);
+        } else {
+            const check = await ChatHistory.create({ messages: storeChatHistory, aichatroom });
+            console.log(check);
+        }
+
+        const vectorStore = await searchVectorStore(client ,input);
+
+        const retriever = await vectorStore.asRetriever({
+            k: 1,
+            vectorStore,
+            verbose: true
+        });
+
+        const retrieverTool = createRetrieverTool(retriever, {
+            name: "retriever",
+            description: "use this tool",
+            query: "{input}"
+        });
+
+        const tools = [retrieverTool, searchTool];
 
         const agent = await createOpenAIFunctionsAgent({
             llm: model,
