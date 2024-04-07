@@ -36,10 +36,32 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
         new MessagesPlaceholder("agent_scratchpad"),
         ("{tool-output}",  // Placeholder for potential tool output
         // Conditionally create and use retrieverTool
-            "{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
+        "{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
+        ("human","{input}")
          // Always use searchTool for broader information retrieval
         //("{tool-output}", "**I searched the web using the Search tool to find relevant information.** {{searchTool.output}}"),
     ]);
+
+    /*
+    const prompt = ChatPromptTemplate.fromMessages([
+    ("ai", "You are a helpful friend and assistant named Solomon. I can answer questions only related to the Bible or Christianity, referencing these topics in my responses."),
+    new MessagesPlaceholder("chat_history"),
+    ("human", "{input}"),
+    new MessagesPlaceholder("agent_scratchpad"),
+    // Use the LLM directly if retrieval tools have no output
+    ("{tool-output}", `{{#if (retrieverTool.output)}}
+        **I found some relevant information from gotQuestions.org:** {{retrieverTool.output}}
+        {{else}}
+            {{#if input}}
+            **Based on my knowledge of the Bible and Christianity, here's what I can tell you:** {{input}}
+            {{else}}
+            I need more information to understand your question. Can you rephrase it?
+            {{/if}}
+            {{#unless retrieverTool.output}}
+            **I couldn't find anything directly related to your question in my religious texts. Would you like me to search the web using the Search tool?** 
+            {{/unless}}
+        {{/if}}`),
+    ]);*/
 
     /*
     const prompt = ChatPromptTemplate.fromMessages([
