@@ -6,7 +6,7 @@ export const searchVectorStore = async (client, input) => {
 
             const query = toString(input);
 
-            const namespace = "test.aisknowledges";
+            const namespace = process.env.COLLECTION_NAMESPACE;;
             const [dbName, collectionName] = namespace.split(".");
             const collection = client.db(dbName).collection(collectionName);
             

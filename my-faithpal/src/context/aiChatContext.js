@@ -27,7 +27,7 @@ export const AIChatContextProvider = ({ children }) => {
     console.log("Online Users:", onlineUsers);
 
     useEffect(() => {
-        const newSocket = io(`http://localhost:8001`);
+        const newSocket = io(`${process.env.NEXT_PUBLIC_AI_SOCKET_URL}`);
         setSocket(newSocket);
 
         return () => {
@@ -247,7 +247,7 @@ export const AIChatContextProvider = ({ children }) => {
     //Will leave in for now
     useEffect(() => {
         const teachAI = async () => {
-            await postRequest("http://localhost:80/faithpalAI/webscrape");
+            await postRequest(`${aiUrl}faithpalAI/webscrape`);
         }
 
         teachAI();

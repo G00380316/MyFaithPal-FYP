@@ -7,11 +7,11 @@ import axios from "axios";
 //Loading our data and making vector store
 export const createVectoreStore = async (client) => {
 
-            const namespace = "test.aisknowledges";
+            const namespace = process.env.COLLECTION_NAMESPACE;
             const [dbName, collectionName] = namespace.split(".");
             const collection = client.db(dbName).collection(collectionName);
 
-            const response = await axios.post("http://localhost:80/faithpalAI/load/json");
+            const response = await axios.post(`${process.env.SERVER_URL}/faithpalAI/load/json`);
 
             console.log(response.data)
     

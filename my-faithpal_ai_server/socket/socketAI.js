@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 
-const io = new Server({ cors: "http://localhost:3000" });
+const io = new Server({ cors: process.env.CLIENT_SERVER_URL });
 
 dotenv.config();
 let onlineUsers = [];
@@ -53,4 +53,4 @@ io.on("connection", (socket) => {
     });
 });
 
-io.listen(8001);
+io.listen(process.env.PORT);

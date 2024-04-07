@@ -95,7 +95,7 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
         output: process.stdout,
     });
 
-    const aichatroom = "65eb4dbd53ff36d9c3fcb707";
+    const aichatroom = process.env.AI_TEST_CHATROOM;
 
     connectMongoDB();
     const chatHistory = await ChatHistory.findOne({ aichatroom });

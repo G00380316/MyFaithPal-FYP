@@ -25,11 +25,12 @@ dotenv.config();
             
         const newChatroom = await Chatroom.create({ participants: [firstId, secondId] });
 
-        console.log('User ID:', firstId);
-        console.log('Second ID:', secondId);
-        console.log('Created Chatroom:', newChatroom);
+        //console.log('User ID:', firstId);
+        //console.log('Second ID:', secondId);
+        //console.log('Created Chatroom:', newChatroom);
 
         res.status(201).json(newChatroom);
+
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Internal Server Error' });

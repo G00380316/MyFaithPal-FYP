@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 
-const io = new Server({ cors: "http://localhost:3000"});
+const io = new Server({ cors: process.env.CLIENT_SERVER_URL});
 
 let onlineUsers = [];
 
@@ -49,4 +49,4 @@ io.on("connection", (socket) => {
     });
 });
 
-io.listen(8000);
+io.listen(process.env.PORT);
