@@ -73,7 +73,7 @@ router.post('/webscrape', async (req, res) => {
 
         await fs.promises.writeFile("question.json", JSON.stringify(mergedQuestions, null, 2));
 
-        console.log(checkData);
+        //console.log(checkData);
 
         res.status(201).json({ /*response: checkData,*/ message: "Scraping completed successfully!" });
         
