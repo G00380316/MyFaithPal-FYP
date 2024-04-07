@@ -1,6 +1,6 @@
 "use client"
 
-import { signOut,useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function userInfo() {
@@ -22,7 +22,7 @@ export default function userInfo() {
                 </span>
             </div>
             <div>
-            <button onClick={() => signOut({callbackUrl:'http://localhost:3000/login'})}>
+            <button onClick={() => signOut({callbackUrl:`${process.env.NEXT_PUBLIC_CLIENT_URL}/login`})}>
                 Log Out
             </button >
             <Link href='/' ><button style={{backgroundColor: 'green'}}>Main application</button></Link>

@@ -11,15 +11,15 @@ import { Avatar, Box, IconButton, Stack, Tab, TabList, Tabs, Typography, tabClas
 import React, { useEffect } from 'react';
 import EditProfile from './editProfile';
 
-import { signOut, useSession } from 'next-auth/react';
-import YourPosts from './userPosts/yourPosts';
-import SavedPosts from './savedPosts/savedPosts';
-import Highlights from './higlights/highlights';
 import { baseUrl, postRequest } from '@/util/service';
-import Notes from './notes/notes';
-import Support from './support/support';
 import { Person } from '@mui/icons-material';
+import { signOut, useSession } from 'next-auth/react';
+import Highlights from './higlights/highlights';
+import Notes from './notes/notes';
 import People from './people/people';
+import SavedPosts from './savedPosts/savedPosts';
+import Support from './support/support';
+import YourPosts from './userPosts/yourPosts';
 
 const Styles = {
     root: {
@@ -78,7 +78,7 @@ export default function MyProfile() {
                         <Typography level="title-sm">{session?.user?.name}</Typography>
                     <Typography level="body-xs">{session?.user?.email}</Typography>
                 </Box>
-                    <IconButton size="sm" variant="plain" color="neutral" onClick={() => signOut({callbackUrl:'http://localhost:3000/login'})}>
+                    <IconButton size="sm" variant="plain" color="neutral" onClick={() => signOut({callbackUrl:`${process.env.NEXT_PUBLIC_CLIENT_URL}/login`})}>
                     <LogoutRoundedIcon />
                     </IconButton>
                 </Box>

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const { Schema, models } = mongoose;
 
 const AISKnowledgeSchema = new Schema({
-    context: {
+    text: {
         type: String,
         required: true,
         unique: true,

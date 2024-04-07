@@ -1,4 +1,6 @@
-export async function getBible(selectedBook , selectedChapter, selectedVerse , selectedTranslation) {
+import { baseUrl } from "@/util/service";
+
+export async function getBible(selectedBook, selectedChapter, selectedVerse, selectedTranslation) {
     try {
         var bookName = selectedBook ? selectedBook.toLowerCase() : '';
         const lastBookName = bookName;
@@ -24,18 +26,18 @@ export async function getBible(selectedBook , selectedChapter, selectedVerse , s
             
             if (selectedVerse == "") {
                 console.log("SelectedTrans is not empty entered if statment")
-                const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}/${selectedTranslation}`);
+                const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}/${selectedTranslation}`);
                 const data = await res.json();
                 console.log('API Response:', data);
 
                 return data;
             }
 
-                const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}:${selectedVerse}/${selectedTranslation}`);
+                const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${selectedVerse}/${selectedTranslation}`);
                 const data = await res.json();
                 if (data.error) {
                     const NewSelectedVerse = selectedVerse - 1;
-                    const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}:${NewSelectedVerse}/${selectedTranslation}`);
+                    const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${NewSelectedVerse}/${selectedTranslation}`);
                     const data = await res.json();
 
                     console.log('API Response with Verse and Translation plus Error:', data);
@@ -49,18 +51,18 @@ export async function getBible(selectedBook , selectedChapter, selectedVerse , s
 
             if (selectedVerse == "") {
             console.log("SelectedVerse is empty entered if statment")
-            const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}`);
+            const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}`);
             const data = await res.json();
             console.log('API Response:', data);
 
             return data;
         }
 
-            const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}:${selectedVerse}`);
+            const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${selectedVerse}`);
             const data = await res.json();
             if (data.error) {
                 const NewSelectedVerse = selectedVerse - 1;
-                const res = await fetch(`http://localhost:5000/bible/${bookName}${selectedChapter}:${NewSelectedVerse}`);
+                const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${NewSelectedVerse}`);
                 const data = await res.json();
 
                 console.log('API Response with Verse plus Error:', data);

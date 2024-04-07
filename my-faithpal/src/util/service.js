@@ -1,5 +1,5 @@
-export const baseUrl = "http://localhost:5000/"
-export const aiUrl = "http://localhost:80/"
+export const baseUrl = process.env.NEXT_PUBLIC_FAITHPALSERVER_URL;
+export const aiUrl = process.env.NEXT_PUBLIC_FAITHPALSERVER_AIURL;
 
 export const postRequest = async (url, body) => {
 

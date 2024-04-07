@@ -46,22 +46,36 @@ router.post('/webscrape', async (req, res) => {
         const listItems = $(".content");
 
         const questions = [];
-        const QA = { context: ""};
+        const QA = { text: "" };
+        let existingQuestions = [];
 
         connectMongoDB();
 
         // Iterate through each list item and extract text
         listItems.each((idx, el) => {
-            QA.context = $(el).children("h1").children("*[itemprop = 'name headline']").text() + $(el).children("*[itemprop = 'articleBody']").text() + "\n\n\n\n";
+            QA.text = $(el).children("h1").children("*[itemprop = 'name headline']").text() + $(el).children("*[itemprop = 'articleBody']").text() + "\n\n\n\n";
         });
 
         questions.push(QA);
 
-        const checkData = await sourceKnowledge.create({ context: QA.context });
+        //const checkData = await sourceKnowledge.create({ text: QA.text });
+
+        try {
+            const fileData = await fs.promises.readFile("question.json", "utf-8");
+            existingQuestions = JSON.parse(fileData);
+        } catch (err) {
+            if (err.code !== 'ENOENT') {
+                console.error("Error reading existing data from file:", err);
+            }
+        }
+
+        const mergedQuestions = existingQuestions.concat(questions);
+
+        await fs.promises.writeFile("question.json", JSON.stringify(mergedQuestions, null, 2));
 
         console.log(checkData);
 
-        res.status(201).json({ response: checkData, message: "Scraping completed successfully!" });
+        res.status(201).json({ /*response: checkData,*/ message: "Scraping completed successfully!" });
         
     } catch (err) {
 
@@ -278,7 +292,7 @@ router.post('/fix/json', async (req, res) => {
 
         console.log(loadData);
 
-        loadData.forEach(obj => FormattedData.push({ context: obj.context }));
+        loadData.forEach(obj => FormattedData.push({ text: obj.text }));
 
         //console.log(FormattedData);
 
@@ -305,7 +319,7 @@ router.post('/load/json', async (req, res) => {
 
         console.log(loadData);
 
-        loadData.forEach(obj => FormattedData.push({ context: obj.context }));
+        loadData.forEach(obj => FormattedData.push({ text: obj.text }));
 
         res.status(200).json({ response: FormattedData, message: "Json sent successfully!" });
         

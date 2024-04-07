@@ -18,8 +18,8 @@ export const createVectoreStore = async (client) => {
             const context = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
 
             //delete the database to create a new vector store from json
-            //const loader = new JSONLoader("question.json");
-            const loader = new JSONLoader(context);
+            const loader = new JSONLoader("question.json");
+            //const loader = new JSONLoader(context);
     
             
             const docs = await loader.load();
