@@ -36,6 +36,7 @@ export default function EditProfile() {
     const [coverImageSrc, setCoverImageSrc] = useState(null);
     const [UserData, setUserData] = useState("");
     const [error, setError] = useState("");
+    let updatedDetails;
     
     const router = useRouter();
     const { data: session } = useSession();
@@ -158,13 +159,12 @@ export default function EditProfile() {
                     _id: session?.user?._id, simage: session?.user?.image, bio, cimage: newCoverUrl, prevcimage: coverImageSrc}),
             })
             
-            const updatedDetails = await resUpdatedUser.json();
-            console.log("This one",updatedDetails)
+            updatedDetails = await resUpdatedUser.json();
+
             if (updatedDetails) {
-
                 console.log("Updated Details info: ", updatedDetails);
-                NotifyCustom({ text: "Success Profile Updated", icon: Icons.success , theme: "light"})
-
+                NotifyCustom({ text: "Success Profile Updated", icon: Icons.success, theme: "light" })
+                NotifyCustom({ text: "Click to see updates", icon: Icons.info, theme: "light" , onClick:() => window.location.reload()})
             } else {
                 console.log("Error updating failed", error);
             }

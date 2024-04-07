@@ -50,7 +50,7 @@ export default function QuestionModal() {
             console.log(response)
 
             if (response.acknowledged === true) {
-                NotifyCustom({ text: `Chat is cleared for next time`, bar: true, icon: Icons.success })
+                NotifyCustom({ text: `Chat is cleared, click to see changes`, bar: true, icon: Icons.success, onClick: () => window.location.reload() })
             }
         } else {
             NotifyCustom({text:`Click again to confirm`, bar: true, icon: Icons.info })
@@ -67,6 +67,7 @@ export default function QuestionModal() {
                 icon: Icons.warning,
                 text: "Log in to Unlock feature",
                 bar: true,
+                autoClose: 1500,
             })
         }
     }, [session]);

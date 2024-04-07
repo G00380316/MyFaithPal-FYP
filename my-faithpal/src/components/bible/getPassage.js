@@ -54,7 +54,8 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
             reference: newRef, user: updatedDomValue._id,
         }));
 
-    NotifyCustom({text:`Oh Oh notes in ${PassageRef} have been cleared...Em sorry?!!`, bar: true, icon: Icons.success })
+        NotifyCustom({ text: `Oh Oh notes in ${PassageRef} have been cleared...Em sorry?!!`, bar: true, icon: Icons.success })
+        setDom(editorRef.current)
     }
 
     const handleSave = async() => {
