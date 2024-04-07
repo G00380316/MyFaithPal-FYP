@@ -34,8 +34,36 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
         new MessagesPlaceholder("chat_history"),
         ("human", "{input}"),
         new MessagesPlaceholder("agent_scratchpad"),
+        ("{tool-output}",  // Placeholder for potential tool output
+        // Conditionally create and use retrieverTool
+            "{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
+         // Always use searchTool for broader information retrieval
+        //("{tool-output}", "**I searched the web using the Search tool to find relevant information.** {{searchTool.output}}"),
     ]);
+
+    /*
+    const prompt = ChatPromptTemplate.fromMessages([
+        ("system", "You are a helpful assistant."),
+        new MessagesPlaceholder("chat_history"),
+        ("human", "{input}"),
+        new MessagesPlaceholder("agent_scratchpad"),
+    ]);*/
     
+    /*
+    const prompt = ChatPromptTemplate.fromMessages([
+        ("system", "You are a helpful assistant, focusing on religious topics."),
+        new MessagesPlaceholder("chat_history"),
+        ("human", "{input}"),
+        new MessagesPlaceholder("agent_scratchpad"),
+
+        // Conditionally use retrieverTool for religious questions
+        ("{tool-output}",
+            "{{#if isReligiousQuestion(input)}} **I consulted religious texts using the Retriever tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
+
+        // Always use searchTool for broader information retrieval
+        ("{tool-output}", "**I searched the web using the Search tool to find relevant information.** {{searchTool.output}}"),
+    ]);*/
+
     //Create and Assign Tools
     const searchTool = new TavilySearchResults();
 
@@ -78,7 +106,7 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
             const vectorStore = await searchVectorStore(client, input);
             //Working really well implementing for app
             const retriever = await vectorStore.asRetriever({
-                k: 5,
+                k: 1,
                 vectorStore,
                 verbose: true
             });
