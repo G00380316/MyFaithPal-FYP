@@ -245,13 +245,13 @@ export const AIChatContextProvider = ({ children }) => {
     }, [setNewMessage, setMessages, aiUrl]);
 
     //Will leave in for now
-    /*useEffect(() => {
+    useEffect(() => {
         const teachAI = async () => {
             await postRequest("http://localhost:80/faithpalAI/webscrape");
         }
 
         teachAI();
-    },[])*/
+    },[session])
 
     /*
     const updateCurrentAIChat = useCallback(async (chat) => {
