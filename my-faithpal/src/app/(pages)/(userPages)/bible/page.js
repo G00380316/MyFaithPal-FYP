@@ -8,6 +8,7 @@ import { Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from "react";
+import { Icons } from "react-toastify";
 
 const Styles = {
     root: {
@@ -42,17 +43,17 @@ export default function Bible() {
 
     const handleSaveButtonClick = () => {
         setSaveClicked(true);
-        console.log("Update saveClicked state to: ", saveClicked);
+        //console.log("Update saveClicked state to: ", saveClicked);
     };
 
     const handleClearButtonClick = () => {
         setClearClicked(true);
-        console.log("Update clearClicked state to: ", clearClicked);
+        //console.log("Update clearClicked state to: ", clearClicked);
     };
 
     useEffect(() => {
         if (saveClicked) {
-            console.log("Save operation completed.");
+            //console.log("Save operation completed.");
             // Reset saveClicked back to false
             setSaveClicked(false);
         }
@@ -60,7 +61,7 @@ export default function Bible() {
 
     useEffect(() => {
         if (clearClicked) {
-            console.log("Clear operation completed.");
+            //console.log("Clear operation completed.");
             // Reset saveClicked back to false
             setClearClicked(false);
         }
@@ -68,7 +69,11 @@ export default function Bible() {
 
     useEffect(() => {
         if (!session?.user) {
-            NotifyCustom({text:"Login in to use all features", bar: false});
+            NotifyCustom({
+                icon: Icons.warning,
+                text: "Log in to use all features",
+                bar: true,
+            })
         }
     }, [session]);
 

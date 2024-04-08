@@ -1,5 +1,7 @@
 
 import { Box, Card, Divider, Typography, Stack, List, ListItem } from '@mui/joy';
+import Link from "next/link"
+import styles from "./support.module.css"
 import ListItemText from '@mui/material/ListItemText';
 import React from 'react'
 
@@ -9,15 +11,18 @@ export default function Support() {
         <Box m>
             <Card >
                 <Box sx={{ m: 2 }} >
-                    <Typography
+                    <Box display={"flex"} justifyContent={"space-between"}>
+                        <Typography
                         fontSize="24px"
                         fontStyle="italic"
                         fontFamily="monospace"
                         level="title-lg"
                         fontWeight={900}
-                    >
-                        Info & Instructions
-                    </Typography>
+                        >
+                            Info & Instructions
+                        </Typography>
+                        <Link href='https://revolut.me/enoch1urd'><button className={styles.button}>Donate</button></Link>
+                    </Box>
                 <Typography level="sm">
                         Hello there! My name is Enoch Abiodun, and I am a fourth-year college student at Atlantic Technology University in Galway City.
                         Welcome to my final year project called Faithpal. Faithpal is a web application created for new and old believers in Jesus Christ, our Lord, and Savior.

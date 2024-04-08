@@ -5,12 +5,12 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
 
     try {
-        var { name, email, username, sname, semail, susername, _id, image, simage, bio, cimage } = await req.json();
+        let { name, email, username, sname, semail, susername, _id, image, simage, bio, cimage, prevcimage } = await req.json();
 
-        console.log("Name: ", name);
-        console.log("Email: ", email);
-        console.log("Username: ", username);
-        console.log("Profile Pic: ", image);
+        //console.log("Name: ", name);
+        //console.log("Email: ", email);
+        //console.log("Username: ", username);
+        //console.log("Profile Pic: ", image);
 
         await connectMongoDB();
 
@@ -35,9 +35,8 @@ export async function POST(req) {
         }
 
         if (!cimage) {
-            cimage = "";
+            cimage = prevcimage;
         }
-
 
         const updatedPost = await User.findByIdAndUpdate(_id, { name, email, username , image , bio, coverimage: cimage}, { new: true });
         

@@ -5,14 +5,14 @@ import express from 'express';
 import { connectMongoDB } from "./lib/mongo.js";
 
 //Routes
-import Prompt from './routes/prompt.js';
-import Chatgpt from './routes/chatgpt.js';
 import AIChatroom from './routes/aichatroom.js';
+import Chatgpt from './routes/chatgpt.js';
 import FaithpalAI from './routes/faithgpt.js';
+import Prompt from './routes/prompt.js';
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT;
 
 connectMongoDB();
 
@@ -26,4 +26,4 @@ app.use('/ai', Chatgpt);
 app.use('/aichatroom', AIChatroom);
 app.use('/faithpalAI', FaithpalAI);
 
-app.listen(PORT, () => console.log(`Server started on port http://localhost:${PORT}`));
+app.listen(PORT, () =>console.log(`Server started on port http://localhost:${PORT}`));

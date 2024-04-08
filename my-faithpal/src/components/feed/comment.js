@@ -1,11 +1,11 @@
-import { Typography, Box, CardContent, IconButton, Link, } from '@mui/joy';
-import { FavoriteBorder, Favorite } from '@mui/icons-material';
-import moment from 'moment';
-import { baseUrl, postRequest } from '@/util/service';
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { NotifyCustom } from '@/util/notify';
-import React from 'react';
+import { baseUrl, postRequest } from '@/util/service';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
+import { Box, CardContent, IconButton, Link, Typography, } from '@mui/joy';
+import moment from 'moment';
+import { useSession } from 'next-auth/react';
+import React, { useState } from 'react';
+import { Icons } from 'react-toastify';
 
 export default function Comment({_id,content,likes,user,createdAt}) {
     
@@ -19,7 +19,11 @@ export default function Comment({_id,content,likes,user,createdAt}) {
     const handleLikes = async () => {
 
         if (!session) {
-            NotifyCustom({text:"Login to Like Comments", bar: false})
+            NotifyCustom({
+                icon: Icons.error,
+                text: "Login to Like Comments",
+                bar: true,
+            })
             return
         };
 
@@ -27,8 +31,8 @@ export default function Comment({_id,content,likes,user,createdAt}) {
 
             const newLikesArray = likes.includes(session?.user?._id) ? likes : [...likes, session?.user?._id];
 
-            console.log(newLikesArray)
-            console.log(_id)
+            //console.log(newLikesArray)
+            //console.log(_id)
             
             const updatedComment = await postRequest(`${baseUrl}comment/update/like`, JSON.stringify({
                 commentId: _id,
@@ -43,14 +47,14 @@ export default function Comment({_id,content,likes,user,createdAt}) {
 
             setnewCommentInfo(updatedComment);
 
-            console.log("Added like to: ", updatedComment);
+            //console.log("Added like to: ", updatedComment);
 
         } else {
 
             const newLikesArray = likes.filter(id => id !== session?.user?._id);
 
-            console.log(newLikesArray)
-            console.log(_id)
+            //console.log(newLikesArray)
+            //console.log(_id)
             
             const updatedComment = await postRequest(`${baseUrl}comment/update/like`, JSON.stringify({
                 commentId: _id,
@@ -65,7 +69,7 @@ export default function Comment({_id,content,likes,user,createdAt}) {
 
             setnewCommentInfo(updatedComment);
             
-            console.log("Removed like from: ", updatedComment);
+            //console.log("Removed like from: ", updatedComment);
         }
     }
 
@@ -88,7 +92,7 @@ export default function Comment({_id,content,likes,user,createdAt}) {
 
                 const userData = await response.json();
 
-                console.log("Need", userData)
+                //console.log("Need", userData)
                 setUserData(userData || "");
                 
             } catch (error) {
@@ -115,16 +119,16 @@ export default function Comment({_id,content,likes,user,createdAt}) {
 
             const commentData = await response.json();
 
-            console.log("need", commentData)
+            //console.log("need", commentData)
 
             if (commentData?.likes?.includes(session?.user?._id)) {
                 setLiked(true);
                 setnewCommentInfo(commentData.likes);
-                //console.log("like set to true")
+                ////console.log("like set to true")
             } else {
                 setLiked(false);
                 setnewCommentInfo(commentData.likes);
-                //console.log("like set to false")
+                ////console.log("like set to false")
             }
         }
 
@@ -143,7 +147,7 @@ export default function Comment({_id,content,likes,user,createdAt}) {
                                     fontWeight="lg"
                                     textColor="text.primary"
                                     >
-                                        {UserData?.user?.name}
+                                        {UserData?.user?.username || UserData?.user?.name}
                                     </Link>
                                 <Box sx={{width:400, overflowWrap: 'break-word', whiteSpace: 'pre-line'}}>
                                 {expanded ? content : content.substring(0, contentLengthToShow)}

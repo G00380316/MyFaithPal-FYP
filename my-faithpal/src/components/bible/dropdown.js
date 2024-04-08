@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { bookInfo } from '@/util/bible/Filter/bookInfo';
-import { translationOptions } from '@/util/bible/translationOptions';
-import { oebbookInfo } from '@/util/bible/Filter/oebBooks';
 import styles from '@/components/bible/dropdown.module.css';
+import { bookInfo } from '@/util/bible/Filter/bookInfo';
+import { oebbookInfo } from '@/util/bible/Filter/oebBooks';
+import { translationOptions } from '@/util/bible/translationOptions';
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 const Dropdown = ({ onSelectionChange, onSaveClick, onClearClick }) => {
 
@@ -66,12 +66,12 @@ const Dropdown = ({ onSelectionChange, onSaveClick, onClearClick }) => {
 
     const handleSaveButtonClick = () => {
         onSaveClick();
-        console.log("parent class")
+        //console.log("parent class")
     };
 
     const handleClearButtonClick = () => {
         onClearClick();
-        console.log("parent class")
+        //console.log("parent class")
     };
 
     return (

@@ -68,13 +68,13 @@ export default function HighlightCard({highlight, verse, reference}) {
                     fontWeight="lg"
                     textColor="text.primary"
                 >
-                    {session?.user?.name}
+                    {session?.user?.username || session?.user?.name}
                 </Link>
             </CardContent>
                 <CardContent >
                         <CardContent orientation='horizontal' sx={{ justifyContent: "space-between" }}>
                             <Typography fontSize="lg" fontWeight={700}>
-                                {reference}:{verse}
+                                {reference.toString()}:{verse.toString()}
                         </Typography>
                         <Typography fontSize="lg" fontWeight={700}>
                                 {translation.trim() || "Web"}

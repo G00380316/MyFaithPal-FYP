@@ -1,11 +1,11 @@
 "use client"
 
-import { createContext, useState, useEffect, useCallback, use } from "react";
 import { baseUrl, getRequest, postRequest } from "@/util/service";
-import { useSession } from "next-auth/react";
-import { io } from "socket.io-client";
 import dotenv from "dotenv";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { createContext, useCallback, useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 export const ChatContext = createContext();
 dotenv.config();
@@ -30,11 +30,11 @@ export const ChatContextProvider = ({ children }) => {
 
     const router = useRouter();
 
-    console.log("Online Users:", onlineUsers);
-    console.log("Notifications:", notifications);
+    //console.log("Online Users:", onlineUsers);
+    //console.log("Notifications:", notifications);
 
     useEffect(() => {
-        const newSocket = io(`http://localhost:8000`);
+        const newSocket = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`);
         setSocket(newSocket);
 
         return () => {
@@ -59,13 +59,13 @@ export const ChatContextProvider = ({ children }) => {
     useEffect(() => {
         if (socket === null) return;
         
-        console.log("I need", currentChat)
+        //console.log("I need", currentChat)
         
         const recipientId = currentChat.participants // Extract participants array from each chat
         .flat() // Flatten the array of arrays
             .filter(id => id !== session?.user?._id);
         
-        console.log("I need", recipientId)
+        //console.log("I need", recipientId)
         
         socket.emit("sendMessage", { ...newMessage, recipientId });
     }, [newMessage]);
@@ -84,7 +84,7 @@ export const ChatContextProvider = ({ children }) => {
         socket.on("getNotification", (res) => {
             
             const isChatOpen = currentChat?.participants.some(id => id === res.senderId)
-            console.log(window.location.pathname)
+            //console.log(window.location.pathname)
             //idea here is to make sure the pathname is question before setting true as we were unable to receive notifications as chat stays open when we leave the path /chat
             if (isChatOpen && (window?.location?.pathname === "/chat")) {
                 setNotifications((prev) => [{ ...res, isRead:true }, ...prev]);
@@ -106,10 +106,10 @@ export const ChatContextProvider = ({ children }) => {
         const getUsers = async () => {
             const response = await getRequest(`/api/getAllUsers`);
             
-            console.log("Array of Users",response);
+            //console.log("Array of Users",response);
 
             if (response.error) {
-                return console.log("Error getting Users", response)
+                return //console.log("Error getting Users", response)
             }
 
             const pChats = response?.user?.filter((u) => {
@@ -126,7 +126,7 @@ export const ChatContextProvider = ({ children }) => {
                 return !isChatCreated;
             });
 
-            console.log("Potential Users to Chat",pChats);
+            //console.log("Potential Users to Chat",pChats);
             setPotentialChats(pChats);
             setAllUsers(response?.user);
         };
@@ -149,7 +149,7 @@ export const ChatContextProvider = ({ children }) => {
                     return setUserChatsError(response);
                 }
 
-                console.log(response);
+                //console.log(response);
                 
                 setUserChats(response);
             }
@@ -172,7 +172,7 @@ export const ChatContextProvider = ({ children }) => {
                 return setMessagesError(response);
             }
 
-            console.log(response);
+            //console.log(response);
                 
             setMessages(response);
         };
@@ -181,11 +181,11 @@ export const ChatContextProvider = ({ children }) => {
     }, [currentChat]);
 
     const sendTextMessage = useCallback( async (textMessage, currentChatID, setTextMessage) => {
-        if (!textMessage) return console.log("No input");
+        if (!textMessage) return //console.log("No input");
 
-        console.log("Sending Chatroom ID to send message", currentChatID)
-        console.log("Sending User ID to send message", session?.user?._id)
-        console.log("Sending text message to send message", textMessage)
+        //console.log("Sending Chatroom ID to send message", currentChatID)
+        //console.log("Sending User ID to send message", session?.user?._id)
+        //console.log("Sending text message to send message", textMessage)
 
         const response = await postRequest(`${baseUrl}message/create`, JSON.stringify({
             chatroom: currentChatID, user: session?.user?._id, text: textMessage,
@@ -213,7 +213,7 @@ export const ChatContextProvider = ({ children }) => {
         );
 
         if (response.error) {
-            return console.log("Error creating chat", response);
+            return //console.log("Error creating chat", response);
         }
 
         setUserChats((prev) => [...prev, response]);

@@ -23,7 +23,7 @@ import Response from '../models/messages.js';
             const response = await openai.chat.completions.create({
                 model: "gpt-3.5-turbo",
                 messages: [{ role: "user", content: prompt }],
-                max_tokens: 200,
+                max_tokens: 1000,
             });
 
             const id_AI = process.env.AI_ID;
@@ -32,7 +32,7 @@ import Response from '../models/messages.js';
 
             const answer = response.choices[0];
             
-            console.log('ChatGPT Response:', answer.message.content);
+            //console.log('ChatGPT Response:', answer.message.content);
 
             const aiReponse = await Response.create({ aichatroom, user: id_AI , text: answer.message.content , data: answer , prompt });
 
@@ -53,7 +53,7 @@ import Response from '../models/messages.js';
 
             res.status(200).json(responses);
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             res.status(500).json(error);
         }
     })

@@ -1,16 +1,26 @@
-import {
-    AspectRatio, Box, Card, Divider, IconButton,
-    Input, Stack, Typography, FormLabel, FormControl,
-    CardOverflow, CardActions, Button, Textarea, FormHelperText
-    ,styled} from '@mui/joy';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import React from 'react'
-import { useSession } from 'next-auth/react';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import { useState } from 'react';
 import { NotifyCustom } from '@/util/notify';
-import { Icons } from 'react-toastify';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import {
+    AspectRatio, Box,
+    Button,
+    Card,
+    CardActions,
+    CardOverflow,
+    Divider,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    IconButton,
+    Input, Stack,
+    Textarea,
+    Typography,
+    styled
+} from '@mui/joy';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Icons } from 'react-toastify';
 
 const VisuallyHiddenInput = styled('input')`
     clip: rect(0 0 0 0);
@@ -30,12 +40,13 @@ export default function EditProfile() {
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [bio, setBio] = useState("");
-    const [file, setFile] = React.useState(null);
-    const [file1, setFile1] = React.useState(null);
-    const [imageSrc, setImageSrc] = React.useState(null);
-    const [coverImageSrc, setCoverImageSrc] = React.useState(null);
+    const [file, setFile] = useState(null);
+    const [file1, setFile1] = useState(null);
+    const [imageSrc, setImageSrc] = useState(null);
+    const [coverImageSrc, setCoverImageSrc] = useState(null);
     const [UserData, setUserData] = useState("");
     const [error, setError] = useState("");
+    let updatedDetails;
     
     const router = useRouter();
     const { data: session } = useSession();
@@ -52,17 +63,17 @@ export default function EditProfile() {
 
     }
 
-    console.log("file for Profile",file)
-    console.log("file for Cover", file1)
+    //console.log("file for Profile",file)
+    //console.log("file for Cover", file1)
     
     const handleSave = async (e) => {
-        
-        e.preventDefault();
+
+        e.preventDefault(e);
 
         try {
 
-            var newCoverUrl;
-            var newProfileUrl;
+            let newCoverUrl;
+            let newProfileUrl;
 
             if (username != session?.user?.username) {
 
@@ -79,7 +90,7 @@ export default function EditProfile() {
                 if (user) {
                     
                     setError("Username is taken");
-                    console.log(error);
+                    //console.log(error);
 
                     return;
 
@@ -101,7 +112,7 @@ export default function EditProfile() {
                 if (user) {
                     
                     setError("Email is taken");
-                    console.log(error);
+                    //console.log(error);
 
                     return;
 
@@ -118,8 +129,13 @@ export default function EditProfile() {
                 });
 
                 const data = await response.json();
-                console.log(data.fileDetails.fileUrl);
+
+                if (data.error) {
+                    NotifyCustom({ text: `Click "Save" again to update`, icon: Icons.info , theme: "light"})
+                }
+
                 newProfileUrl = data.fileDetails.fileUrl;
+
             }
 
             if (file1) {
@@ -133,8 +149,13 @@ export default function EditProfile() {
                 });
 
                 const data = await response.json();
-                console.log(data.fileDetails.fileUrl);
+
+                if (data.error) {
+                    NotifyCustom({ text: `Click "Save" again to update`, icon: Icons.info , theme: "light"})
+                }
+
                 newCoverUrl = data.fileDetails.fileUrl;
+
             }
 
             const resUpdatedUser = await fetch('api/updateUser', {
@@ -145,26 +166,24 @@ export default function EditProfile() {
                 body: JSON.stringify({
                     email, username, name, image: newProfileUrl, sname: session?.user?.name,
                     semail: session?.user?.email, susername: session?.user?.username,
-                    _id: session?.user?._id, simage: session?.user?.image, bio, cimage: newCoverUrl }),
+                    _id: session?.user?._id, simage: session?.user?.image, bio, cimage: newCoverUrl, prevcimage: coverImageSrc}),
             })
             
-            const updatedDetails = await resUpdatedUser.json();
+            updatedDetails = await resUpdatedUser.json();
 
             if (updatedDetails) {
-
-                console.log("Updated Details info: ", updatedDetails);
-                router.refresh();
-                NotifyCustom({ text: "Success Profile Updated", icon: Icons.success , theme: "light"})
-                
+                //console.log("Updated Details info: ", updatedDetails);
+                NotifyCustom({ text: "Success Profile Updated", icon: Icons.success, theme: "light" })
+                NotifyCustom({ text: "Click to see updates", icon: Icons.info, theme: "light" , onClick:() => window.location.reload()})
             } else {
-                console.log("Error updating failed", error);
+                //console.log("Error updating failed", error);
             }
         } catch (error) {
-            console.log("Error whilst Updating: ", error);
+            //console.log("Error whilst Updating: ", error);
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
@@ -179,7 +198,7 @@ export default function EditProfile() {
     }, [file]);
 
     
-    React.useEffect(() => {
+    useEffect(() => {
         if (file1) {
             const reader = new FileReader();
             reader.onload = () => {
@@ -193,7 +212,7 @@ export default function EditProfile() {
         }
     }, [file1]);
 
-    React.useEffect(() => {
+    useEffect(() => {
 
         const fetchData = async () => {
             try {
@@ -211,7 +230,7 @@ export default function EditProfile() {
                 setUserData(userData || "");
                 setBio(userData?.user?.bio || "I love Jesus")
                 setCoverImageSrc(userData?.user?.coverimage)
-                
+
             } catch (error) {
                 
                 console.error('Error getting User Data:', error);
@@ -225,7 +244,6 @@ export default function EditProfile() {
 
     const maxCharacters = 275;
 
-    
     const handleChange = (event) => {
         const inputText = event.target.value;
         if (inputText.length <= maxCharacters) {

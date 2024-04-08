@@ -23,7 +23,7 @@ export default function Posts() {
                     userId: session?.user?._id
                 }));
                 setPostData(data || []);
-                console.log("All Posts", data);
+                //console.log("All Posts", data);
 
             } catch (error) {
 
@@ -65,7 +65,7 @@ export default function Posts() {
             </Grid>
                 <Grid>
                     <Stack spacing={1} marginTop={1} width={1000}>
-                        {PostData.slice().reverse().map((post) => (
+                        {PostData?.slice().reverse().map((post) => (
                             <Post
                                 key={post._id}
                                 _id={post._id}

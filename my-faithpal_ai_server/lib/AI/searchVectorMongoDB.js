@@ -6,7 +6,7 @@ export const searchVectorStore = async (client, input) => {
 
             const query = toString(input);
 
-            const namespace = "test.vectorstore";
+            const namespace = process.env.COLLECTION_NAMESPACE;;
             const [dbName, collectionName] = namespace.split(".");
             const collection = client.db(dbName).collection(collectionName);
             
@@ -25,7 +25,7 @@ export const searchVectorStore = async (client, input) => {
             // });
             //works better
             //const retrieverOutput = await vectorStore.similaritySearch(query, 5);
-            //console.log (result)
+            ////console.log (result)
 
             return vectorStore;
 }

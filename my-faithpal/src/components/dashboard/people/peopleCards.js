@@ -1,8 +1,9 @@
 import {
-    AspectRatio, Box, Card, Divider,
-    Stack, Typography,CardOverflow
+    AspectRatio, Box, Card,
+    CardOverflow,
+    Stack, Typography
 } from '@mui/joy';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import Posts from './peoplePosts';
 
 export default function PeopleCards({ user }) {
@@ -17,7 +18,7 @@ export default function PeopleCards({ user }) {
 
     useEffect(() => {
 
-        //console.log("This", user)
+        ////console.log("This", user)
         setPersonId(user?._id)
         setEmail(user?.email)
         setName(user?.name)
@@ -58,7 +59,7 @@ export default function PeopleCards({ user }) {
                                     src={image || ""}
                                     alt=""
                                     loading="lazy"
-                                    style={{ width: 225, height: 225, borderRadius: '50%'}}
+                                    style={{ width: 240, height: 225, borderRadius: '50%'}}
                                 />
                             </Box>
                             <Box

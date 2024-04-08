@@ -33,8 +33,8 @@ export default function Home() {
   useEffect(() => {
 
     if (!session) {
-        
-      NotifyCustom({ text: `What to get to know God...Start reading.` });
+      
+      NotifyCustom({ text: `What to get to know God...Start reading.`, theme: "dark" });
       
     }
 

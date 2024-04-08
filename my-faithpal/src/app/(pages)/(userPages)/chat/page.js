@@ -10,6 +10,7 @@ import { Grid, Stack, Typography } from "@mui/joy";
 import { LoadingButton } from "@mui/lab";
 import { useSession } from "next-auth/react";
 import { useContext, useEffect } from "react";
+import { Icons } from "react-toastify";
 
 export default function Chat() {
 
@@ -17,8 +18,12 @@ export default function Chat() {
   const { data: session } = useSession();
 
   useEffect(() => {
-        if (!session?.user) {
-            NotifyCustom({text:`Log in to Unlock feature`});
+    if (!session?.user) {
+          NotifyCustom({
+                icon: Icons.warning,
+                text: "Log in to Unlock feature",
+                bar: true,
+          })
         }
   }, [session]);
   

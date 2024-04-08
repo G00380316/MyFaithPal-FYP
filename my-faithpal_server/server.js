@@ -7,13 +7,13 @@ import { connectMongoDB } from "./lib/mongo.js";
 //Routes
 import Bible from './routes/bible.js';
 import Chatroom from "./routes/chatroom.js";
+import Comment from './routes/comment.js';
 import Message from './routes/message.js';
 import Post from './routes/post.js';
-import Comment from './routes/comment.js';
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 connectMongoDB();
 
@@ -28,4 +28,4 @@ app.use('/message', Message);
 app.use('/post', Post);
 app.use('/comment', Comment);
 
-app.listen(PORT, () => console.log(`Server started on port http://localhost:${PORT}`));
+app.listen(PORT, () =>console.log(`Server started on port http://localhost:${PORT}`));

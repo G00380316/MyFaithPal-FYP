@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export const useFetchRecipientUser = ( userChats ) => {
     
@@ -7,7 +7,7 @@ export const useFetchRecipientUser = ( userChats ) => {
     const [recipientUser, setRecipientUser] = useState(null);
     const [error, setError] = useState(null);
 
-    console.log("userChats Info ", userChats);
+    //console.log("userChats Info ", userChats);
 
     useEffect(() => {
         const getUser = async () => {
@@ -18,10 +18,10 @@ export const useFetchRecipientUser = ( userChats ) => {
 
             if (!recipientId) return null;
 
-            //console.log("recipientID Info", recipientId);
+            ////console.log("recipientID Info", recipientId);
 
             try {
-                    console.log("Sending Recipient", recipientId);
+                    //console.log("Sending Recipient", recipientId);
 
                     const response = await fetch(`/api/userByID`, {
                         method: 'POST',
@@ -33,7 +33,7 @@ export const useFetchRecipientUser = ( userChats ) => {
 
                     const userData  = await response.json();
 
-                    console.log("Data Received by API Route in Hook", userData.user);
+                    //console.log("Data Received by API Route in Hook", userData.user);
 
                     if (response.error) {
                         setError(response.error);

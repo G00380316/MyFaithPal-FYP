@@ -5,6 +5,11 @@
         color: rgb(180, 180, 180);
     }
 
+    .title{
+        align-self: center;
+        margin-left: 100%;
+    }
+
     .chat_box {
         background: rgb(114, 109, 93);
         border-radius: 5px;
@@ -29,10 +34,24 @@
     border-radius: 0.25em;
     }
 
+    .button {
+        cursor: pointer;
+        border: 0;
+        border-radius: 4px;
+        font-weight: 600;
+        width: 120px;
+        padding: 10px 0;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        transition: all 0.4s ease;
+    }
+
+    .button:hover {
+        background-color: rgb(165, 42, 42);
+    }
+
     .chat_header {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         border-radius: 5px;
         padding: 0.75rem;
         color: white;

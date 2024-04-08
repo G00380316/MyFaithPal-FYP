@@ -1,13 +1,14 @@
 import { getBible } from "@/app/api/(bible)/bible/getBible";
+import { NotifyCustom } from "@/util/notify";
 import { baseUrl, postRequest } from '@/util/service';
+import { Grid, Stack } from "@mui/joy";
+import { LoadingButton } from "@mui/lab";
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { Icons } from "react-toastify";
 import { Editor, useDomValue } from 'reactjs-editor';
 import styles from "./passage.module.css";
-import { Grid,Stack } from "@mui/joy";
-import { LoadingButton } from "@mui/lab";
-import { NotifyCustom } from "@/util/notify";
 
 export default function DisplayPassage({ selectedBook, selectedChapter, selectedVerse , selectedTranslation, saveClicked, clearClicked }) {
     
@@ -25,14 +26,14 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
     useEffect(() => {
         if (saveClicked) {
             handleSave();
-            console.log("Save received")
+            //console.log("Save received")
         }
     }, [saveClicked]);
 
     useEffect(() => {
         if (clearClicked) {
             handleClear();
-            console.log("Request to Clear received")
+            //console.log("Request to Clear received")
         }
     }, [clearClicked]);
 
@@ -53,7 +54,8 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
             reference: newRef, user: updatedDomValue._id,
         }));
 
-    NotifyCustom({text:`Oh Oh notes in ${PassageRef} have been cleared...Em sorry?!!`, bar: false })
+        NotifyCustom({ text: `Oh Oh notes in ${PassageRef} have been cleared...Em sorry?!!`, bar: true, icon: Icons.success })
+        setDom(editorRef.current)
     }
 
     const handleSave = async() => {
@@ -74,10 +76,10 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
         }));
 
         if (passageExists.error) {
-            console.log(passageExists.error);
+            //console.log(passageExists.error);
         }
 
-    NotifyCustom({text:`"${PassageRef}", Saved`, bar: false })
+    NotifyCustom({text:`"${PassageRef}", Saved`, bar: false, icon: Icons.success })
     }
 
     useEffect(() => {
@@ -91,7 +93,7 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
             if (getPassage) {
                 //var persistedDom = localStorage.getItem(`dom${PassageRef}${selectedVerse}${selectedTranslation}${session?.user?._id}`)
                 const receivedPassage = JSON.stringify(getPassage);
-                console.log(receivedPassage);
+                //console.log(receivedPassage);
                 setDom(JSON.parse(receivedPassage));
             }
             else {
@@ -108,7 +110,7 @@ export default function DisplayPassage({ selectedBook, selectedChapter, selected
 
                 const data = await getBible(selectedBook, selectedChapter, selectedVerse , selectedTranslation);
                 setBibleData(data.verses || []);
-                console.log("get Passage information", data);
+                //console.log("get Passage information", data);
             } catch (error) {
                 console.error('Error fetching Bible data:', error);
                 setError(error.message || 'An error occurred while fetching data');

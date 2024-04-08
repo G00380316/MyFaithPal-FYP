@@ -1,12 +1,12 @@
 "use client"
 
-import Link from "next/link"
-import styles from "@/components/forms/form.module.css"
-import { useState } from "react";
-import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation";
-import { CardContent, Divider,Typography} from "@mui/joy";
+import styles from "@/components/forms/form.module.css";
 import { Facebook, Google } from "@mui/icons-material";
+import { CardContent, Divider, Typography } from "@mui/joy";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function LoginForm() {
 
@@ -35,7 +35,7 @@ export default function LoginForm() {
             router.replace("/profile");
         }
         catch (error) {
-            console.log(error);
+            //console.log(error);
         }
     };
     
