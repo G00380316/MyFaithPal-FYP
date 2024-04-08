@@ -74,7 +74,7 @@ export default function HighlightCard({highlight, verse, reference}) {
                 <CardContent >
                         <CardContent orientation='horizontal' sx={{ justifyContent: "space-between" }}>
                             <Typography fontSize="lg" fontWeight={700}>
-                                {reference}:{verse}
+                                {reference.toString()}:{verse.toString()}
                         </Typography>
                         <Typography fontSize="lg" fontWeight={700}>
                                 {translation.trim() || "Web"}

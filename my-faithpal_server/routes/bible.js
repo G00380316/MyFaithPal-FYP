@@ -109,7 +109,7 @@ router.post('/get/user/changes', async (req, res) => {
 
 router.get('/random', async (req, res) => {
     try {
-        const apiUrl = '${process.env.BIBLE_SERVER_URL}?random=verse';
+        const apiUrl = `${process.env.BIBLE_SERVER_URL}?random=verse`;
 
         const response = await axios.get(apiUrl);
 

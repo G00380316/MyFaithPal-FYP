@@ -7,21 +7,26 @@ import axios from "axios";
 //Loading our data and making vector store
 export const createVectoreStore = async (client) => {
 
+            //delete the collection to create a new vector store from json
             const namespace = process.env.COLLECTION_NAMESPACE;
             const [dbName, collectionName] = namespace.split(".");
             const collection = client.db(dbName).collection(collectionName);
 
-            const response = await axios.post(`${process.env.SERVER_URL}/faithpalAI/load/json`);
+            /* If you want to load directly from database
+            //const response = await axios.post(`${process.env.SERVER_URL}/faithpalAI/load/json`);
 
-            console.log(response.data)
+            //console.log(response.data)
     
-            const context = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
+            //const context = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
 
-            //delete the database to create a new vector store from json
+            //const loader = new JSONLoader(context);*/
+
+            //WARNING RUN JSON FIX BEFORE CREATING VECTOR
+
+            await collection.drop();
+
             const loader = new JSONLoader("question.json");
-            //const loader = new JSONLoader(context);
-    
-            
+
             const docs = await loader.load();
 
             const splitter = new RecursiveCharacterTextSplitter({
@@ -31,8 +36,6 @@ export const createVectoreStore = async (client) => {
             const splitDocs = await splitter.splitDocuments(docs);
 
             const embeddings = new OpenAIEmbeddings();
-    
-            //collection.deleteMany({});
 
             const vectorStore = await MongoDBAtlasVectorSearch.fromDocuments(
                 splitDocs,

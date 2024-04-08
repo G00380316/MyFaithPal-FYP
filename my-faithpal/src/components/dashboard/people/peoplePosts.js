@@ -17,6 +17,8 @@ export default function Posts({ personId }) {
             try {
                 setLoading(true);
 
+                if (!personId) return;
+
                 const data = await postRequest(`${baseUrl}post/byuserId`, JSON.stringify({
                     userId: personId
                 }));
