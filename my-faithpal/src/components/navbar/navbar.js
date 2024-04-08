@@ -1,14 +1,14 @@
 "use client"
 
-import Link from "next/link"
 import styles from "@/app/page.module.css"
 import navStyles from "@/components/navbar/navbar.module.css"
-import { useSession } from "next-auth/react"
-import { useContext, useEffect } from "react"
 import { ChatContext } from "@/context/chatContext"
 import { NotifyCustom } from "@/util/notify"
-import { Icons } from "react-toastify"
 import moment from "moment/moment"
+import { useSession } from "next-auth/react"
+import Link from "next/link"
+import { useContext, useEffect } from "react"
+import { Icons } from "react-toastify"
 
 const image = ({ image }) => {
     return (
@@ -37,7 +37,7 @@ export default function navbar() {
             senderImage: sender?.image,
         };
     });
-    console.log("noti", modifiedNotifications)
+    //console.log("noti", modifiedNotifications)
 
     useEffect(() => {
         
@@ -50,7 +50,7 @@ export default function navbar() {
             const notifiedSenders = new Set();
             modifiedNotifications.forEach((mn, index) => {
                 if (!notifiedSenders.has(mn.senderName) && !mn.isRead) {
-                    console.log("noti 2", modifiedNotifications)
+                    //console.log("noti 2", modifiedNotifications)
                     NotifyCustom({ text: `You have a new message from ${mn?.senderUsername || mn?.senderName}\n\r${moment(mn.date).calendar()}`, icon: image({ image: mn.senderImage || "avatar.png" }), onClick: () => markNotificationsAsRead(mn, userChats, notifications)});
                     notifiedSenders.add(mn.senderName);
                 }
@@ -64,8 +64,8 @@ export default function navbar() {
 
     
 
-    console.log("didnt read", unreadNotifications)
-    console.log("modified didnt read", modifiedNotifications)
+    //console.log("didnt read", unreadNotifications)
+    //console.log("modified didnt read", modifiedNotifications)
     return (
         <nav className={navStyles.nav}>
         <Link href='/'><h1>MYFAITHPAL</h1></Link>

@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 import { useSession } from 'next-auth/react';
+import { useEffect, useRef, useState } from 'react';
 import { baseUrl, postRequest } from '../service';
 
 
@@ -63,7 +63,7 @@ const DropdownMenu = ({postId, postUser, saves, likes, onSelect}) => {
         setSelectedIndex(index);
         handleCloseMenu();
         
-        console.log(index);
+        //console.log(index);
 
         try {
 
@@ -87,13 +87,13 @@ const DropdownMenu = ({postId, postUser, saves, likes, onSelect}) => {
 
                     setnewLikeInfo(updatedPost?.likes?.length.toString())
 
-                    console.log("Added like to: ", updatedPost);
+                    //console.log("Added like to: ", updatedPost);
 
                 } else {
 
                     const newLikesArray = likes.filter(id => id !== session?.user?._id);
 
-                    console.log(newLikesArray)
+                    //console.log(newLikesArray)
 
                     const updatedPost = await postRequest(`${baseUrl}post/update/likes`, JSON.stringify({
                         postId,
@@ -108,7 +108,7 @@ const DropdownMenu = ({postId, postUser, saves, likes, onSelect}) => {
 
                     setnewLikeInfo(updatedPost?.likes?.length.toString())
 
-                    console.log("Removed like from: ", updatedPost);
+                    //console.log("Removed like from: ", updatedPost);
                     
                 }
             }
@@ -120,7 +120,7 @@ const DropdownMenu = ({postId, postUser, saves, likes, onSelect}) => {
 
                 const newSavesArray = saves?.includes(session?.user?._id) ? saves : [...saves, session?.user?._id];
 
-                console.log(newSavesArray)
+                //console.log(newSavesArray)
                 
                 const updatedPost = await postRequest(`${baseUrl}post/update/saves`, JSON.stringify({
                     postId,
@@ -139,7 +139,7 @@ const DropdownMenu = ({postId, postUser, saves, likes, onSelect}) => {
 
                     const newSavesArray = saves.filter(id => id !== session?.user?._id);
 
-                    console.log(newSavesArray)
+                    //console.log(newSavesArray)
 
                     const updatedPost = await postRequest(`${baseUrl}post/update/saves`, JSON.stringify({
                         postId,
@@ -154,7 +154,7 @@ const DropdownMenu = ({postId, postUser, saves, likes, onSelect}) => {
 
                     setnewSaveInfo(updatedPost?.saves?.length.toString())
 
-                    console.log("Removed save from: ", updatedPost);
+                    //console.log("Removed save from: ", updatedPost);
 
                 }
             }
@@ -162,7 +162,7 @@ const DropdownMenu = ({postId, postUser, saves, likes, onSelect}) => {
             //Delete
             if (index == 2) {
 
-                console.log("delete");
+                //console.log("delete");
 
                 const deletedPost = await postRequest(`${baseUrl}post/delete`,
                     JSON.stringify({ postId })
@@ -178,7 +178,7 @@ const DropdownMenu = ({postId, postUser, saves, likes, onSelect}) => {
                 
             }*/
         } catch (error) {
-            console.log(error)
+            //console.log(error)
         }
     };
 

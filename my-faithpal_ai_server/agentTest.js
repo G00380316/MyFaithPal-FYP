@@ -4,17 +4,16 @@ import dotenv from "dotenv";
 import readline from 'readline';
 
 //AI LangChain
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { ChatOpenAI, OpenAI } from "@langchain/openai";
-import { AIMessage, HumanMessage } from '@langchain/core/messages';
-import { MessagesPlaceholder } from '@langchain/core/prompts';
-import { createOpenAIFunctionsAgent, AgentExecutor } from 'langchain/agents';
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
+import { AIMessage, HumanMessage } from '@langchain/core/messages';
+import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
+import { ChatOpenAI } from "@langchain/openai";
+import { AgentExecutor, createOpenAIFunctionsAgent } from 'langchain/agents';
 import { createRetrieverTool } from "langchain/tools/retriever";
 import { MongoClient } from "mongodb";
+import { connectMongoDB } from "./lib/AI/mongo.js";
 import { searchVectorStore } from "./lib/AI/searchVectorMongoDB.js";
 import ChatHistory from "./models/llmHistory.js";
-import { connectMongoDB } from "./lib/AI/mongo.js";
 
     dotenv.config();
 
@@ -109,10 +108,10 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
                     storeChatHistory.push(new AIMessage(message.content));
                 }
             });
-            console.log(storeChatHistory);
+            //console.log(storeChatHistory);
         } else {
             const check = await ChatHistory.create({ messages: storeChatHistory, aichatroom });
-            console.log(check);
+            //console.log(check);
     }
 
     const askQuestion = () => {
@@ -133,7 +132,7 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
                 verbose: true
             });
 
-            console.log(retriever)
+            //console.log(retriever)
             
             const retrieverTool = createRetrieverTool(retriever, {
                 name: "Retriever",
@@ -162,12 +161,12 @@ import { connectMongoDB } from "./lib/AI/mongo.js";
                 chat_history: storeChatHistory,
             });
 
-            console.log("Agent: ", response.output);
+            //console.log("Agent: ", response.output);
             storeChatHistory.push(new HumanMessage(input));
             storeChatHistory.push(new AIMessage(response.output));
             const updatedHistory = await ChatHistory.findOneAndUpdate({ aichatroom }, { $set: { messages: storeChatHistory } });
             
-            //console.log(updatedHistory);
+            ////console.log(updatedHistory);
 
             askQuestion()
         });

@@ -9,9 +9,9 @@ export async function POST(req) {
 
         const user = await User.findOne({ username });
 
-        console.log("User has been checked...user: ", user);
+        //console.log("User has been checked...user: ", user);
         return NextResponse.json({ user });
     } catch (error){
-    console.log(error);
+    //console.log(error);
     }
 }

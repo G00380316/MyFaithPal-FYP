@@ -1,4 +1,3 @@
-import React from 'react';
 import Grid from '@mui/joy/Grid';
 import HighlightCard from './highlightBox';
 
@@ -17,7 +16,7 @@ function findSpans(obj, parentObj = null, parentKey = null) {
                 
                 var child = parentObj?.[1]?.props?.children?.[0].props?.children?.[1]?.props?.children?.[0];
                 const verse = parentObj?.[0]?.props?.children?.[0];
-                //console.log("higlight verse: ", child);
+                ////console.log("higlight verse: ", child);
 
                 if (typeof child === 'object') {
                     while (typeof child === 'object') {
@@ -26,9 +25,9 @@ function findSpans(obj, parentObj = null, parentKey = null) {
                 }
                 
                 if (!HighlightArray.some(item => item?.highlight === child)) {
-                    console.log("Found highlight array in: ", parentObj);
+                    //console.log("Found highlight array in: ", parentObj);
                     HighlightArray.push({ highlight: child , ref: reference, verse});
-                    console.log("Found highlight array: ", HighlightArray);
+                    //console.log("Found highlight array: ", HighlightArray);
                 }
             }
         } else if (Array.isArray(obj)) {

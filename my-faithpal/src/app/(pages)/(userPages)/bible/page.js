@@ -43,17 +43,17 @@ export default function Bible() {
 
     const handleSaveButtonClick = () => {
         setSaveClicked(true);
-        console.log("Update saveClicked state to: ", saveClicked);
+        //console.log("Update saveClicked state to: ", saveClicked);
     };
 
     const handleClearButtonClick = () => {
         setClearClicked(true);
-        console.log("Update clearClicked state to: ", clearClicked);
+        //console.log("Update clearClicked state to: ", clearClicked);
     };
 
     useEffect(() => {
         if (saveClicked) {
-            console.log("Save operation completed.");
+            //console.log("Save operation completed.");
             // Reset saveClicked back to false
             setSaveClicked(false);
         }
@@ -61,7 +61,7 @@ export default function Bible() {
 
     useEffect(() => {
         if (clearClicked) {
-            console.log("Clear operation completed.");
+            //console.log("Clear operation completed.");
             // Reset saveClicked back to false
             setClearClicked(false);
         }

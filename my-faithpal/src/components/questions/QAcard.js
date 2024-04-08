@@ -2,16 +2,17 @@
 
 import { AIChatContext } from '@/context/aiChatContext';
 import { useFetchRecipientUser } from '@/hooks/openAI/useFetchRecipient';
+import { NotifyCustom } from '@/util/notify';
+import { aiUrl, postRequest } from '@/util/service';
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
+import { Checkbox, Grid, Stack, Typography } from '@mui/joy';
+import { LoadingButton } from '@mui/lab';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
-import styles from "./qa.module.css";
-import { Grid, Stack, Typography } from '@mui/joy';
-import { LoadingButton } from '@mui/lab';
-import { NotifyCustom } from '@/util/notify';
 import { Icons } from "react-toastify";
-import { aiUrl, postRequest } from '@/util/service';
+import styles from "./qa.module.css";
 
 export default function QuestionModal() {
     
@@ -21,20 +22,34 @@ export default function QuestionModal() {
     const [textMessage, setTextMessage] = useState("");
     const [isToggled, setIsToggled] = useState(false);
     const [isClicked, setClick] = useState(false);
+    const [checked, setChecked] = useState(false);
     const scroll = useRef();
 
     const handleKeyPress = () => {
         // Call the function to send the message when Enter is pressed
-        sendTextMessage(textMessage, currentAIChat._id, setTextMessage, isToggled);
+        sendTextMessage(textMessage, currentAIChat._id, setTextMessage, isToggled, checked);
+        setTextMessage("");
     };
 
     const handleToggle = () => {
         setIsToggled(!isToggled);
+        setClick(false);
         if (!isToggled) {
             NotifyCustom({text:`Switched to Solomon`});
         }
         else {
             NotifyCustom({ text: `Switched to OpenAI` });
+        }
+    };
+
+    const handleChange = () => {
+        setChecked(!checked);
+        setIsToggled(false);
+        if (!checked) {
+            NotifyCustom({text:`Strict Mode` , bar: true, theme: "dark", icon: Icons.warning});
+        }
+        else {
+            NotifyCustom({text:`Strict Mode Off` , bar: true, theme: "dark", icon: Icons.info});
         }
     };
 
@@ -47,7 +62,7 @@ export default function QuestionModal() {
                 aichatroom: currentAIChat
             }));
 
-            console.log(response)
+            //console.log(response)
 
             if (response.acknowledged === true) {
                 NotifyCustom({ text: `Chat is cleared, click to see changes`, bar: true, icon: Icons.success, onClick: () => window.location.reload() })
@@ -72,10 +87,10 @@ export default function QuestionModal() {
         }
     }, [session]);
     
-    console.log( "This is chatBox AI current Chat: ",currentAIChat)
-    console.log("This is chatBox recipient User: ", recipientUser)
-    console.log("These are messages:", messages)
-    //console.log("Message input: ", textMessage)
+    //console.log( "This is chatBox AI current Chat: ",currentAIChat)
+    //console.log("This is chatBox recipient User: ", recipientUser)
+    //console.log("These are messages:", messages)
+    ////console.log("Message input: ", textMessage)
     
     if (!session) {
         return (
@@ -132,10 +147,26 @@ export default function QuestionModal() {
     return (
         <div className={styles.chat_box}>
             <div className={styles.chat_header}>
-                <span className={styles.title} >RabbiGpt</span>
-                <button onClick={handleClearButtonClick} className={styles.button}>
+                <Grid display={"flex"} flexDirection={"row"} justifyContent={"space-between"} spacing={1} flex={1}>
+                    {
+                        !isToggled ?
+                        <Checkbox
+                        checked={checked}
+                        onChange={handleChange}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                        sx={{marginTop:0.75}}
+                        />
+                        :
+                            <Checkbox disabled={true} uncheckedIcon={<DisabledByDefaultIcon/>} disableIcon={false} sx={{marginTop:0.75}}/>
+                    }
+                    
+                    <Stack>
+                        <span className={styles.title} >RabbiGpt</span>
+                    </Stack>
+                    <button onClick={handleClearButtonClick} className={styles.button}>
                         Clear
-                </button>
+                    </button>
+                </Grid>
             </div>
         <div className={styles.chat_messages}>
             <div className={styles.messages_box}>
@@ -148,8 +179,10 @@ export default function QuestionModal() {
             )}
                 </div>
             </div>
-        </div>
-            <div className={styles.chat_input}>
+            </div>
+            {
+                !checked ?
+                    <div className={styles.chat_input}>
                     <InputEmojiWithRef
                     value={textMessage}
                     onChange={setTextMessage}
@@ -158,8 +191,20 @@ export default function QuestionModal() {
                     borderColor="rgba(72,112,223,0.2)"
                     disableRecent={true}
                     placeholder="Ask your Rabbi AI a Question? Dont be shy..." />
-            <input type="checkbox" id="switch" checked={isToggled} onChange={handleToggle} /><label for="switch">{isToggled ? 'ON' : 'OFF'}</label>
-            </div>
+                        <input type="checkbox" id="switch" checked={isToggled} onChange={handleToggle} /><label for="switch">{isToggled ? 'ON' : 'OFF'}</label>
+                    </div>
+                    :
+                    <div className={styles.chat_input}>
+                    <InputEmojiWithRef
+                    value={textMessage}
+                    onChange={setTextMessage}
+                    onEnter={handleKeyPress}
+                    fontFamily="nunito"
+                    borderColor="rgba(72,112,223,0.2)"
+                    disableRecent={true}
+                    placeholder="Ask your Rabbi AI a Question? Dont be shy..." />
+                    </div>
+            }
         </div >
     );
 }

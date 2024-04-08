@@ -5,7 +5,7 @@ export async function getBible(selectedBook, selectedChapter, selectedVerse, sel
         var bookName = selectedBook ? selectedBook.toLowerCase() : '';
         const lastBookName = bookName;
 
-        console.log(selectedTranslation)
+        //console.log(selectedTranslation)
 
         if (bookName == '') {
             bookName = lastBookName;
@@ -25,10 +25,10 @@ export async function getBible(selectedBook, selectedChapter, selectedVerse, sel
         if (!selectedTranslation == "") {
             
             if (selectedVerse == "") {
-                console.log("SelectedTrans is not empty entered if statment")
+                //console.log("SelectedTrans is not empty entered if statment")
                 const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}/${selectedTranslation}`);
                 const data = await res.json();
-                console.log('API Response:', data);
+                //console.log('API Response:', data);
 
                 return data;
             }
@@ -40,20 +40,20 @@ export async function getBible(selectedBook, selectedChapter, selectedVerse, sel
                     const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${NewSelectedVerse}/${selectedTranslation}`);
                     const data = await res.json();
 
-                    console.log('API Response with Verse and Translation plus Error:', data);
+                    //console.log('API Response with Verse and Translation plus Error:', data);
 
                     return data;
                 }
-                console.log('API Response with Verse and Translation:', data);
+                //console.log('API Response with Verse and Translation:', data);
         
         return data;
         }
 
             if (selectedVerse == "") {
-            console.log("SelectedVerse is empty entered if statment")
+            //console.log("SelectedVerse is empty entered if statment")
             const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}`);
             const data = await res.json();
-            console.log('API Response:', data);
+            //console.log('API Response:', data);
 
             return data;
         }
@@ -65,11 +65,11 @@ export async function getBible(selectedBook, selectedChapter, selectedVerse, sel
                 const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${NewSelectedVerse}`);
                 const data = await res.json();
 
-                console.log('API Response with Verse plus Error:', data);
+                //console.log('API Response with Verse plus Error:', data);
 
                 return data;
             }
-            console.log('API Response with Verse:', data);
+            //console.log('API Response with Verse:', data);
         
         return data;
         } catch (error) {

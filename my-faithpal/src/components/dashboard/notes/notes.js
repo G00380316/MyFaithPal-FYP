@@ -1,4 +1,3 @@
-import React from 'react';
 import Grid from '@mui/joy/Grid';
 import NoteCard from './noteBox';
 
@@ -46,9 +45,9 @@ function findSpans(obj, parentObj = null, parentKey = null) {
                 }
 
                 if (!NotesArray.some(item => item?.note === child)) {
-                    //console.log("Found note: ", parentObj);
+                    ////console.log("Found note: ", parentObj);
                     NotesArray.push({ note: child , ref: reference, verse , comment});
-                    console.log("Found note array: ", NotesArray);
+                    //console.log("Found note array: ", NotesArray);
                 }
             }
         } else if (Array.isArray(obj)) {

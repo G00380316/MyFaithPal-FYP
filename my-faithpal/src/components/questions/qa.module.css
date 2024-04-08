@@ -5,6 +5,11 @@
         color: rgb(180, 180, 180);
     }
 
+    .title{
+        align-self: center;
+        margin-left: 100%;
+    }
+
     .chat_box {
         background: rgb(114, 109, 93);
         border-radius: 5px;
@@ -46,7 +51,6 @@
 
     .chat_header {
         display: flex;
-        margin-left: 45%;
         justify-content: space-between;
         border-radius: 5px;
         padding: 0.75rem;

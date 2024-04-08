@@ -10,7 +10,7 @@ export async function GET(req,res) {
         
         return NextResponse.json({ user });
     } catch (error){
-        console.log(error);
+        //console.log(error);
         return NextResponse.json(error);
     }
 }

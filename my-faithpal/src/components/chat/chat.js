@@ -29,7 +29,7 @@ export default function Chat( userChats ) {
         return shortText;
     }
 
-    var name = recipientUser?.name || "Unknown";
+    var name = recipientUser?.username || recipientUser?.name || "Unknown";
 
     return (
         <div className={styles.button} onClick={() => {

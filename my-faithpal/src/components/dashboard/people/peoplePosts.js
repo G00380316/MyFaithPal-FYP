@@ -23,7 +23,7 @@ export default function Posts({ personId }) {
                     userId: personId
                 }));
                 setPostData(data || []);
-                console.log("All Posts", data);
+                //console.log("All Posts", data);
 
             } catch (error) {
 

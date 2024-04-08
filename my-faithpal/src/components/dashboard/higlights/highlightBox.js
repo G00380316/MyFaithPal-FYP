@@ -68,7 +68,7 @@ export default function HighlightCard({highlight, verse, reference}) {
                     fontWeight="lg"
                     textColor="text.primary"
                 >
-                    {session?.user?.name}
+                    {session?.user?.username || session?.user?.name}
                 </Link>
             </CardContent>
                 <CardContent >

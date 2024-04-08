@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import Chatroom from '../models/chatroom.js';
 import { connectMongoDB } from '../lib/mongo.js';
+import Chatroom from '../models/chatroom.js';
 
 const router = express.Router();
 dotenv.config();
@@ -25,9 +25,9 @@ dotenv.config();
             
         const newChatroom = await Chatroom.create({ participants: [firstId, secondId] });
 
-        //console.log('User ID:', firstId);
-        //console.log('Second ID:', secondId);
-        //console.log('Created Chatroom:', newChatroom);
+        ////console.log('User ID:', firstId);
+        ////console.log('Second ID:', secondId);
+        ////console.log('Created Chatroom:', newChatroom);
 
         res.status(201).json(newChatroom);
 
@@ -49,13 +49,13 @@ dotenv.config();
                 participants: { $in: userId } //Replace userId with intUserId for int
             })
 
-            console.log('User ID:', userId);
-            console.log('Chatrooms:', chatrooms);
+            //console.log('User ID:', userId);
+            //console.log('Chatrooms:', chatrooms);
 
             res.status(200).json(chatrooms);
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             res.status(500).json(error);
         }
     })
@@ -73,14 +73,14 @@ dotenv.config();
                 participants: {$all: [firstId,secondId]}
             })
 
-            console.log('User ID:', firstId);
-            console.log('Second ID:', secondId);
-            console.log('Chatrooms:', chatrooms);
+            //console.log('User ID:', firstId);
+            //console.log('Second ID:', secondId);
+            //console.log('Chatrooms:', chatrooms);
             
             res.status(200).json(chatrooms);
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             res.status(500).json(error);
         }
     }

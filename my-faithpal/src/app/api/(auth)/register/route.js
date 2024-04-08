@@ -1,16 +1,16 @@
 import { connectMongoDB } from "@/lib/mongo";
 import User from "@/models/user";
-import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
     try {
         const { username, name, email, password } = await req.json();
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        //console.log("Name: ", name);
-        //console.log("Email: ", email);
-        //console.log("Password: ", password);
+        ////console.log("Name: ", name);
+        ////console.log("Email: ", email);
+        ////console.log("Password: ", password);
 
         await connectMongoDB();
         await User.create({ username, name, email, password: hashedPassword });

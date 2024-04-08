@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link"
-import styles from "@/components/forms/form.module.css"
-import { useState } from "react";
+import styles from "@/components/forms/form.module.css";
+import { Divider } from "@mui/joy";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Divider} from "@mui/joy";
+import { useState } from "react";
 
 
 export default function regForm() {
@@ -17,9 +17,9 @@ export default function regForm() {
 
     const router = useRouter();
 
-    console.log(name);
-    console.log(email);
-    console.log(password);
+    //console.log(name);
+    //console.log(email);
+    //console.log(password);
 
     const handleSubmit = async (e) => {
 
@@ -46,7 +46,7 @@ export default function regForm() {
             if (user) {
                 setError("User already exists");
                 form.reset();
-                console.log(error);
+                //console.log(error);
                 return;
             }
 
@@ -65,10 +65,10 @@ export default function regForm() {
                 form.reset();
                 router.push("/login");
             } else {
-                console.log("Error registraiton failed", error);
+                //console.log("Error registraiton failed", error);
             }
         } catch (error) {
-            console.log("Error whilst Registration: ", error);
+            //console.log("Error whilst Registration: ", error);
         }
     };
 

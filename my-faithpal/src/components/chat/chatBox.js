@@ -1,12 +1,12 @@
 import styles from "@/components/chat/chat.module.css";
 import { ChatContext } from '@/context/chatContext';
 import { useFetchRecipientUser } from '@/hooks/chat/useChatboxFetchRecipient';
+import { Avatar, Grid, Stack, Typography } from "@mui/joy";
+import LoadingButton from '@mui/lab/LoadingButton';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useRef, useState } from 'react';
 import InputEmojiWithRef from 'react-input-emoji';
-import { Avatar,Grid,Stack, Typography } from "@mui/joy";
-import LoadingButton from '@mui/lab/LoadingButton';
 
 export default function chatBox() {
 
@@ -26,10 +26,10 @@ export default function chatBox() {
   }, [messages,recipientUser]);
 
   /*
-  console.log( "This is chatBox current Chat: ",currentChat)
-  console.log("This is chatBox recipient User: ", recipientUser)
-  console.log("These are messages:", messages)
-  console.log("Message input: ", textMessage)
+  //console.log( "This is chatBox current Chat: ",currentChat)
+  //console.log("This is chatBox recipient User: ", recipientUser)
+  //console.log("These are messages:", messages)
+  //console.log("Message input: ", textMessage)
 */
   
   if (!recipientUser)
@@ -71,7 +71,7 @@ export default function chatBox() {
       <div className={styles.chat_header}>
         <Avatar size="sm" src={recipientUser?.image || ""} sx={{ borderColor: 'background.body' }}/>
           <div className={styles.user_card}></div>
-      <span>{recipientUser?.name}</span>
+      <span>{recipientUser?.username || recipientUser?.name }</span>
       </div>
       <div className={styles.chat_messages}>
         <div className={styles.messages}>

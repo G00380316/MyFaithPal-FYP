@@ -1,10 +1,10 @@
 import { connectMongoDB } from "@/lib/mongo";
 import User from "@/models/user";
+import bcrypt from "bcryptjs";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import bcrypt from "bcryptjs";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
     providers: [
@@ -35,7 +35,7 @@ export const authOptions = {
 
                     return { _id: user.id, name: user.name, email: user.email, username: user.username };
                 } catch (error) {
-                    console.log("Error: ", error);
+                    //console.log("Error: ", error);
                 }
             },
         }),
@@ -63,7 +63,7 @@ export const authOptions = {
                 if (user?.username) token.username = user.username;
 
                 if (user?.image) token.image = user.image;
-                //console.log("jwt callback", { token, user, session })
+                ////console.log("jwt callback", { token, user, session })
                 return token;
             }
 
@@ -73,7 +73,7 @@ export const authOptions = {
             if (user?.username) token.username = user.username;
             //passing in image to token
             if (user?.image) token.image = user.image;
-            //console.log("jwt callback", { token, user, session })
+            ////console.log("jwt callback", { token, user, session })
 
             return token;
         },
@@ -85,13 +85,13 @@ export const authOptions = {
             if (token?.username) session.user.username = token.username;
             //then putting the username in session from database
             if (token?.image) session.user.image = token.image;
-            //console.log("session callback", { token, user, session })
+            ////console.log("session callback", { token, user, session })
 
             return session;
         },
         async signIn({ profile , credentials}) {
-            console.log("Details:", profile)
-            //console.log("Details:", credentials)
+            //console.log("Details:", profile)
+            ////console.log("Details:", credentials)
             
             if (credentials) {
                 const { email, password } = credentials;
@@ -116,7 +116,7 @@ export const authOptions = {
 
                     return { _id: user.id, name: user.name, email: user.email, username: user.username };
                 } catch (error) {
-                    console.log("Error: ", error);
+                    //console.log("Error: ", error);
                 }
             }
             
@@ -135,7 +135,7 @@ export const authOptions = {
                                     email: profile.email, name: profile.name, image: profile.picture, username
                                 })
 
-                            console.log("Created Google user",user)
+                            //console.log("Created Google user",user)
 
                         } else {
 
@@ -145,7 +145,7 @@ export const authOptions = {
                                 email: profile.email, name: profile.name, image: profile.picture?.data?.url, username
                                 })
                             
-                            console.log("Created Facebook user",user)
+                            //console.log("Created Facebook user",user)
                             
                         }
                     } else if (userExist) {
@@ -155,14 +155,14 @@ export const authOptions = {
                             if (userExist.image) {
 
                                 const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name }, { new: true });
-                                console.log("Updated Google user", updatedUser)
+                                //console.log("Updated Google user", updatedUser)
 
                                 return true
 
                             } else {
 
                                 const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name, image: profile.picture }, { new: true });
-                                console.log("Updated Google user",updatedUser)
+                                //console.log("Updated Google user",updatedUser)
 
                                 return true
 
@@ -173,21 +173,21 @@ export const authOptions = {
                             if (userExist.image) {
 
                                 const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name }, { new: true });
-                                console.log("Updated Facebook user",updatedUser)
+                                //console.log("Updated Facebook user",updatedUser)
 
                                 return true
 
                             } else {
 
                                 const updatedUser = await User.findOneAndUpdate({ email: profile.email }, { email: profile.email, name: profile.name, image: profile.picture?.data?.url }, { new: true });
-                                console.log("Updated Facebook user",updatedUser)
+                                //console.log("Updated Facebook user",updatedUser)
 
                                 return true
                             }
                         }
                     }
                 } catch (error) {
-                    console.log(error)
+                    //console.log(error)
                     return false
                 }
             }

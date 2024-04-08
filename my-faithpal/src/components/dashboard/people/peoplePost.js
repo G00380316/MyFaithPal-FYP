@@ -1,4 +1,5 @@
 import { CommentList } from '@/components/feed/commentList';
+import DropdownMenu from '@/util/buttons/postOptions';
 import { baseUrl, postRequest } from '@/util/service';
 import { Bookmark, Favorite, FavoriteBorder, ModeCommentOutlined, MoreHoriz } from '@mui/icons-material';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
@@ -8,7 +9,6 @@ import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import * as React from 'react';
 import { useState } from 'react';
-import DropdownMenu from '@/util/buttons/postOptions';
 
 const style = {
     position: 'absolute',
@@ -50,17 +50,17 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
     //Handle functions
     const handleSubmitComment = async () => {
 
-        console.log("Posting comment:", text);
+        //console.log("Posting comment:", text);
 
         const sendData = await postRequest(`${baseUrl}comment/create`, JSON.stringify({
             user: session?.user?._id,
-            sendername: session?.user?.name,
+            sendername: session?.user?.username || session?.user?.name,
             senderimage: session?.user?.image,
             content: text,
             post: _id,
         }));
 
-        console.log("This is what happened",sendData);
+        //console.log("This is what happened",sendData);
 
         setText('');
         isCommentSent(!sentComment);
@@ -102,8 +102,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
 
             const newLikesArray = likes.includes(session?.user?._id) ? likes : [...likes, session?.user?._id];
 
-            console.log(newLikesArray)
-            console.log(_id)
+            //console.log(newLikesArray)
+            //console.log(_id)
             
             const updatedPost = await postRequest(`${baseUrl}post/update/likes`, JSON.stringify({
                 postId: _id,
@@ -118,14 +118,14 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
 
             setnewLikeInfo(updatedPost?.likes?.length.toString())
 
-            console.log("Added like to: ", updatedPost);
+            //console.log("Added like to: ", updatedPost);
 
         } else {
 
             const newLikesArray = likes.filter(id => id !== session?.user?._id);
 
-            console.log(newLikesArray)
-            console.log(_id)
+            //console.log(newLikesArray)
+            //console.log(_id)
 
             const updatedPost = await postRequest(`${baseUrl}post/update/likes`, JSON.stringify({
                 postId: _id,
@@ -140,7 +140,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
 
             setnewLikeInfo(updatedPost?.likes?.length.toString())
             
-            console.log("Removed like from: ", updatedPost);
+            //console.log("Removed like from: ", updatedPost);
         }
     }
 
@@ -149,8 +149,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
 
             const newSavesArray = saves?.includes(session?.user?._id) ? saves : [...saves, session?.user?._id];
 
-            console.log(newSavesArray)
-            console.log(_id)
+            //console.log(newSavesArray)
+            //console.log(_id)
             
             const updatedPost = await postRequest(`${baseUrl}post/update/saves`, JSON.stringify({
                 postId: _id,
@@ -165,14 +165,14 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
 
             setnewSaveInfo(updatedPost?.saves?.length.toString())
 
-            console.log("Added save to: ", updatedPost);
+            //console.log("Added save to: ", updatedPost);
 
         } else {
 
             const newSavesArray = saves.filter(id => id !== session?.user?._id);
 
-            console.log(newSavesArray)
-            console.log(_id)
+            //console.log(newSavesArray)
+            //console.log(_id)
 
             const updatedPost = await postRequest(`${baseUrl}post/update/saves`, JSON.stringify({
                 postId: _id,
@@ -187,7 +187,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
 
             setnewSaveInfo(updatedPost?.saves?.length.toString())
 
-            console.log("Removed save from: ", updatedPost);
+            //console.log("Removed save from: ", updatedPost);
         }
     }
 
@@ -201,7 +201,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 }));
 
                 setCommentData(data || []);
-                console.log("All Comments", data);
+                //console.log("All Comments", data);
 
             } catch (error) {
 
@@ -287,8 +287,8 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
         fetchData();
     }, [user]);
 
-    console.log("this is new like count", newLikeInfo)
-    console.log("this is new save count", newSaveInfo)
+    //console.log("this is new like count", newLikeInfo)
+    //console.log("this is new save count", newSaveInfo)
 
     //no text
     if (!content) {
@@ -340,7 +340,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             sx={{ borderColor: 'background.body' }}
                                         />
                                         </Box>
-                                            <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
+                                            <Typography fontWeight="lg">{UserData?.user?.username || UserData?.user?.name}</Typography>
                                         {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
@@ -436,7 +436,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                         sx={{ borderColor: 'background.body' }}
                     />
                     </Box>
-                        <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
+                        <Typography fontWeight="lg">{UserData?.user?.username || UserData?.user?.name}</Typography>
                     {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                     (<>
                         <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
@@ -458,7 +458,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                     fontWeight="lg"
                                     textColor="text.primary"
                                 >
-                                    {UserData?.user?.name}
+                                    {UserData?.user?.username || UserData?.user?.name}
                                 </Link>
                                 {/*<Link
                                     component="button"
@@ -554,7 +554,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                                 sx={{ borderColor: 'background.body' }}
                                             />
                                             </Box>
-                                                <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
+                                                <Typography fontWeight="lg">{UserData?.user?.username || UserData?.user?.name}</Typography>
                                             {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                                             (<>
                                                 <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
@@ -668,7 +668,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                     sx={{ borderColor: 'background.body' }}
                 />
                 </Box>
-                    <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
+                    <Typography fontWeight="lg">{UserData?.user?.username || UserData?.user?.name}</Typography>
                 {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                 (<>
                     <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
@@ -685,7 +685,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                     fontWeight="lg"
                                     textColor="text.primary"
                                 >
-                                    {UserData?.user?.name}
+                                    {UserData?.user?.username || UserData?.user?.name}
                                 </Link>{' '}
                             </Typography>
                                 {/*<Link
@@ -800,7 +800,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                             sx={{ borderColor: 'background.body' }}
                                         />
                                         </Box>
-                                            <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
+                                            <Typography fontWeight="lg">{UserData?.user?.username || UserData?.user?.name}</Typography>
                                         {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                                         (<>
                                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
@@ -912,7 +912,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                     sx={{ borderColor: 'background.body' }}
                 />
                 </Box>
-                    <Typography fontWeight="lg">{UserData?.user?.name}</Typography>
+                    <Typography fontWeight="lg">{UserData?.user?.username || UserData?.user?.name}</Typography>
                 {session ? (<IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }} onClick={() => setClicked(true)}><DropdownMenu postId={_id} postUser={user} saves={saves} likes={likes} onSelect={handleSelect}/> </IconButton>):
                         (<>
                             <IconButton variant = "plain" color = "neutral" size = "sm" sx = {{ ml: 'auto' }}>
@@ -934,7 +934,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                                     fontWeight="lg"
                                     textColor="text.primary"
                                 >
-                                    {UserData?.user?.name}
+                                    {UserData?.user?.username || UserData?.user?.name}
                                 </Link>{' '}
                             </Typography>
                                 {/*<Link

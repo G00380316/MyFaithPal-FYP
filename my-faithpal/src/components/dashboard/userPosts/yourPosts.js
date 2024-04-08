@@ -23,7 +23,7 @@ export default function Posts() {
                     userId: session?.user?._id
                 }));
                 setPostData(data || []);
-                console.log("All Posts", data);
+                //console.log("All Posts", data);
 
             } catch (error) {
 

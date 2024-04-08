@@ -28,9 +28,9 @@ import AIChatroom from '../models/aiChatroom.js';
         
         const newAIChatroom = await AIChatroom.create({ participants: [userId, id_AI] });
 
-        console.log('User ID:', userId);
-        console.log('AI ID:', id_AI);
-        console.log('Created an AI Chatroom:', newAIChatroom);
+        //console.log('User ID:', userId);
+        //console.log('AI ID:', id_AI);
+        //console.log('Created an AI Chatroom:', newAIChatroom);
 
         res.status(201).json(newAIChatroom);
         } catch (error) {
@@ -51,13 +51,13 @@ import AIChatroom from '../models/aiChatroom.js';
                 participants: { $in: userId } //Replace userId with intUserId for int
             })
 
-            console.log('User ID:', userId);
-            console.log('AiChatrooms:', chatrooms);
+            //console.log('User ID:', userId);
+            //console.log('AiChatrooms:', chatrooms);
 
             res.status(200).json(chatrooms);
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             res.status(500).json(error);
         }
     })
@@ -77,14 +77,14 @@ import AIChatroom from '../models/aiChatroom.js';
                 participants: {$all: [userId,id_AI]}
             })
 
-            console.log('User ID:', userId);
-            console.log('AI ID:', id_AI);
-            console.log('AiChatrooms:', chatrooms);
+            //console.log('User ID:', userId);
+            //console.log('AI ID:', id_AI);
+            //console.log('AiChatrooms:', chatrooms);
             
             res.status(200).json(chatrooms);
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             res.status(500).json(error);
         }
     }

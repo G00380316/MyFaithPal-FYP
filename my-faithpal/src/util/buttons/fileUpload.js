@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import { Card, CardOverflow, styled } from '@mui/joy';
 import Button from '@mui/joy/Button';
 import SvgIcon from '@mui/joy/SvgIcon';
-import {Card, CardOverflow, styled } from '@mui/joy';
-import ImageUpLoad from './imgPlaceholder';
-import { baseUrl, postRequest } from '../service';
 import { useSession } from 'next-auth/react';
-import { NotifyCustom } from '../notify';
+import { useEffect, useState } from 'react';
 import { Icons } from 'react-toastify';
+import { NotifyCustom } from '../notify';
+import { baseUrl, postRequest } from '../service';
+import ImageUpLoad from './imgPlaceholder';
 
 const VisuallyHiddenInput = styled('input')`
     clip: rect(0 0 0 0);
@@ -59,7 +59,7 @@ export default function InputFileUpload({ post, text }) {
                     media: "",
                 }));
 
-                console.log(sendData);
+                //console.log(sendData);
 
                 setUploading(false);
 
@@ -69,13 +69,13 @@ export default function InputFileUpload({ post, text }) {
 
             } catch (error) {
                 
-                console.log(error);
+                //console.log(error);
                 setUploading(false);
 
             }
         };
 
-        console.log("Passed check there is a file attemping upload: ", file);
+        //console.log("Passed check there is a file attemping upload: ", file);
 
         setUploading(true);
 
@@ -90,7 +90,7 @@ export default function InputFileUpload({ post, text }) {
             });
 
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
 
             if (data.error) {
 
@@ -105,14 +105,14 @@ export default function InputFileUpload({ post, text }) {
                 media: data?.fileDetails?.fileUrl,
             }));
 
-            console.log("This was data sent to backend: ",sendData);
+            //console.log("This was data sent to backend: ",sendData);
 
             setUploading(false);
             window.location.reload();
 
         } catch (error) {
 
-            console.log(error);
+            //console.log(error);
             setUploading(false);
 
         }

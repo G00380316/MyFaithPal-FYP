@@ -25,7 +25,7 @@ export const searchVectorStore = async (client, input) => {
             // });
             //works better
             //const retrieverOutput = await vectorStore.similaritySearch(query, 5);
-            //console.log (result)
+            ////console.log (result)
 
             return vectorStore;
 }

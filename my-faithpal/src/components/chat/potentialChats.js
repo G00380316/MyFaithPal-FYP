@@ -1,12 +1,10 @@
-import { useState,useEffect } from 'react';
-import { useContext } from 'react';
 import styles from '@/components/chat/chat.module.css';
-import { useSession } from 'next-auth/react';
-import { Box, Input } from '@mui/joy';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { ChatContext } from '@/context/chatContext';
 import { getRequest } from '@/util/service';
-import { Avatar } from '@mui/joy';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { Avatar, Box, Input } from '@mui/joy';
+import { useSession } from 'next-auth/react';
+import { useContext, useEffect, useState } from 'react';
 
 export default function PotentialChats() {
     const { potentialChats, createChat, onlineUsers, updateCurrentChat, userChats } = useContext(ChatContext);
@@ -21,7 +19,7 @@ export default function PotentialChats() {
             const response = await getRequest(`/api/getAllUsers`);
 
             if (response.error) {
-                console.log("Error getting Users", response);
+                //console.log("Error getting Users", response);
                 return;
             }
 
@@ -36,7 +34,7 @@ export default function PotentialChats() {
         const response = await getRequest(`/api/getAllUsers`);
 
         if (response.error) {
-            console.log("Error getting Users", response);
+            //console.log("Error getting Users", response);
             return;
         }
 
@@ -52,7 +50,7 @@ export default function PotentialChats() {
 
     }, [inputFocused]);
 
-    const filteredChats = allUsers.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    const filteredChats = allUsers.filter(user => user?.username?.toLowerCase().includes(searchQuery.toLowerCase()) || user?.name?.toLowerCase().includes(searchQuery.toLowerCase()));
 
     const handleChatAction = (userId) => {
 
@@ -89,7 +87,7 @@ export default function PotentialChats() {
                     user.name !== 'AI' && (
                         <div className={styles.single_user} key={index} onClick={() => handleChatAction(user._id)}>
                             <Avatar src={user?.image || ""} sx={{ borderColor: 'background.body', height:24, width:24, mr:1 }}/>
-                            {user.name}
+                            {user.username || user.name}
                             <span className={onlineUsers?.some(onlineUser => onlineUser.userID === user._id) ? styles.user_online : ''}></span>
                         </div>
                     )))
@@ -98,7 +96,7 @@ export default function PotentialChats() {
                     user.name !== 'AI' && (
                         <div className={styles.single_user} key={index} onClick={() => handleChatAction(user._id)}>
                             <Avatar src={user?.image || ""} sx={{ borderColor: 'background.body', height:24, width:24, mr:1 }}/>
-                            {user.name}
+                            {user.username || user.name}
                             <span className={onlineUsers?.some(onlineUser => onlineUser.userID === user._id) ? styles.user_online : ''}></span>
                         </div>)))}
                     </div>

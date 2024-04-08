@@ -1,8 +1,7 @@
 import { MongoDBAtlasVectorSearch } from "@langchain/mongodb";
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { JSONLoader } from "langchain/document_loaders/fs/json";
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { OpenAIEmbeddings } from "@langchain/openai";
-import axios from "axios";
 
 //Loading our data and making vector store
 export const createVectoreStore = async (client) => {
@@ -15,7 +14,7 @@ export const createVectoreStore = async (client) => {
             /* If you want to load directly from database
             //const response = await axios.post(`${process.env.SERVER_URL}/faithpalAI/load/json`);
 
-            //console.log(response.data)
+            ////console.log(response.data)
     
             //const context = new Blob([JSON.stringify(response.data)], { type: 'application/json' });
 
@@ -23,7 +22,7 @@ export const createVectoreStore = async (client) => {
 
             //WARNING RUN JSON FIX BEFORE CREATING VECTOR
 
-            await collection.drop();
+            await collection.deleteMany({});
 
             const loader = new JSONLoader("question.json");
 

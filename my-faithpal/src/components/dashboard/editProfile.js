@@ -1,16 +1,26 @@
-import {
-    AspectRatio, Box, Card, Divider, IconButton,
-    Input, Stack, Typography, FormLabel, FormControl,
-    CardOverflow, CardActions, Button, Textarea, FormHelperText
-    ,styled} from '@mui/joy';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import React from 'react'
-import { useSession } from 'next-auth/react';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import { useState, useEffect } from 'react';
 import { NotifyCustom } from '@/util/notify';
-import { Icons } from 'react-toastify';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import {
+    AspectRatio, Box,
+    Button,
+    Card,
+    CardActions,
+    CardOverflow,
+    Divider,
+    FormControl,
+    FormHelperText,
+    FormLabel,
+    IconButton,
+    Input, Stack,
+    Textarea,
+    Typography,
+    styled
+} from '@mui/joy';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Icons } from 'react-toastify';
 
 const VisuallyHiddenInput = styled('input')`
     clip: rect(0 0 0 0);
@@ -53,8 +63,8 @@ export default function EditProfile() {
 
     }
 
-    console.log("file for Profile",file)
-    console.log("file for Cover", file1)
+    //console.log("file for Profile",file)
+    //console.log("file for Cover", file1)
     
     const handleSave = async (e) => {
 
@@ -80,7 +90,7 @@ export default function EditProfile() {
                 if (user) {
                     
                     setError("Username is taken");
-                    console.log(error);
+                    //console.log(error);
 
                     return;
 
@@ -102,7 +112,7 @@ export default function EditProfile() {
                 if (user) {
                     
                     setError("Email is taken");
-                    console.log(error);
+                    //console.log(error);
 
                     return;
 
@@ -162,14 +172,14 @@ export default function EditProfile() {
             updatedDetails = await resUpdatedUser.json();
 
             if (updatedDetails) {
-                console.log("Updated Details info: ", updatedDetails);
+                //console.log("Updated Details info: ", updatedDetails);
                 NotifyCustom({ text: "Success Profile Updated", icon: Icons.success, theme: "light" })
                 NotifyCustom({ text: "Click to see updates", icon: Icons.info, theme: "light" , onClick:() => window.location.reload()})
             } else {
-                console.log("Error updating failed", error);
+                //console.log("Error updating failed", error);
             }
         } catch (error) {
-            console.log("Error whilst Updating: ", error);
+            //console.log("Error whilst Updating: ", error);
         }
     };
 

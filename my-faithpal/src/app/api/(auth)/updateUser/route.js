@@ -7,10 +7,10 @@ export async function POST(req) {
     try {
         let { name, email, username, sname, semail, susername, _id, image, simage, bio, cimage, prevcimage } = await req.json();
 
-        console.log("Name: ", name);
-        console.log("Email: ", email);
-        console.log("Username: ", username);
-        console.log("Profile Pic: ", image);
+        //console.log("Name: ", name);
+        //console.log("Email: ", email);
+        //console.log("Username: ", username);
+        //console.log("Profile Pic: ", image);
 
         await connectMongoDB();
 

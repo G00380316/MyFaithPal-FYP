@@ -1,8 +1,8 @@
-import Comment from './comment';
-import { React, useState, useEffect } from 'react'
-import { Stack, Box,Grid } from '@mui/joy';
 import { baseUrl, postRequest } from '@/util/service';
+import { Box, Grid, Stack } from '@mui/joy';
 import { LoadingButton } from '@mui/lab';
+import { useEffect, useState } from 'react';
+import Comment from './comment';
 
 const Styles = {
     root: {
@@ -36,7 +36,7 @@ export const CommentList = ({ postId,sentComment }) => {
                 }));
 
                 setCommentData(data || []);
-                console.log("All Comments", data);
+                //console.log("All Comments", data);
 
             } catch (error) {
 

@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { useSession } from 'next-auth/react';
-import { Box, Input, Typography, Grid, Stack, Avatar } from '@mui/joy';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { getRequest } from '@/util/service';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { Avatar, Box, Grid, Input, Stack, Typography } from '@mui/joy';
+import { useSession } from 'next-auth/react';
+import { useEffect, useRef, useState } from 'react';
 import PeopleCards from './peopleCards';
 
 export default function People() {
@@ -19,7 +19,7 @@ export default function People() {
         const response = await getRequest(`/api/getAllUsers`);
 
         if (response.error) {
-            console.log("Error getting Users", response);
+            //console.log("Error getting Users", response);
             return;
         }
 
@@ -49,10 +49,10 @@ export default function People() {
         };
     }, [wrapperRef]);
 
-    const filteredChats = allUsers.filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    const filteredChats = allUsers.filter(user => user?.username?.toLowerCase().includes(searchQuery.toLowerCase()) || user?.name?.toLowerCase().includes(searchQuery.toLowerCase()));
 
     const handleSelectUser = (user) => {
-        console.log("This 1", user);
+        //console.log("This 1", user);
         setDisplayUser(user);
         setOptionsOpen(false);
     };
@@ -96,7 +96,7 @@ export default function People() {
                                                         onClick={() => handleSelectUser(user)}
                                                     >
                                                         <Avatar src={user?.image || ""} sx={{ borderColor: 'background.body', height: 24, width: 24, mr: 1, ml: 1 }} />
-                                                        <Typography color='#424949'>{user.name}</Typography>
+                                                        <Typography color='#424949'>{user.username || user.name}</Typography>
                                                     </Box>
                                                 </Stack>
                                             )

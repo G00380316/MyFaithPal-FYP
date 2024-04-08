@@ -75,7 +75,7 @@ export default function MyProfile() {
                 src={session?.user?.image}
                 />
                 <Box sx={{ minWidth: 0, flex: 1 }}>
-                        <Typography level="title-sm">{session?.user?.name}</Typography>
+                        <Typography level="title-sm">{session?.user?.username || session?.user?.name}</Typography>
                     <Typography level="body-xs">{session?.user?.email}</Typography>
                 </Box>
                     <IconButton size="sm" variant="plain" color="neutral" onClick={() => signOut({callbackUrl:`${process.env.NEXT_PUBLIC_CLIENT_URL}/login`})}>

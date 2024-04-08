@@ -1,11 +1,11 @@
 "use client"
 
-import { React, useEffect, useState } from 'react'
-import { Stack,Grid } from '@mui/joy';
-import Post from './savePost';
 import { baseUrl, getRequest } from '@/util/service';
-import { useSession } from 'next-auth/react';
+import { Grid, Stack } from '@mui/joy';
 import { LoadingButton } from '@mui/lab';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import Post from './savePost';
 
 export default function Posts() {
     
@@ -22,7 +22,7 @@ export default function Posts() {
                 const data = await getRequest(`${baseUrl}post/`);
 
                 setPostData(data || []);
-                console.log("All Posts", data);
+                //console.log("All Posts", data);
 
             } catch (error) {
 

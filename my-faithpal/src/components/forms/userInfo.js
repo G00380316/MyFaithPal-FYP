@@ -12,7 +12,7 @@ export default function userInfo() {
             <div>
             Name:
                 <span>
-                {session?.user?.name}
+                {session?.user?.username || session?.user?.name}
                 </span>
             </div>
             <div>

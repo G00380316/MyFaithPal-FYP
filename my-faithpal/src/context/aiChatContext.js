@@ -1,10 +1,10 @@
 "use client"
 
-import { createContext, useState, useEffect, useCallback } from "react";
 import { aiUrl, getRequest, postRequest } from "@/util/service";
+import dotenv from "dotenv";
 import { useSession } from "next-auth/react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import  dotenv  from "dotenv";
 
 export const AIChatContext = createContext();
 dotenv.config();
@@ -24,7 +24,7 @@ export const AIChatContextProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const [onlineUsers, setOnlineUsers] = useState([]);
 
-    console.log("Online Users:", onlineUsers);
+    //console.log("Online Users:", onlineUsers);
 
     useEffect(() => {
         const newSocket = io(`${process.env.NEXT_PUBLIC_AI_SOCKET_URL}`);
@@ -64,13 +64,13 @@ export const AIChatContextProvider = ({ children }) => {
     useEffect(() => {
         if (socket === null) return;
         
-        console.log("I need", currentAIChat)
+        //console.log("I need", currentAIChat)
         
         const recipientId = currentAIChat.participants // Extract participants array from each chat
         .flat() // Flatten the array of arrays
             .filter(id => id !== process.env.AI_ID);
         
-        console.log("I need 2", recipientId)
+        //console.log("I need 2", recipientId)
         
         socket.emit("sendMessage", { ...newMessage, recipientId });
     }, [newMessage]);
@@ -107,7 +107,7 @@ export const AIChatContextProvider = ({ children }) => {
                     return setaiUserChatsError(response);
                 }
 
-                console.log(response);
+                //console.log(response);
                 
                 setaiUserChats(response);
             }
@@ -124,7 +124,7 @@ export const AIChatContextProvider = ({ children }) => {
         );
 
         if (response.error) {
-            return console.log("Error creating chat", response);
+            return //console.log("Error creating chat", response);
         }
 
         setaiUserChats((prev) => [...prev, response]);
@@ -135,7 +135,7 @@ export const AIChatContextProvider = ({ children }) => {
             if (session?.user?._id) {
                 const response = await getRequest(`${aiUrl}aichatroom/find/${session?.user?._id}`);
                 
-                console.log("Ai chat: ", response);
+                //console.log("Ai chat: ", response);
 
                 if (response != null) {
                     setCurrentAIChat(response);
@@ -155,9 +155,11 @@ export const AIChatContextProvider = ({ children }) => {
             setIsMessagesLoading(true);
             setMessagesError(null);
 
+            if (!currentAIChat) return;
+            
             const message = await getRequest(`${aiUrl}prompt/get/${currentAIChat?._id}`);
 
-            console.log("current chat id", currentAIChat)
+            //console.log("current chat id", currentAIChat)
 
             setIsMessagesLoading(false);
 
@@ -165,7 +167,7 @@ export const AIChatContextProvider = ({ children }) => {
                 return setMessagesError(message);
             }
 
-            console.log(message);
+            //console.log(message);
                 
             setMessages(message);
         };
@@ -173,12 +175,12 @@ export const AIChatContextProvider = ({ children }) => {
         getMessages();
     }, [currentAIChat]);
 
-    const sendTextMessage = useCallback( async (textMessage, currentAIChatID, setTextMessage, isToggled) => {
-        if (!textMessage) return console.log("No input");
+    const sendTextMessage = useCallback( async (textMessage, currentAIChatID, setTextMessage, isToggled, checked) => {
+        if (!textMessage) return //console.log("No input");
 
-        console.log("Sending AIChatroom ID to send message", currentAIChatID)
-        console.log("Sending User ID to send message", session?.user?._id)
-        console.log("Sending text message to send message", textMessage)
+        //console.log("Sending AIChatroom ID to send message", currentAIChatID)
+        //console.log("Sending User ID to send message", session?.user?._id)
+        //console.log("Sending text message to send message", textMessage)
 
         const response = await postRequest(`${aiUrl}prompt/create`, JSON.stringify({
             aichatroom: currentAIChatID, user: session?.user?._id, text: textMessage,
@@ -192,26 +194,26 @@ export const AIChatContextProvider = ({ children }) => {
         setNewMessage(response);
         setMessages((prev) => [...prev, response]);
         setTextMessage("");
-        sendResponse(response.text, response.aichatroom, isToggled);
+        sendResponse(response.text, response.aichatroom, isToggled, checked);
         
     }, [session, setNewMessage, setMessages, sendTextMessageError, aiUrl]);
 
         
-    const sendResponse = useCallback(async (textMessage, currentAIChatID, isToggled) => {
-        if (!textMessage) return console.log("No input");
+    const sendResponse = useCallback(async (textMessage, currentAIChatID, isToggled, checked) => {
+        if (!textMessage) return //console.log("No input");
 
         let response;
 
-        if (isToggled == false) {
+        if (isToggled == false && checked == false) {
 
             response = await postRequest(`${aiUrl}ai/create`, JSON.stringify({
                 aichatroom: currentAIChatID,
                 question: textMessage,
             }));
 
-            console.log("AI---Sending AIChatroom ID to send message", response?.response?.text);
-            console.log("AI---Sending User ID to send message", response.user);
-            console.log("AI---Sending text message to send message", response.text);
+            //console.log("AI---Sending AIChatroom ID to send message", response?.response?.text);
+            //console.log("AI---Sending User ID to send message", response.user);
+            //console.log("AI---Sending text message to send message", response.text);
 
             if (response.error) {
                 setSendTextMessageError(response);
@@ -221,16 +223,31 @@ export const AIChatContextProvider = ({ children }) => {
             setNewMessage(response.response);
             setMessages((prev) => [...prev, response.response]);
 
-        } else {
+        } else if(isToggled == true) {
             
             response = await postRequest(`${aiUrl}faithpalAI/input`, JSON.stringify({
                 aichatroom: currentAIChatID, input: textMessage
             }));
 
             
-            console.log("AI---Sending AIChatroom ID to send message", response?.response?.text);
-            console.log("AI---Sending User ID to send message", response.user);
-            console.log("AI---Sending text message to send message", response.text);
+            //console.log("AI---Sending AIChatroom ID to send message", response?.response?.text);
+            //console.log("AI---Sending User ID to send message", response.user);
+            //console.log("AI---Sending text message to send message", response.text);
+
+            if (response.error) {
+                setSendTextMessageError(response);
+                return sendTextMessageError;
+            }
+
+            setNewMessage(response.response);
+            setMessages((prev) => [...prev, response.response]);
+
+        }
+        else if(checked == true){
+            
+            response = await postRequest(`${aiUrl}faithpalAI/input/beta`, JSON.stringify({
+                aichatroom: currentAIChatID, input: textMessage
+            }));
 
             if (response.error) {
                 setSendTextMessageError(response);

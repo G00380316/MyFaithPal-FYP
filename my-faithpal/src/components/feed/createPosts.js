@@ -1,12 +1,12 @@
 "use client"
 
-import * as React from 'react';
-import FormControl from '@mui/joy/FormControl';
-import { Avatar, Card, CardContent, Button, Typography, Divider, Textarea, ButtonGroup, IconButton  } from '@mui/joy';
-import { Fade, Modal, Box, Backdrop } from '@mui/material';
 import InputFileUpload from '@/util/buttons/fileUpload';
-import { useSession } from 'next-auth/react';
 import { emojis } from '@/util/icons/emojis';
+import { Avatar, Button, ButtonGroup, Card, CardContent, Divider, IconButton, Textarea, Typography } from '@mui/joy';
+import FormControl from '@mui/joy/FormControl';
+import { Backdrop, Box, Fade, Modal } from '@mui/material';
+import { useSession } from 'next-auth/react';
+import * as React from 'react';
 
 const style = {
     position: 'absolute',
@@ -41,7 +41,7 @@ export default function createPosts() {
     const handleSubmitPost = () => {
 
         setPost(true);
-        console.log("This is the final Post text: ", text);
+        //console.log("This is the final Post text: ", text);
         handleClose();
 
     }
@@ -101,7 +101,7 @@ export default function createPosts() {
                                 sx={{ borderColor: 'background.body' }}
                                     />
                                 </Box>
-                                <Typography fontWeight="lg" sx={{mt:"3px"}}>{session?.user?.name}</Typography>
+                                <Typography fontWeight="lg" sx={{mt:"3px"}}>{session?.user?.username || session?.user?.name}</Typography>
                             </CardContent>
                             <Textarea
                             placeholder="What's on your Spirit"

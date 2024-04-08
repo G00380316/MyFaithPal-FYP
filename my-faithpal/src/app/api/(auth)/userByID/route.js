@@ -9,14 +9,14 @@ export async function POST(req) {
         
         const _id = data.recipientId || data.user;
 
-        console.log("ID received by Hook", _id);
+        //console.log("ID received by Hook", _id);
 
         const user = await User.findById({ _id })
 
-        console.log("User has been checked...user: ", user);
+        //console.log("User has been checked...user: ", user);
         return NextResponse.json({ user });
     } catch (error){
-        console.log(error);
+        //console.log(error);
         return NextResponse.json(error);
     }
 }

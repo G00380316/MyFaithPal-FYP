@@ -6,6 +6,6 @@ import { ChatOpenAI, OpenAI } from "@langchain/openai";
     export const model = new ChatOpenAI({
         modelName:"gpt-3.5-turbo-1106", // gpt-3.5-turbo or gpt-3.5-turbo-1106
         temperature: 0.5, // How accurate AI or creative
-        maxTokens: 100,
+        maxTokens: 1000,
         verbose: true, // For testing AI
     });
