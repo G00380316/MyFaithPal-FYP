@@ -267,13 +267,16 @@ router.post('/fix/json', async (req, res) => {
         
         connectMongoDB();
 
-        let FormattedData = [];
-
         const loadData = await AISKnowledge.find();
 
         //console.log(loadData);
+        const uniqueTexts = new Set();
 
-        loadData.forEach(obj => FormattedData.push({ text: obj.text }));
+
+        loadData.forEach(obj => uniqueTexts.add(obj.text));
+
+
+        const FormattedData = [...uniqueTexts].map(text => ({ text }));
 
         ////console.log(FormattedData);
 
