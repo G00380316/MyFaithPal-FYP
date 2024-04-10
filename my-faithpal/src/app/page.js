@@ -34,7 +34,7 @@ export default function Home() {
 
     if (!session) {
       
-      NotifyCustom({ text: `What to get to know God...Start reading.`, theme: "dark" });
+      NotifyCustom({ text: `Want to get to know God...Start reading.`, theme: "dark" });
       
     }
 
