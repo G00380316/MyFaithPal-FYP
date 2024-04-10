@@ -19,7 +19,7 @@ async function UploadFiletoS3(file, fileName) {
 
     const params = {
         Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME,
-        Key: `imagePosts/${fileName}-${Date.now()}`,
+        Key: `imagePosts/${fileName}`,
         Body: fileBuffer,
         ContentType: contentType,
     }//for the key you can put `yourfolder/${fileName} - ${Date.now()}` to upload file to specific folder
