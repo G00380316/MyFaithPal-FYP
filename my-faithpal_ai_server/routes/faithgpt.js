@@ -100,8 +100,6 @@ router.post('/input', async (req, res) => {
             new MessagesPlaceholder("agent_scratchpad"),
             ("{tool-output}","{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
             ("human", "{input}"),
-            ("{tool-output}", "**I searched the web using the Search tool to find relevant information.** {{searchTool.output}}"),
-            ("human", "{input}"),
         ]);
         
         const searchTool = new TavilySearchResults();
@@ -190,7 +188,6 @@ router.post('/input/beta', async (req, res) => {
             ("human", "{input}"),
             new MessagesPlaceholder("agent_scratchpad"),
             ("{tool-output}", "{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
-            ("human", "{input}"),
         ]);
         
         const searchTool = new TavilySearchResults();
