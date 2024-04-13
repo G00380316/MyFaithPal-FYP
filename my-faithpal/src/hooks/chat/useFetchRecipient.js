@@ -23,7 +23,8 @@ export const useFetchRecipientUser = ( userChats ) => {
             try {
                     //console.log("Sending Recipient", recipientId);
 
-                    const response = await fetch(`/api/userByID`, {
+                const response = await fetch(`/api/userByID`, {
+                        cache: 'no-store',
                         method: 'POST',
                         headers: {
                             "Content-Type": "application/json",

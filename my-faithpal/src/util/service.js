@@ -4,6 +4,7 @@ export const aiUrl = process.env.NEXT_PUBLIC_FAITHPALSERVER_AIURL;
 export const postRequest = async (url, body) => {
 
     const response = await fetch(url, {
+        cache:"no-store",
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -30,7 +31,7 @@ export const postRequest = async (url, body) => {
 
 export const getRequest = async (url) => {
     
-    const response = await fetch(url);
+    const response = await fetch(url, {cache: "no-store"});
 
     const data = await response.json();
 
