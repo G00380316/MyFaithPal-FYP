@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import mime from "mime-types";
+export const dynamic = 'force-dynamic';
 
 const s3Client = new S3Client({
     region: process.env.NEXT_PUBLIC_AWS_S3_REGION,

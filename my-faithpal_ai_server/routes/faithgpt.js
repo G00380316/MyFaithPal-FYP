@@ -100,8 +100,6 @@ router.post('/input', async (req, res) => {
             new MessagesPlaceholder("agent_scratchpad"),
             ("{tool-output}","{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
             ("human", "{input}"),
-            ("{tool-output}", "**I searched the web using the Search tool to find relevant information.** {{searchTool.output}}"),
-            ("human", "{input}"),
         ]);
         
         const searchTool = new TavilySearchResults();
@@ -184,16 +182,15 @@ router.post('/input/beta', async (req, res) => {
         connectMongoDB();
 
         // Prompt Template
-        const prompt = ChatPromptTemplate.fromMessages([
+       const prompt = ChatPromptTemplate.fromMessages([
             ("ai", "You are a helpful friend and assistant and your name is Solomon, Answer questions only related to the Bible or Christianity and Answer referring to Bible and Christianity"),
             new MessagesPlaceholder("chat_history"),
             ("human", "{input}"),
             new MessagesPlaceholder("agent_scratchpad"),
             ("{tool-output}", "{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
-            ("human", "{input}"),
         ]);
         
-        const searchTool = new TavilySearchResults();
+	const searchTool = new TavilySearchResults();
 
         const chatHistory = await ChatHistory.findOne({ aichatroom });
         const storeChatHistory = [];
@@ -267,16 +264,13 @@ router.post('/fix/json', async (req, res) => {
         
         connectMongoDB();
 
+        let FormattedData = [];
+
         const loadData = await AISKnowledge.find();
 
         //console.log(loadData);
-        const uniqueTexts = new Set();
 
-
-        loadData.forEach(obj => uniqueTexts.add(obj.text));
-
-
-        const FormattedData = [...uniqueTexts].map(text => ({ text }));
+        loadData.forEach(obj => FormattedData.push({ text: obj.text }));
 
         ////console.log(FormattedData);
 

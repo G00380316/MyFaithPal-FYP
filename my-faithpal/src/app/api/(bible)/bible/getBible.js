@@ -1,4 +1,5 @@
 import { baseUrl } from "@/util/service";
+export const dynamic = 'force-dynamic';
 
 export async function getBible(selectedBook, selectedChapter, selectedVerse, selectedTranslation) {
     try {
@@ -26,18 +27,18 @@ export async function getBible(selectedBook, selectedChapter, selectedVerse, sel
             
             if (selectedVerse == "") {
                 //console.log("SelectedTrans is not empty entered if statment")
-                const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}/${selectedTranslation}`);
+                const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}/${selectedTranslation}`,{cache: 'no-store'});
                 const data = await res.json();
                 //console.log('API Response:', data);
 
                 return data;
             }
 
-                const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${selectedVerse}/${selectedTranslation}`);
+                const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${selectedVerse}/${selectedTranslation}`,{cache: 'no-store'});
                 const data = await res.json();
                 if (data.error) {
                     const NewSelectedVerse = selectedVerse - 1;
-                    const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${NewSelectedVerse}/${selectedTranslation}`);
+                    const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${NewSelectedVerse}/${selectedTranslation}`,{cache: 'no-store'});
                     const data = await res.json();
 
                     //console.log('API Response with Verse and Translation plus Error:', data);
@@ -51,18 +52,18 @@ export async function getBible(selectedBook, selectedChapter, selectedVerse, sel
 
             if (selectedVerse == "") {
             //console.log("SelectedVerse is empty entered if statment")
-            const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}`);
+            const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}`,{cache: 'no-store'});
             const data = await res.json();
             //console.log('API Response:', data);
 
             return data;
         }
 
-            const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${selectedVerse}`);
+            const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${selectedVerse}`,{cache: 'no-store'});
             const data = await res.json();
             if (data.error) {
                 const NewSelectedVerse = selectedVerse - 1;
-                const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${NewSelectedVerse}`);
+                const res = await fetch(`${baseUrl}bible/${bookName}${selectedChapter}:${NewSelectedVerse}`,{cache: 'no-store'});
                 const data = await res.json();
 
                 //console.log('API Response with Verse plus Error:', data);

@@ -80,7 +80,7 @@ export const AIChatContextProvider = ({ children }) => {
         if (socket === null) return;
         
         socket.on("getMessage", ( res ) => {
-            
+            if (!session) return;
             if (currentAIChat?._id !== res.aichatroom) return
             
             setMessages((prev) => [...prev, res]);

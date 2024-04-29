@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-
+export const dynamic = 'force-dynamic';
 
 export async function getChats() {
 
@@ -7,7 +7,7 @@ export async function getChats() {
 
     try {
         
-        const res = await fetch(`${proccess.env.FAITHPALSERVER_URL}/messages/get/${session?.user?._id}`);
+        const res = await fetch(`${proccess.env.FAITHPALSERVER_URL}/messages/get/${session?.user?._id}`,{cache: 'no-store'});
         const data = await res.json();
         //console.log('API Response:', data);
 
@@ -15,7 +15,7 @@ export async function getChats() {
 
     } catch (error) {
 
-        console.error('Error fetching Bible data:', error);
+        console.error('Error fetching messages data:', error);
 
         throw error;
 

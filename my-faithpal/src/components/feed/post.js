@@ -674,7 +674,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
             <Card
             variant="outlined"
             sx={{
-                maxWidth: "100%"
+                maxWidth: "500px"
             }}
             >
             <CardContent orientation="horizontal" sx={{ alignItems: 'center', gap: 1 }}>
@@ -921,7 +921,7 @@ export default function Post({ _id, content, media, likes, saves, user, createdA
                 <Card
             variant="outlined"
             sx={{
-                maxWidth: "100%"
+                maxWidth: "500px"
             }}
             >
             <CardContent orientation="horizontal" sx={{ alignItems: 'center', gap: 1 }}>
