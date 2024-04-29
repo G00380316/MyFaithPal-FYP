@@ -84,6 +84,14 @@ export default function QuestionModal() {
                 bar: true,
                 autoClose: 1500,
             })
+        } else if (session?.user) {
+            NotifyCustom({
+                icon: Icons.info,
+                text: "Click white buttons Top left or Bottom right to enable Solomon",
+                bar: false,
+                autoClose: 2500,
+                theme: "dark"
+            })
         }
     }, [session]);
     

@@ -182,7 +182,7 @@ router.post('/input/beta', async (req, res) => {
         connectMongoDB();
 
         // Prompt Template
-        const prompt = ChatPromptTemplate.fromMessages([
+       const prompt = ChatPromptTemplate.fromMessages([
             ("ai", "You are a helpful friend and assistant and your name is Solomon, Answer questions only related to the Bible or Christianity and Answer referring to Bible and Christianity"),
             new MessagesPlaceholder("chat_history"),
             ("human", "{input}"),
@@ -190,7 +190,7 @@ router.post('/input/beta', async (req, res) => {
             ("{tool-output}", "{{#if hasRetrieverTool}} **Use the {{retrieverTool}} tool to enhance my response.** {{retrieverTool.output}} {{/if}}"),
         ]);
         
-        const searchTool = new TavilySearchResults();
+	const searchTool = new TavilySearchResults();
 
         const chatHistory = await ChatHistory.findOne({ aichatroom });
         const storeChatHistory = [];
@@ -264,16 +264,13 @@ router.post('/fix/json', async (req, res) => {
         
         connectMongoDB();
 
+        let FormattedData = [];
+
         const loadData = await AISKnowledge.find();
 
         //console.log(loadData);
-        const uniqueTexts = new Set();
 
-
-        loadData.forEach(obj => uniqueTexts.add(obj.text));
-
-
-        const FormattedData = [...uniqueTexts].map(text => ({ text }));
+        loadData.forEach(obj => FormattedData.push({ text: obj.text }));
 
         ////console.log(FormattedData);
 

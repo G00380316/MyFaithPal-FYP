@@ -1,7 +1,9 @@
 "use client";
 
 import styles from "@/components/forms/form.module.css";
-import { Divider } from "@mui/joy";
+import { Facebook, Google } from "@mui/icons-material";
+import { Divider, CardContent, Typography } from "@mui/joy";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -103,8 +105,23 @@ export default function regForm() {
                     </div>)}
                 </div>
                 <Divider sx={{ margin: 1 }} />
-                    <p className={styles.description}>Click Sign In to Login in with Google, Facbook or LinkedIn</p>
-                <Divider sx={{mt: 1}}/>
+                <p className={styles.description}>Click Sign In to Log in or Sign up with Google</p>
+                <div>
+                    <Divider sx={{ margin: 1 }} />
+                        <button onClick={() => signIn("google")} className ={styles.button}>
+                        <CardContent orientation="horizontal" sx={{alignItems: "center", justifyContent: "center", m: 'auto',}}>
+                            <Google sx={{ml: 'auto'}}/>
+                            <Typography sx={{m: 'auto'}}>Continue with Google</Typography>
+                        </CardContent>
+                        </button>
+                    {/*<button onClick={() => signIn("facebook")} className ={styles.button}>
+                            <CardContent orientation="horizontal" sx={{alignItems: "center", justifyContent: "space-evenly", m: 'auto',}}>
+                                <Facebook sx={{ml: 'auto'}}/>
+                                <Typography sx={{m: 'auto'}}>Continue with Facebook</Typography>
+                            </CardContent>
+                    </button>*/}
+                    <Divider sx={{mt: 1}}/>
+                </div>
             </form>
             <div>
                     <Link href='/login'><button className ={styles.button}>Sign in</button></Link>

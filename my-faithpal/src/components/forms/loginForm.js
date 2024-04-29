@@ -69,13 +69,13 @@ export default function LoginForm() {
                             <Typography sx={{m: 'auto'}}>Continue with Google</Typography>
                         </CardContent>
                         </button>
-                        <button onClick={() => signIn("facebook")} className ={styles.button}>
+                       {/* <button onClick={() => signIn("facebook")} className ={styles.button}>
                             <CardContent orientation="horizontal" sx={{alignItems: "center", justifyContent: "space-evenly", m: 'auto',}}>
                                 <Facebook sx={{ml: 'auto'}}/>
                                 <Typography sx={{m: 'auto'}}>Continue with Facebook</Typography>
                             </CardContent>
-                        </button>
-            <Divider sx={{ margin: 1 }} />
+                        </button>*/}
+                    <Divider sx={{ margin: 1 }} />
             <div style={{ marginBottom: 5 }}>
                 <Link href='/register'><button className={styles.button}>Sign up</button></Link>
             </div>

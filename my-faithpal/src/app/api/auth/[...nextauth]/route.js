@@ -137,6 +137,7 @@ export const authOptions = {
                                 })
 
                             //console.log("Created Google user",user)
+                            return true
 
                         } else {
 
